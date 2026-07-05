@@ -66,6 +66,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .address-tab:hover{transform:scale(1.05)}
 .wallet-address{font-size:18px;color:#c6ffc5;line-height:1.7;margin:0 auto 30px;max-width:900px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
 .wallet-address strong{color:#78ff7a;word-break:break-all}
+.wallet-address-label{color:#999;font-size:13px;display:block;width:100%;margin-bottom:10px}
 .copy-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:12px 20px;cursor:pointer;transition:0.3s;font-weight:700;font-size:14px}
 .copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
@@ -191,13 +192,14 @@ footer p{font-weight:500}
     <p class="goal">Raise goal: <strong>$3,000,000</strong></p>
 
     <div class="address-tabs">
-        <button class="address-tab active">ETH</button>
-        <button class="address-tab">USDT</button>
-        <button class="address-tab">USDC</button>
-        <button class="address-tab">SOL</button>
+        <button class="address-tab active" data-currency="ETH">ETH</button>
+        <button class="address-tab" data-currency="USDT">USDT</button>
+        <button class="address-tab" data-currency="USDC">USDC</button>
+        <button class="address-tab" data-currency="SOL">SOL</button>
     </div>
 
     <div class="wallet-address">
+        <span class="wallet-address-label" id="currency-label">ETH Address</span>
         <strong id="sale-address">0x8E44a6Ab51025569E5a784576508eE38e881a72b</strong>
         <button class="copy-btn" id="copy-address">Copy</button>
     </div>
@@ -217,7 +219,7 @@ footer p{font-weight:500}
         </div>
         <div class="stat-box">
             <h3>Raised</h3>
-            <p>$126,325 USD</p>
+            <p id="raised-display">$126,325 USD</p>
         </div>
     </div>
 
@@ -329,11 +331,53 @@ footer p{font-weight:500}
 <script src="/frontend/sale.js"></script>
 
 <script>
-// copy address
+// Currency addresses and prices
+const ADDRESSES = {
+    ETH: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    USDT: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    USDC: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    SOL: '4TvNJbBSfgZopxS6QkJRg75exFL4DLt7z4p3rdEf8UCF'
+};
+
+const PRICES = { ETH: 2500, USDT: 1, USDC: 1, SOL: 150 };
+const PRICE_PER_TOKEN = 0.003;
+const RAISED_USD = 126325;
+
+// Tab switching for addresses
+const addressTabs = document.querySelectorAll('.address-tab');
+const saleAddress = document.getElementById('sale-address');
+const currencyLabel = document.getElementById('currency-label');
+const raisedDisplay = document.getElementById('raised-display');
+
+addressTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        // Remove active class from all tabs
+        addressTabs.forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        // Get selected currency
+        const currency = tab.getAttribute('data-currency');
+        
+        // Update address and label
+        saleAddress.innerText = ADDRESSES[currency];
+        currencyLabel.innerText = `${currency} Address`;
+        
+        // Update raised amount for this currency
+        const raisedInCurrency = RAISED_USD / PRICES[currency];
+        raisedDisplay.innerText = `${raisedInCurrency.toFixed(currency === 'SOL' ? 2 : 6)} ${currency}`;
+    });
+});
+
+// Copy address
 const copyBtn = document.getElementById('copy-address');
 copyBtn && copyBtn.addEventListener('click', () => {
     const saleAddr = document.getElementById('sale-address').innerText;
-    navigator.clipboard.writeText(saleAddr).then(()=> alert('Copied'));
+    navigator.clipboard.writeText(saleAddr).then(()=> {
+        copyBtn.innerText = '✓ Copied!';
+        setTimeout(() => { copyBtn.innerText = 'Copy'; }, 2000);
+    });
 });
 
 // Wallet connection with enhanced display
@@ -344,7 +388,13 @@ const disconnectBtn = document.getElementById('disconnect');
 const btnText = document.getElementById('btn-text');
 const walletNetwork = document.getElementById('wallet-network');
 
-walletBtn.addEventListener('click', async ()=>{
+walletBtn.addEventListener('click', async (e) => {
+    if (walletBtn.classList.contains('connected')) {
+        e.stopPropagation();
+        walletMenu.classList.toggle('active');
+        return;
+    }
+    
     if (!window.ethereum) return alert('MetaMask not found');
     try{
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -367,13 +417,6 @@ walletBtn.addEventListener('click', async ()=>{
     }catch(e){ console.error(e); }
 });
 
-walletBtn.addEventListener('click', (e) => {
-    if(walletBtn.classList.contains('connected')) {
-        e.stopPropagation();
-        walletMenu.classList.toggle('active');
-    }
-});
-
 disconnectBtn.addEventListener('click', ()=>{
     walletAddressDisplay.innerText = 'Connecting...';
     walletNetwork.innerText = 'Ethereum Mainnet';
@@ -394,9 +437,6 @@ const amountInput = document.getElementById('pepe-amount');
 const tokensDisplay = document.getElementById('tokens-display');
 const tokensAmount = document.getElementById('tokens-amount');
 const paymentSelect = document.getElementById('payment-method');
-
-const PRICES = { ETH: 2500, USDT: 1, USDC: 1, SOL: 150 };
-const PRICE_PER_TOKEN = 0.003;
 
 function updateTokenDisplay() {
   const amount = parseFloat(amountInput.value);
