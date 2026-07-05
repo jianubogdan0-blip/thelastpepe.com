@@ -505,6 +505,33 @@ copyBtn.addEventListener('click', () => {
     }, 2000);
 });
 
+function syncAddressTabs(currency) {
+    addressTabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.currency === currency);
+    });
+}
+
+function syncCurrencyButtons(currency) {
+    currencyBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.currency === currency);
+    });
+}
+
+function setSelectedCurrency(currency, options = {}) {
+    const { syncBuyButtons = true, syncPresaleTabs = true, updateEstimate = true } = options;
+    selectedCurrency = currency;
+
+    if (syncPresaleTabs) syncAddressTabs(currency);
+    if (syncBuyButtons) syncCurrencyButtons(currency);
+
+    updatePresaleAddress(currency);
+
+    if (updateEstimate) {
+        calculateTokens();
+        renderRateDisplay();
+    }
+}
+
 function updatePresaleAddress(currency) {
     saleAddress.textContent = PAYMENT_ADDRESSES[currency];
     addressLabel.textContent = `${currency} Wallet Address:`;
@@ -512,19 +539,13 @@ function updatePresaleAddress(currency) {
 
 addressTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-        addressTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        updatePresaleAddress(tab.dataset.currency);
+        setSelectedCurrency(tab.dataset.currency);
     });
 });
 
 currencyBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        currencyBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedCurrency = btn.dataset.currency;
-        calculateTokens();
-        renderRateDisplay();
+        setSelectedCurrency(btn.dataset.currency);
     });
 });
 
@@ -647,7 +668,7 @@ document.addEventListener('click', (e) => {
 });
 
 window.addEventListener('load', async () => {
-    updatePresaleAddress('ETH');
+    setSelectedCurrency('ETH');
     await fetchLivePrices();
     setInterval(fetchLivePrices, 60000);
 
