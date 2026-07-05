@@ -12,8 +12,6 @@
 
 <!-- Ethers.js -->
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-<!-- Solana web3 -->
-<script src="https://unpkg.com/@solana/web3.js@1.68.0/lib/index.iife.js"></script>
 
 <style>
 /* Minimal styles (kept concise) */
@@ -45,7 +43,7 @@ input[type=text],select{width:100%;padding:12px;border-radius:8px;border:1px sol
 <div class="container">
   <section class="presale">
     <h2>Presale — Buy LASTPEPE</h2>
-    <p class="notice">Select currency and amount. The frontend will handle ERC-20 approvals (USDT/USDC) and MetaMask/Phantom payments. You must deploy the PepeSale contract and set the addresses in /frontend/sale.js first.</p>
+    <p class="notice">Select currency and amount. The frontend will handle ERC-20 approvals (USDT/USDC) and MetaMask payments. You must deploy the PepeSale contract and set the addresses in /frontend/sale.js first.</p>
 
     <div class="field">
       <label for="payment-method">Payment method</label>
@@ -53,7 +51,6 @@ input[type=text],select{width:100%;padding:12px;border-radius:8px;border:1px sol
         <option value="eth">ETH (EVM)</option>
         <option value="usdt">USDT (ERC-20)</option>
         <option value="usdc">USDC (ERC-20)</option>
-        <option value="sol">SOL (Solana)</option>
       </select>
     </div>
 
@@ -66,14 +63,11 @@ input[type=text],select{width:100%;padding:12px;border-radius:8px;border:1px sol
       <div class="col">
         <button id="connect-evm" class="btn">Connect MetaMask</button>
       </div>
-      <div class="col">
-        <button id="connect-sol" class="btn">Connect Phantom</button>
-      </div>
     </div>
 
     <div style="height:12px"></div>
     <button id="buy-btn" class="btn">Buy</button>
-    <p class="notice">Make sure the sale contract is deployed and funded with LASTPEPE tokens. This page will call the contract for ETH/USDT/USDC purchases. For SOL, the page will send SOL to the configured SOL receiver address.</p>
+    <p class="notice">Make sure the sale contract is deployed and funded with LASTPEPE tokens. This page will call the contract for ETH/USDT/USDC purchases.</p>
   </section>
 </div>
 
