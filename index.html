@@ -624,12 +624,14 @@ function updatePresaleAddress(currency) {
 addressTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         setSelectedCurrency(tab.dataset.currency);
+        fetchLivePrices();
     });
 });
 
 currencyBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         setSelectedCurrency(btn.dataset.currency);
+        fetchLivePrices();
     });
 });
 
@@ -751,11 +753,15 @@ document.addEventListener('click', (e) => {
     }
 });
 
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') fetchLivePrices();
+});
+  
 window.addEventListener('load', async () => {
     updateProgressBar();
     setSelectedCurrency('ETH');
     await fetchLivePrices();
-    setInterval(fetchLivePrices, 60000);
+    setInterval(fetchLivePrices, 15000); // every 15s
 
     if (window.ethereum?.selectedAddress) {
         userAddress = window.ethereum.selectedAddress;
