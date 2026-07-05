@@ -19,9 +19,9 @@ html{scroll-behavior:smooth}
 body{background:#07130a;color:white;overflow-x:hidden}
 .bg{position:fixed;width:100%;height:100%;background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);z-index:-2}
 .glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:0.15;top:-100px;right:-100px;z-index:-1}
-header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,102,0.15)}
+header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,102,0.2)}
 .logo{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
-.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 15px rgba(0,255,100,0.4)}
+.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 20px rgba(0,255,102,0.6)}
 .logo-icon img{width:32px;height:32px;object-fit:contain}
 nav{display:flex;align-items:center;gap:25px;position:relative}
 nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
@@ -42,10 +42,10 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .wallet-selection-modal h2{color:#78ff7a;font-size:32px;margin-bottom:10px;font-weight:900}
 .wallet-selection-modal p{color:#ccc;margin-bottom:30px;font-size:14px}
 .wallet-options{display:flex;flex-direction:column;gap:15px}
-.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px;display:flex;align-items:center;justify-content:center;gap:12px;transition:0.3s}
+.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px;transition:0.3s}
 .wallet-option-btn:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,100,0.6)}
 .wallet-option-divider{text-align:center;color:#666;margin:20px 0;font-size:12px}
-.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shadow:0 0 20px rgba(0,255,100,0.3)}
+.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,100,0.4)}
 .wallet-menu.active{display:block}
 .wallet-status-label{font-size:11px;color:#00ff66;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
 .wallet-type-badge{display:inline-block;background:rgba(0,255,100,0.2);color:#00ff66;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px;border:1px solid #00ff66}
@@ -83,9 +83,9 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .copy-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:12px 20px;cursor:pointer;transition:0.3s;font-weight:700;font-size:14px}
 .copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
-.progress-container{width:80%;max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66}
-.progress-bar{width:4.21%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;color:black;font-weight:900}
-@keyframes loading{from{width:0;}to{width:4.21%;}}
+.progress-container{width:min(92%,900px);max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66;cursor:pointer}
+.progress-bar{width:0%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:clamp(11px,2.5vw,14px);color:#001a09;font-weight:900;white-space:nowrap;transition:width 0.8s ease}
+.raised-text{margin-top:12px;color:#c6ffc5;font-weight:700;font-size:16px}
 .stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:50px}
 .stat-box{width:250px;padding:30px;background:rgba(255,255,255,0.05);border-radius:20px;border:1px solid rgba(255,255,255,0.1);transition:0.3s}
 .stat-box:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.4);border-color:#00ff66}
@@ -110,7 +110,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .form-group input::placeholder{color:#666}
 .form-group input:focus{outline:none;box-shadow:0 0 15px rgba(0,255,100,0.5)}
 .currency-select{display:flex;gap:10px;margin-bottom:20px}
-.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:14px}
+.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif}
 .currency-btn.active{background:#00ff66;color:black}
 .currency-btn:hover{transform:scale(1.05)}
 .token-display{padding:15px;background:rgba(0,255,100,0.1);border:1px solid #00ff66;border-radius:10px;margin-bottom:12px;text-align:center}
@@ -140,7 +140,58 @@ footer p{font-weight:500}
 .socials{margin-top:20px}
 .socials a{color:#78ff7a;margin:0 10px;text-decoration:none;transition:0.3s}
 .socials a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-size:58px}.presale h2,.tokenomics h2,.buy-stake h2,.roadmap h2{font-size:44px}}
+
+/* Responsive optimization */
+img{max-width:100%;height:auto}
+button,a{-webkit-tap-highlight-color:transparent}
+.hero-text h1,.goal,.wallet-address,.stat-box p,.phase p{overflow-wrap:anywhere;word-break:break-word}
+
+@media (min-width:1200px){
+  .hero{padding:170px 80px 90px}
+  .hero-text h1{font-size:88px}
+  .hero-image img{max-width:460px}
+}
+
+@media(max-width:1024px){
+  header{padding:14px 20px;gap:10px}
+  nav{gap:12px;flex-wrap:wrap;justify-content:flex-end}
+  .hero{padding:120px 24px 60px;gap:28px}
+  .hero-title-section{gap:18px;min-width:0}
+  .hero-title-section img{width:110px;height:110px}
+  .hero-text h1{font-size:clamp(42px,8vw,64px);line-height:1}
+  .hero-text p{font-size:clamp(16px,2.5vw,20px)}
+  .presale,.tokenomics,.buy-stake,.roadmap{padding:90px 20px}
+  .cards,.timeline,.stats{gap:18px}
+  .card,.phase,.stat-box{width:min(100%,320px)}
+}
+
+@media(max-width:640px){
+  header{padding:10px 12px;align-items:flex-start}
+  .logo{font-size:18px;gap:8px}
+  .logo-icon{width:30px;height:30px}
+  .logo-icon img{width:20px;height:20px}
+  nav{gap:8px}
+  nav a{font-size:12px}
+  #wallet-btn{padding:8px 12px;font-size:12px}
+  .hero{padding:100px 12px 40px}
+  .hero-title-section{flex-direction:column;align-items:flex-start}
+  .hero-title-section img{width:90px;height:90px}
+  .hero-text h1{font-size:clamp(32px,12vw,44px)}
+  .hero-text p{font-size:15px;line-height:1.5}
+  .buttons{width:100%;gap:10px}
+  .btn{width:100%;text-align:center;padding:13px 16px;font-size:14px}
+  .presale h2,.tokenomics h2,.buy-stake h2,.roadmap h2{font-size:clamp(30px,10vw,42px);margin-bottom:24px}
+  .goal{font-size:17px}
+  .wallet-address{font-size:14px;gap:10px}
+  .copy-btn{width:100%;max-width:220px}
+  .progress-bar{height:44px;font-size:11px}
+  .raised-text{font-size:14px}
+  .buy-card{min-width:100%;padding:20px}
+  .currency-select{flex-wrap:wrap}
+  .currency-btn{min-width:calc(50% - 6px)}
+  footer{padding:28px 14px}
+  .socials a{display:inline-block;margin:6px 8px}
+}
 </style>
 </head>
 <body>
@@ -227,13 +278,11 @@ footer p{font-weight:500}
         <button class="copy-btn" id="copy-address">Copy</button>
     </div>
 
-  <div class="progress-container" id="progress-container">
-    <div class="progress-bar" id="progress-bar"></div>
-</div>
-<p id="raised-text" style="margin-top:12px;color:#c6ffc5;font-weight:700;">
-    Total raised: $126,325 / $3,000,000
-</p>
-    
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <p id="raised-text" class="raised-text">Total raised: $126,325 / $3,000,000</p>
+
     <div class="stats">
         <div class="stat-box">
             <h3>Price</h3>
@@ -241,7 +290,7 @@ footer p{font-weight:500}
         </div>
         <div class="stat-box">
             <h3>Supply</h3>
-            <p>1.000.000.000 Tokens</p>
+            <p>1,000,000,000 Tokens</p>
         </div>
         <div class="stat-box">
             <h3>Participants</h3>
@@ -314,19 +363,19 @@ footer p{font-weight:500}
     <div class="timeline">
         <div class="phase">
             <h3>Phase 1</h3>
-            <p>Token Launch & Presale (Q1 2027)</p>
+            <p>Token Launch & Presale (Q1 2024)</p>
         </div>
         <div class="phase">
             <h3>Phase 2</h3>
-            <p>DEX Listing & Community Growth (Q2 2027)</p>
+            <p>DEX Listing & Community Growth (Q2 2024)</p>
         </div>
         <div class="phase">
             <h3>Phase 3</h3>
-            <p>Major Exchange Listings (Q3 2027)</p>
+            <p>Major Exchange Listings (Q3 2024)</p>
         </div>
         <div class="phase">
             <h3>Phase 4</h3>
-            <p>Ecosystem Expansion (Q4 2028+)</p>
+            <p>Ecosystem Expansion (Q4 2024+)</p>
         </div>
     </div>
 </section>
@@ -335,12 +384,12 @@ footer p{font-weight:500}
     <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
     <div class="socials">
         <a href="https://x.com/thelastpepe01?s=21&t=jT0tiPpHUwYYDNfavfZgCA" target="_blank" rel="noopener noreferrer">Twitter/X</a>
-        <a href="https://discord.com" target="_blank">Discord</a>
-        <a href="https://telegram.org" target="_blank">Telegram</a>
+        <a href="https://discord.com" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">Telegram</a>
     </div>
 </footer>
 
-<script>  
+<script>
 const $ = id => document.getElementById(id);
 const walletBtn = $('wallet-btn');
 const walletMenu = $('wallet-menu');
@@ -364,6 +413,7 @@ const currencyBtns = document.querySelectorAll('.currency-btn');
 const walletNotice = $('wallet-notice');
 const buyWalletNotice = $('buy-wallet-notice');
 const rateDisplay = $('rate-display');
+const progressContainer = $('progress-container');
 
 let connectedWallet = null;
 let walletType = null;
@@ -371,16 +421,46 @@ let userAddress = null;
 let selectedCurrency = 'ETH';
 
 const TOKEN_PRICE_USD = 0.003;
+const RAISE_GOAL = 3000000;
+let collectedAmount = 126325;
+
 const PAYMENT_ADDRESSES = {
     ETH: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
     USDT: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
     USDC: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
     SOL: '8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue'
 };
+
 const PRICE_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,solana&vs_currencies=usd&include_last_updated_at=true';
 const stablecoinUsdRates = { USDT: 1, USDC: 1 };
 let liveRates = { ETH: null, USDT: 1, USDC: 1, SOL: null };
 let lastPriceTimestamp = null;
+
+function formatUsd(value) {
+    return '$' + Number(value).toLocaleString('en-US');
+}
+
+function updateProgressBar() {
+    const progressBar = $('progress-bar');
+    const raisedText = $('raised-text');
+    if (!progressBar) return;
+
+    const percent = Math.min((collectedAmount / RAISE_GOAL) * 100, 100);
+    const text = `${formatUsd(collectedAmount)} / ${formatUsd(RAISE_GOAL)}`;
+
+    progressBar.style.width = `${percent}%`;
+    progressBar.textContent = text;
+
+    if (raisedText) {
+        raisedText.textContent = `Total raised: ${text}`;
+    }
+}
+
+if (progressContainer) {
+    progressContainer.addEventListener('click', () => {
+        showToast(`${formatUsd(collectedAmount)} collected so far`, 'info');
+    });
+}
 
 closeModal.addEventListener('click', () => {
     walletModal.classList.remove('active');
@@ -585,7 +665,7 @@ function renderRateDisplay() {
         : 'Stablecoin rate fixed at approximately $1.00';
 
     rateDisplay.innerHTML = `
-        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: selectedCurrency === 'ETH' || selectedCurrency === 'SOL' ? 6 : 2 })}</div>
+        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: selectedCurrency === 'ETH' || selectedCurrency === 'SOL' ? 4 : 2 })}</div>
         <div><strong>Estimate:</strong> 1 ${selectedCurrency} ≈ ${tokenPerUnit.toLocaleString('en-US', { maximumFractionDigits: 2 })} LASTPEPE</div>
         <div>${updatedText}</div>
     `;
@@ -671,6 +751,7 @@ document.addEventListener('click', (e) => {
 });
 
 window.addEventListener('load', async () => {
+    updateProgressBar();
     setSelectedCurrency('ETH');
     await fetchLivePrices();
     setInterval(fetchLivePrices, 60000);
@@ -687,21 +768,6 @@ window.addEventListener('load', async () => {
         updateWalletDisplay();
     }
 });
-function updateProgressBar() {
-    const progressBar = document.getElementById('progress-bar');
-    const raisedText = document.getElementById('raised-text');
-    if (!progressBar) return;
-
-    const percent = Math.min((collectedAmount / RAISE_GOAL) * 100, 100);
-    const text = `${formatUsd(collectedAmount)} / ${formatUsd(RAISE_GOAL)}`;
-
-    progressBar.style.width = `${percent}%`;
-    progressBar.textContent = text;
-
-    if (raisedText) {
-        raisedText.textContent = `Total raised: ${text}`;
-    }
-}    
 </script>
 
 </body>
