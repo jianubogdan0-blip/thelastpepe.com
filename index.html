@@ -14,997 +14,120 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Orbitron',sans-serif;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    background:#07130a;
-    color:white;
-    overflow-x:hidden;
-}
-
-/* BACKGROUND */
-
-.bg{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);
-    z-index:-2;
-}
-
-.glow{
-    position:fixed;
-    width:600px;
-    height:600px;
-    background:#00ff6a;
-    filter:blur(200px);
-    opacity:0.15;
-    top:-100px;
-    right:-100px;
-    z-index:-1;
-}
-
-/* NAVBAR */
-
-header{
-    position:fixed;
-    width:100%;
-    top:0;
-    left:0;
-    padding:20px 60px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    background:rgba(0,0,0,0.5);
-    backdrop-filter:blur(10px);
-    z-index:1000;
-    border-bottom:1px solid rgba(0,255,102,0.2);
-}
-
-.logo{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    font-size:28px;
-    font-weight:900;
-    color:#78ff7a;
-    text-shadow:0 0 15px #00ff66;
-    cursor:pointer;
-}
-
-.logo-icon{
-    width:46px;
-    height:46px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);
-    border-radius:50%;
-    box-shadow:0 0 18px rgba(0,255,102,0.35);
-}
-
-.logo-icon img{
-    width:32px;
-    height:32px;
-    object-fit:contain;
-}
-
-nav{
-    display:flex;
-    align-items:center;
-    gap:25px;
-}
-
-nav a{
-    text-decoration:none;
-    color:white;
-    transition:0.3s;
-    font-size:14px;
-    font-weight:600;
-}
-
-nav a:hover{
-    color:#00ff66;
-    text-shadow:0 0 10px #00ff66;
-}
-
-#wallet-btn{
-    padding:10px 20px;
-    background:#00ff66;
-    color:black;
-    border:none;
-    border-radius:50px;
-    cursor:pointer;
-    font-weight:700;
-    font-family:'Orbitron',sans-serif;
-    transition:0.3s;
-    font-size:14px;
-    position:relative;
-    white-space:nowrap;
-}
-
-#wallet-btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 15px rgba(0,255,102,0.8);
-}
-
-#wallet-btn.connected{
-    background:#78ff7a;
-}
-
-.wallet-menu{
-    position:absolute;
-    top:100%;
-    right:0;
-    margin-top:10px;
-    background:rgba(0,0,0,0.95);
-    border:2px solid #00ff66;
-    border-radius:15px;
-    padding:15px;
-    min-width:250px;
-    display:none;
-    z-index:1001;
-    box-shadow:0 0 30px rgba(0,255,102,0.3);
-}
-
-.wallet-menu.active{
-    display:block;
-}
-
-.wallet-menu-item{
-    padding:10px 15px;
-    color:#78ff7a;
-    font-size:13px;
-    word-break:break-all;
-    background:rgba(0,255,100,0.1);
-    border-radius:8px;
-    margin-bottom:10px;
-    border:1px solid rgba(0,255,100,0.3);
-}
-
-.wallet-menu-item strong{
-    color:#00ff66;
-}
-
-.disconnect-btn{
-    width:100%;
-    padding:10px;
-    background:#ff6b6b;
-    color:white;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:700;
-    font-family:'Orbitron',sans-serif;
-    transition:0.3s;
-    font-size:13px;
-}
-
-.disconnect-btn:hover{
-    background:#ff5252;
-    transform:scale(1.05);
-}
-
-/* HERO */
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:160px 60px 80px;
-    gap:40px;
-    flex-wrap:wrap;
-}
-
-.hero-title-section{
-    display:flex;
-    align-items:center;
-    gap:30px;
-    max-width:600px;
-    flex:1;
-    min-width:300px;
-}
-
-.hero-title-section img{
-    width:150px;
-    height:150px;
-    border-radius:20px;
-    flex-shrink:0;
-    object-fit:cover;
-    box-shadow:0 0 30px rgba(0,255,100,0.5);
-    border:3px solid #00ff66;
-}
-
-.hero-text{
-    max-width:500px;
-    flex:1;
-    min-width:250px;
-}
-
-.hero-text h1{
-    font-size:82px;
-    line-height:0.9;
-    margin-bottom:25px;
-    font-weight:900;
-}
-
-.hero-text span{
-    color:#00ff66;
-    text-shadow:0 0 30px #00ff66;
-}
-
-.hero-text p{
-    font-size:20px;
-    color:#d6d6d6;
-    line-height:1.7;
-    margin-bottom:35px;
-    font-weight:400;
-}
-
-.buttons{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    padding:16px 34px;
-    border-radius:50px;
-    text-decoration:none;
-    font-weight:700;
-    transition:0.3s;
-    cursor:pointer;
-    border:none;
-    font-size:15px;
-}
-
-.buy{
-    background:#00ff66;
-    color:black;
-    box-shadow:0 0 20px rgba(0,255,102,0.7);
-}
-
-.buy:hover{
-    transform:scale(1.08);
-    box-shadow:0 0 30px rgba(0,255,102,1);
-}
-
-.whitepaper{
-    border:2px solid #00ff66;
-    color:#00ff66;
-    background:transparent;
-    box-shadow:0 0 10px rgba(0,255,102,0.3);
-}
-
-.whitepaper:hover{
-    background:#00ff66;
-    color:black;
-    box-shadow:0 0 20px rgba(0,255,102,1);
-}
-
-/* IMAGE */
-
-.hero-image{
-    flex:1;
-    min-width:250px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-.hero-image img{
-    width:100%;
-    max-width:400px;
-    border-radius:30px;
-    border:5px solid #00ff66;
-    box-shadow:0 0 40px rgba(0,255,100,0.7);
-    animation:float 4s ease-in-out infinite;
-    object-fit:cover;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-15px);}
-    100%{transform:translateY(0);}
-}
-
-/* PRESALE */
-
-.presale{
-    padding:120px 40px;
-    text-align:center;
-}
-
-.presale h2{
-    font-size:60px;
-    margin-bottom:20px;
-    color:#78ff7a;
-    font-weight:900;
-}
-
-.goal{
-    font-size:24px;
-    margin-bottom:40px;
-    color:#ccc;
-    font-weight:600;
-}
-
-.address-tabs{
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    margin-bottom:20px;
-    flex-wrap:wrap;
-}
-
-.address-tab{
-    padding:12px 24px;
-    border:2px solid #00ff66;
-    background:transparent;
-    color:#00ff66;
-    border-radius:50px;
-    cursor:pointer;
-    font-weight:700;
-    transition:0.3s;
-    font-family:'Orbitron',sans-serif;
-    font-size:14px;
-}
-
-.address-tab.active{
-    background:#00ff66;
-    color:black;
-    box-shadow:0 0 15px rgba(0,255,102,0.8);
-}
-
-.address-tab:hover{
-    transform:scale(1.05);
-}
-
-.wallet-address{
-    font-size:18px;
-    color:#c6ffc5;
-    line-height:1.7;
-    margin:0 auto 30px;
-    max-width:900px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:wrap;
-}
-
-.wallet-address strong{
-    color:#78ff7a;
-    word-break:break-all;
-}
-
-.copy-btn{
-    background:rgba(255,255,255,0.08);
-    color:#fff;
-    border:1px solid #00ff66;
-    border-radius:999px;
-    padding:12px 20px;
-    cursor:pointer;
-    transition:0.3s;
-    font-weight:700;
-    font-size:14px;
-}
-
-.copy-btn:hover{
-    background:#00ff66;
-    color:#000;
-    box-shadow:0 0 15px rgba(0,255,102,0.8);
-}
-
-.copy-btn.copied{
-    background:#78ff7a;
-    color:#000;
-    border-color:#78ff7a;
-}
-
-.progress-container{
-    width:80%;
-    max-width:900px;
-    margin:auto;
-    background:#1a1a1a;
-    border-radius:50px;
-    overflow:hidden;
-    border:2px solid #00ff66;
-}
-
-.progress-bar{
-    width:5.82%;
-    height:50px;
-    background:linear-gradient(90deg,#00ff66,#78ff7a);
-    animation:loading 3s ease forwards;
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    padding-right:15px;
-    font-weight:700;
-    font-size:14px;
-}
-
-@keyframes loading{
-    from{width:0;}
-    to{width:5.82%;}
-}
-
-.stats{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-    flex-wrap:wrap;
-    margin-top:50px;
-}
-
-.stat-box{
-    width:250px;
-    padding:30px;
-    background:rgba(255,255,255,0.05);
-    border-radius:20px;
-    border:1px solid rgba(255,255,255,0.1);
-    transition:0.3s;
-}
-
-.stat-box:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 25px rgba(0,255,100,0.4);
-    border-color:#00ff66;
-}
-
-.stat-box h3{
-    color:#78ff7a;
-    font-size:32px;
-    margin-bottom:15px;
-    font-weight:900;
-}
-
-.stat-box p{
-    color:#999;
-    font-weight:600;
-}
-
-/* TOKENOMICS */
-
-.tokenomics{
-    padding:120px 50px;
-    background:#09150d;
-    text-align:center;
-}
-
-.tokenomics h2{
-    font-size:60px;
-    margin-bottom:60px;
-    color:#78ff7a;
-    font-weight:900;
-}
-
-.cards{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-    flex-wrap:wrap;
-}
-
-.card{
-    width:300px;
-    padding:35px;
-    border-radius:25px;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-}
-
-.card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 0 25px rgba(0,255,100,0.3);
-    border-color:#00ff66;
-}
-
-.card h3{
-    font-size:30px;
-    color:#78ff7a;
-    margin-bottom:15px;
-    font-weight:900;
-}
-
-.card p{
-    color:#ddd;
-    line-height:1.6;
-    font-weight:500;
-}
-
-/* BUY & STAKE */
-
-.buy-stake{
-    padding:120px 40px;
-    text-align:center;
-}
-
-.buy-stake h2{
-    font-size:60px;
-    margin-bottom:60px;
-    color:#78ff7a;
-    font-weight:900;
-}
-
-.buy-stake-container{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    flex-wrap:wrap;
-    max-width:1200px;
-    margin:auto;
-}
-
-.buy-card, .stake-card{
-    flex:1;
-    min-width:350px;
-    padding:40px;
-    border-radius:25px;
-    background:rgba(255,255,255,0.05);
-    border:2px solid #00ff66;
-    box-shadow:0 0 30px rgba(0,255,100,0.2);
-}
-
-.buy-card h3, .stake-card h3{
-    font-size:32px;
-    color:#78ff7a;
-    margin-bottom:25px;
-    font-weight:900;
-}
-
-.form-group{
-    margin-bottom:20px;
-    text-align:left;
-}
-
-.form-group label{
-    display:block;
-    color:#00ff66;
-    font-size:14px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.form-group input, .form-group select{
-    width:100%;
-    padding:12px 15px;
-    border-radius:10px;
-    border:1px solid #00ff66;
-    background:rgba(0,255,100,0.1);
-    color:white;
-    font-family:'Orbitron',sans-serif;
-    font-size:14px;
-}
-
-.form-group input::placeholder{
-    color:#666;
-}
-
-.form-group input:focus, .form-group select:focus{
-    outline:none;
-    box-shadow:0 0 15px rgba(0,255,100,0.5);
-}
-
-.currency-select{
-    display:flex;
-    gap:10px;
-    margin-bottom:20px;
-}
-
-.currency-btn{
-    flex:1;
-    padding:10px;
-    border:2px solid #00ff66;
-    background:transparent;
-    color:#00ff66;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:700;
-    transition:0.3s;
-    font-family:'Orbitron',sans-serif;
-}
-
-.currency-btn.active{
-    background:#00ff66;
-    color:black;
-}
-
-.currency-btn:hover{
-    transform:scale(1.05);
-}
-
-.token-display{
-    padding:15px;
-    background:rgba(0,255,100,0.1);
-    border:1px solid #00ff66;
-    border-radius:10px;
-    margin-bottom:20px;
-    text-align:center;
-}
-
-.token-display p{
-    color:#00ff66;
-    font-weight:700;
-    font-size:16px;
-}
-
-.token-display .amount{
-    color:#78ff7a;
-    font-size:24px;
-    font-weight:900;
-    margin-top:5px;
-}
-
-.buy-btn, .stake-btn{
-    width:100%;
-    padding:14px;
-    background:#00ff66;
-    color:black;
-    border:none;
-    border-radius:10px;
-    font-weight:700;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-    font-family:'Orbitron',sans-serif;
-}
-
-.buy-btn:hover, .stake-btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 25px rgba(0,255,102,0.8);
-}
-
-.buy-btn:disabled, .stake-btn:disabled{
-    opacity:0.6;
-    cursor:not-allowed;
-}
-
-.stake-options{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-.apy-option{
-    padding:20px;
-    border:2px solid rgba(0,255,100,0.3);
-    border-radius:15px;
-    background:rgba(0,255,100,0.05);
-    cursor:pointer;
-    transition:0.3s;
-    text-align:left;
-}
-
-.apy-option:hover{
-    border-color:#00ff66;
-    box-shadow:0 0 15px rgba(0,255,100,0.3);
-}
-
-.apy-option input{
-    margin-right:10px;
-    cursor:pointer;
-}
-
-.apy-option-text{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.apy-rate{
-    color:#78ff7a;
-    font-weight:700;
-    font-size:18px;
-}
-
-.apy-duration{
-    color:#999;
-    font-size:14px;
-}
-
-.amount-input-group{
-    margin-bottom:20px;
-}
-
-.amount-input-group label{
-    display:block;
-    color:#00ff66;
-    font-size:14px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.amount-input-group input{
-    width:100%;
-    padding:12px 15px;
-    border-radius:10px;
-    border:1px solid #00ff66;
-    background:rgba(0,255,100,0.1);
-    color:white;
-    font-family:'Orbitron',sans-serif;
-    font-size:14px;
-}
-
-.wallet-status{
-    padding:10px 15px;
-    background:rgba(0,255,100,0.15);
-    border:1px solid #00ff66;
-    border-radius:10px;
-    margin-bottom:20px;
-    font-size:14px;
-    color:#78ff7a;
-}
-
-.toast-message{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#00ff66;
-    color:black;
-    padding:15px 25px;
-    border-radius:10px;
-    font-weight:700;
-    z-index:2000;
-    animation:slideIn 0.3s ease;
-}
-
-.toast-message.error{
-    background:#ff6b6b;
-    color:white;
-}
-
-.toast-message.success{
-    background:#00ff66;
-    color:black;
-}
-
-.toast-message.warning{
-    background:#ffa500;
-    color:black;
-}
-
-@keyframes slideIn{
-    from{
-        transform:translateX(400px);
-        opacity:0;
-    }
-    to{
-        transform:translateX(0);
-        opacity:1;
-    }
-}
-
-/* ROADMAP */
-
-.roadmap{
-    padding:120px 50px;
-    text-align:center;
-}
-
-.roadmap h2{
-    font-size:60px;
-    color:#78ff7a;
-    margin-bottom:60px;
-    font-weight:900;
-}
-
-.timeline{
-    display:flex;
-    justify-content:center;
-    gap:30px;
-    flex-wrap:wrap;
-}
-
-.phase{
-    width:280px;
-    padding:30px;
-    border-radius:25px;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.08);
-    transition:0.3s;
-}
-
-.phase:hover{
-    border-color:#00ff66;
-    box-shadow:0 0 20px rgba(0,255,100,0.3);
-}
-
-.phase h3{
-    color:#00ff66;
-    margin-bottom:20px;
-    font-weight:900;
-}
-
-.phase p{
-    color:#ccc;
-    font-weight:500;
-}
-
-/* FOOTER */
-
-footer{
-    padding:50px;
-    text-align:center;
-    background:black;
-    color:#777;
-    border-top:1px solid rgba(0,255,102,0.2);
-}
-
-footer p{
-    font-weight:500;
-}
-
-.socials{
-    margin-top:20px;
-}
-
-.socials a{
-    color:#78ff7a;
-    margin:0 10px;
-    text-decoration:none;
-    transition:0.3s;
-}
-
-.socials a:hover{
-    color:#00ff66;
-    text-shadow:0 0 10px #00ff66;
-}
-
-/* TABLET OPTIMIZATION (768px - 1024px) */
-@media(max-width:1024px){
-
-header{
-    padding:15px 30px;
-}
-
-.logo{
-    font-size:22px;
-}
-
-.logo-icon{
-    width:38px;
-    height:38px;
-}
-
-nav{
-    gap:15px;
-}
-
-nav a{
-    font-size:12px;
-}
-
-.hero{
-    padding:120px 30px 60px;
-    gap:40px;
-}
-
-.hero-text h1{
-    font-size:65px;
-}
-
-.hero-text p{
-    font-size:16px;
-}
-
-.hero-image img{
-    width:100%;
-    max-width:350px;
-}
-
-.presale, .buy-stake, .tokenomics, .roadmap{
-    padding:80px 30px;
-}
-
-.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
-    font-size:45px;
-    margin-bottom:40px;
-}
-
-.goal{
-    font-size:18px;
-}
-
-.stat-box{
-    width:200px;
-    padding:20px;
-}
-
-.stat-box h3{
-    font-size:24px;
-}
-
-.card{
-    width:240px;
-    padding:25px;
-}
-
-.card h3{
-    font-size:24px;
-}
-
-.phase{
-    width:230px;
-    padding:20px;
-}
-
-.buy-card, .stake-card{
-    min-width:300px;
-    padding:30px;
-}
-
-.buy-card h3, .stake-card h3{
-    font-size:24px;
-}
-
-}
-
-/* MOBILE OPTIMIZATION (max 768px) */
-@media(max-width:768px){
-
-header{
-    padding:12px 15px;
-    flex-wrap:nowrap;
-    justify-content:space-between;
-}
-
-.logo{
-    font-size:18px;
-    gap:8px;
-}
-
-.logo-icon{
-    width:35px;
-    height:35px;
-}
-
-.logo-icon img{
-    width:22px;
-    height:22px;
-}
-
-nav{
-    display:none;
-    width:100%;
-    flex-direction:column;
-    gap:10px;
-    margin-top:10px;
-}
-
-nav.active{
-    display:flex;
-}
-
-#wallet-btn{
-    padding:8px 14px;
-    font-size:12px;
-    white-space:nowrap;
-    flex-shrink:0;
-}
-
-.wallet-menu{
-    position:fixed;
-    top:60px;
-    left:10px;
-    right:10px;
-}
-
-}
-
+/* (styles unchanged from original) */
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
+html{scroll-behavior:smooth}
+body{background:#07130a;color:white;overflow-x:hidden}
+.bg{position:fixed;width:100%;height:100%;background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);z-index:-2}
+.glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:0.15;top:-100px;right:-100px;z-index:-1}
+header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,102,0.2)}
+.logo{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
+.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 18px rgba(0,255,102,0.35)}
+.logo-icon img{width:32px;height:32px;object-fit:contain}
+nav{display:flex;align-items:center;gap:25px}
+nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
+nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
+#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;white-space:nowrap}
+#wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
+#wallet-btn.connected{background:#78ff7a}
+.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:250px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,102,0.3)}
+.wallet-menu.active{display:block}
+.wallet-menu-item{padding:10px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3)}
+.wallet-menu-item strong{color:#00ff66}
+.disconnect-btn{width:100%;padding:10px;background:#ff6b6b;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:13px}
+.disconnect-btn:hover{background:#ff5252;transform:scale(1.05)}
+.hero{min-height:100vh;display:flex;justify-content:space-between;align-items:center;padding:160px 60px 80px;gap:40px;flex-wrap:wrap}
+.hero-title-section{display:flex;align-items:center;gap:30px;max-width:600px;flex:1;min-width:300px}
+.hero-title-section img{width:150px;height:150px;border-radius:20px;flex-shrink:0;object-fit:cover;box-shadow:0 0 30px rgba(0,255,100,0.5);border:3px solid #00ff66}
+.hero-text{max-width:500px;flex:1;min-width:250px}
+.hero-text h1{font-size:82px;line-height:0.9;margin-bottom:25px;font-weight:900}
+.hero-text span{color:#00ff66;text-shadow:0 0 30px #00ff66}
+.hero-text p{font-size:20px;color:#d6d6d6;line-height:1.7;margin-bottom:35px;font-weight:400}
+.buttons{display:flex;gap:20px;flex-wrap:wrap}
+.btn{padding:16px 34px;border-radius:50px;text-decoration:none;font-weight:700;transition:0.3s;cursor:pointer;border:none;font-size:15px}
+.buy{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,102,0.7)}
+.buy:hover{transform:scale(1.08);box-shadow:0 0 30px rgba(0,255,102,1)}
+.whitepaper{border:2px solid #00ff66;color:#00ff66;background:transparent;box-shadow:0 0 10px rgba(0,255,102,0.3)}
+.whitepaper:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,102,1)}
+.hero-image{flex:1;min-width:250px;display:flex;justify-content:center;align-items:center}
+.hero-image img{width:100%;max-width:400px;border-radius:30px;border:5px solid #00ff66;box-shadow:0 0 40px rgba(0,255,100,0.7);animation:float 4s ease-in-out infinite;object-fit:cover}
+@keyframes float{0%{transform:translateY(0);}50%{transform:translateY(-15px);}100%{transform:translateY(0);}}
+.presale{padding:120px 40px;text-align:center}
+.presale h2{font-size:60px;margin-bottom:20px;color:#78ff7a;font-weight:900}
+.goal{font-size:24px;margin-bottom:40px;color:#ccc;font-weight:600}
+.address-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:14px}
+.address-tab.active{background:#00ff66;color:black;box-shadow:0 0 15px rgba(0,255,102,0.8)}
+.address-tab:hover{transform:scale(1.05)}
+.wallet-address{font-size:18px;color:#c6ffc5;line-height:1.7;margin:0 auto 30px;max-width:900px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+.wallet-address strong{color:#78ff7a;word-break:break-all}
+.copy-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:12px 20px;cursor:pointer;transition:0.3s;font-weight:700;font-size:14px}
+.copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
+.copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
+.progress-container{width:80%;max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66}
+.progress-bar{width:5.82%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;font-weight:700;font-size:14px}
+@keyframes loading{from{width:0;}to{width:5.82%;}}
+.stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:50px}
+.stat-box{width:250px;padding:30px;background:rgba(255,255,255,0.05);border-radius:20px;border:1px solid rgba(255,255,255,0.1);transition:0.3s}
+.stat-box:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.4);border-color:#00ff66}
+.stat-box h3{color:#78ff7a;font-size:32px;margin-bottom:15px;font-weight:900}
+.stat-box p{color:#999;font-weight:600}
+.tokenomics{padding:120px 50px;background:#09150d;text-align:center}
+.tokenomics h2{font-size:60px;margin-bottom:60px;color:#78ff7a;font-weight:900}
+.cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.card{width:300px;padding:35px;border-radius:25px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:0.3s}
+.card:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.3);border-color:#00ff66}
+.card h3{font-size:30px;color:#78ff7a;margin-bottom:15px;font-weight:900}
+.card p{color:#ddd;line-height:1.6;font-weight:500}
+.buy-stake{padding:120px 40px;text-align:center}
+.buy-stake h2{font-size:60px;margin-bottom:60px;color:#78ff7a;font-weight:900}
+.buy-stake-container{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;max-width:1200px;margin:auto}
+.buy-card, .stake-card{flex:1;min-width:350px;padding:40px;border-radius:25px;background:rgba(255,255,255,0.05);border:2px solid #00ff66;box-shadow:0 0 30px rgba(0,255,100,0.2)}
+.buy-card h3, .stake-card h3{font-size:32px;color:#78ff7a;margin-bottom:25px;font-weight:900}
+.form-group{margin-bottom:20px;text-align:left}
+.form-group label{display:block;color:#00ff66;font-size:14px;font-weight:700;margin-bottom:8px}
+.form-group input, .form-group select{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #00ff66;background:rgba(0,255,100,0.1);color:white;font-family:'Orbitron',sans-serif;font-size:14px}
+.form-group input::placeholder{color:#666}
+.form-group input:focus, .form-group select:focus{outline:none;box-shadow:0 0 15px rgba(0,255,100,0.5)}
+.currency-select{display:flex;gap:10px;margin-bottom:20px}
+.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif}
+.currency-btn.active{background:#00ff66;color:black}
+.currency-btn:hover{transform:scale(1.05)}
+.token-display{padding:15px;background:rgba(0,255,100,0.1);border:1px solid #00ff66;border-radius:10px;margin-bottom:20px;text-align:center}
+.token-display p{color:#00ff66;font-weight:700;font-size:16px}
+.token-display .amount{color:#78ff7a;font-size:24px;font-weight:900;margin-top:5px}
+.buy-btn, .stake-btn{width:100%;padding:14px;background:#00ff66;color:black;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif}
+.buy-btn:hover, .stake-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(0,255,102,0.8)}
+.buy-btn:disabled, .stake-btn:disabled{opacity:0.6;cursor:not-allowed}
+.stake-options{display:flex;flex-direction:column;gap:15px}
+.apy-option{padding:20px;border:2px solid rgba(0,255,100,0.3);border-radius:15px;background:rgba(0,255,100,0.05);cursor:pointer;transition:0.3s;text-align:left}
+.apy-option:hover{border-color:#00ff66;box-shadow:0 0 15px rgba(0,255,100,0.3)}
+.apy-option input{margin-right:10px;cursor:pointer}
+.apy-option-text{display:flex;justify-content:space-between;align-items:center}
+.apy-rate{color:#78ff7a;font-weight:700;font-size:18px}
+.apy-duration{color:#999;font-size:14px}
+.amount-input-group{margin-bottom:20px}
+.amount-input-group label{display:block;color:#00ff66;font-size:14px;font-weight:700;margin-bottom:8px}
+.amount-input-group input{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #00ff66;background:rgba(0,255,100,0.1);color:white;font-family:'Orbitron',sans-serif;font-size:14px}
+.wallet-status{padding:10px 15px;background:rgba(0,255,100,0.15);border:1px solid #00ff66;border-radius:10px;margin-bottom:20px;font-size:14px;color:#78ff7a}
+.toast-message{position:fixed;bottom:20px;right:20px;background:#00ff66;color:black;padding:15px 25px;border-radius:10px;font-weight:700;z-index:2000;animation:slideIn 0.3s ease}
+.toast-message.error{background:#ff6b6b;color:white}
+.toast-message.success{background:#00ff66;color:black}
+.toast-message.warning{background:#ffa500;color:black}
+@keyframes slideIn{from{transform:translateX(400px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.roadmap{padding:120px 50px;text-align:center}
+.roadmap h2{font-size:60px;color:#78ff7a;margin-bottom:60px;font-weight:900}
+.timeline{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+.phase{width:280px;padding:30px;border-radius:25px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);transition:0.3s}
+.phase:hover{border-color:#00ff66;box-shadow:0 0 20px rgba(0,255,100,0.3)}
+.phase h3{color:#00ff66;margin-bottom:20px;font-weight:900}
+.phase p{color:#ccc;font-weight:500}
+footer{padding:50px;text-align:center;background:black;color:#777;border-top:1px solid rgba(0,255,102,0.2)}
+footer p{font-weight:500}
+.socials{margin-top:20px}
+.socials a{color:#78ff7a;margin:0 10px;text-decoration:none;transition:0.3s}
+.socials a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
+@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-size:65px}.hero-text p{font-size:16px}.hero-image img{width:100%;max-width:350px}.presale, .buy-stake, .tokenomics, .roadmap{padding:80px 30px}.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{font-size:45px;margin-bottom:40px}.goal{font-size:18px}.stat-box{width:200px;padding:20px}.stat-box h3{font-size:24px}.card{width:240px;padding:25px}.card h3{font-size:24px}.phase{width:230px;padding:20px}.buy-card, .stake-card{min-width:300px;padding:30px}.buy-card h3, .stake-card h3{font-size:24px}}@media(max-width:768px){header{padding:12px 15px;flex-wrap:nowrap;justify-content:space-between}.logo{font-size:18px;gap:8px}.logo-icon{width:35px;height:35px}.logo-icon img{width:22px;height:22px}nav{display:none;width:100%;flex-direction:column;gap:10px;margin-top:10px}nav.active{display:flex}#wallet-btn{padding:8px 14px;font-size:12px;white-space:nowrap;flex-shrink:0}.wallet-menu{position:fixed;top:60px;left:10px;right:10px}} 
 </style>
 </head>
 <body>
@@ -1081,6 +204,28 @@ nav.active{
         </div>
     </div>
 
+    <!-- Integrated presale form -->
+    <div style="max-width:900px;margin:40px auto;text-align:left;background:rgba(0,0,0,0.4);padding:20px;border-radius:12px;border:1px solid rgba(0,255,102,0.08)">
+      <h3 style="color:#78ff7a;margin-bottom:12px">Buy LASTPEPE (Presale)</h3>
+      <div class="form-group">
+        <label for="payment-method">Payment method</label>
+        <select id="payment-method">
+          <option value="eth">ETH (native)</option>
+          <option value="usdt">USDT (ERC-20)</option>
+          <option value="usdc">USDC (ERC-20)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pepe-amount">Amount of LASTPEPE to buy (tokens)</label>
+        <input id="pepe-amount" type="text" placeholder="e.g. 1000" />
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button id="connect-evm" class="btn">Connect MetaMask</button>
+        <button id="buy-btn" class="btn">Buy</button>
+      </div>
+      <p style="color:#ccc;margin-top:12px">Note: make sure the sale contract is deployed, prices set, and the contract holds LASTPEPE tokens. Use testnet first.</p>
+    </div>
+
 </section>
 
 <section id="tokenomics" class="tokenomics">
@@ -1146,6 +291,10 @@ nav.active{
     </div>
 </footer>
 
+<div id="toast" class="toast-message" style="display:none"></div>
+
+<script src="/frontend/sale.js"></script>
+
 <script>
 // copy address
 const copyBtn = document.getElementById('copy-address');
@@ -1154,7 +303,7 @@ copyBtn && copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(saleAddr).then(()=> alert('Copied'));
 });
 
-// wallet connect placeholder
+// wallet connect placeholder (keeps showing connected address in header menu)
 const walletBtn = document.getElementById('wallet-btn');
 const walletMenu = document.getElementById('wallet-menu');
 const walletAddressEl = document.getElementById('wallet-address');
