@@ -14,7 +14,6 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
 <style>
-/* (styles unchanged from original) */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
 html{scroll-behavior:smooth}
 body{background:#07130a;color:white;overflow-x:hidden}
@@ -22,25 +21,46 @@ body{background:#07130a;color:white;overflow-x:hidden}
 .glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:0.15;top:-100px;right:-100px;z-index:-1}
 header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,102,0.2)}
 .logo{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
-.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 18px rgba(0,255,102,0.35)}
+.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 15px rgba(0,255,100,0.4)}
 .logo-icon img{width:32px;height:32px;object-fit:contain}
-nav{display:flex;align-items:center;gap:25px}
+nav{display:flex;align-items:center;gap:25px;position:relative}
 nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
 nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;white-space:nowrap;display:flex;align-items:center;gap:8px}
+#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;display:flex;align-items:center;gap:8px}
 #wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
 #wallet-btn.connected{background:#78ff7a;box-shadow:0 0 20px rgba(0,255,102,0.6)}
 .wallet-indicator{width:8px;height:8px;background:#0bbd3c;border-radius:50%;display:none;box-shadow:0 0 8px #00ff66}
 #wallet-btn.connected .wallet-indicator{display:block;animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 8px #00ff66}50%{box-shadow:0 0 15px #00ff66}100%{box-shadow:0 0 8px #00ff66}}
-.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:280px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,102,0.3)}
+
+/* Modal Overlay */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center}
+.modal-overlay.active{display:flex}
+.modal-content{background:#07130a;border:2px solid #00ff66;border-radius:20px;padding:40px;max-width:500px;width:90%;box-shadow:0 0 40px rgba(0,255,100,0.4);animation:slideDown 0.3s ease}
+@keyframes slideDown{from{transform:translateY(-50px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-close{position:absolute;top:15px;right:20px;background:none;border:none;color:#00ff66;font-size:28px;cursor:pointer;transition:0.3s}
+.modal-close:hover{color:#78ff7a;transform:scale(1.2)}
+
+/* Wallet Selection Modal */
+.wallet-selection-modal{text-align:center}
+.wallet-selection-modal h2{color:#78ff7a;font-size:32px;margin-bottom:10px;font-weight:900}
+.wallet-selection-modal p{color:#ccc;margin-bottom:30px;font-size:14px}
+.wallet-options{display:flex;flex-direction:column;gap:15px}
+.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px;transition:0.3s;display:flex;align-items:center;justify-content:center;gap:12px}
+.wallet-option-btn:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,100,0.6)}
+.wallet-option-btn img{width:24px;height:24px}
+.wallet-option-divider{text-align:center;color:#666;margin:20px 0;font-size:12px}
+
+.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shadow:0 0 25px rgba(0,255,100,0.3)}
 .wallet-menu.active{display:block}
 .wallet-status-label{font-size:11px;color:#00ff66;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
-.wallet-menu-item{padding:12px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3);border-left:3px solid #00ff66}
+.wallet-type-badge{display:inline-block;background:rgba(0,255,100,0.2);color:#00ff66;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px;border:1px solid #00ff66}
+.wallet-menu-item{padding:12px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3);transition:0.3s}
 .wallet-menu-item strong{color:#00ff66;display:block;margin-bottom:4px;font-size:12px}
 .wallet-menu-item small{display:block;color:#999;font-size:11px;margin-top:4px}
 .disconnect-btn{width:100%;padding:10px;background:#ff6b6b;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:13px}
 .disconnect-btn:hover{background:#ff5252;transform:scale(1.05)}
+
 .hero{min-height:100vh;display:flex;justify-content:space-between;align-items:center;padding:160px 60px 80px;gap:40px;flex-wrap:wrap}
 .hero-title-section{display:flex;align-items:center;gap:30px;max-width:600px;flex:1;min-width:300px}
 .hero-title-section img{width:150px;height:150px;border-radius:20px;flex-shrink:0;object-fit:cover;box-shadow:0 0 30px rgba(0,255,100,0.5);border:3px solid #00ff66}
@@ -61,7 +81,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .presale h2{font-size:60px;margin-bottom:20px;color:#78ff7a;font-weight:900}
 .goal{font-size:24px;margin-bottom:40px;color:#ccc;font-weight:600}
 .address-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
-.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:14px}
+.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:13px}
 .address-tab.active{background:#00ff66;color:black;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .address-tab:hover{transform:scale(1.05)}
 .wallet-address{font-size:18px;color:#c6ffc5;line-height:1.7;margin:0 auto 30px;max-width:900px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
@@ -71,7 +91,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
 .progress-container{width:80%;max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66}
-.progress-bar{width:4.21%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;font-weight:700;font-size:14px}
+.progress-bar{width:4.21%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;color:white;font-weight:700;font-size:12px}
 @keyframes loading{from{width:0;}to{width:4.21%;}}
 .stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:50px}
 .stat-box{width:250px;padding:30px;background:rgba(255,255,255,0.05);border-radius:20px;border:1px solid rgba(255,255,255,0.1);transition:0.3s}
@@ -97,7 +117,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .form-group input::placeholder{color:#666}
 .form-group input:focus, .form-group select:focus{outline:none;box-shadow:0 0 15px rgba(0,255,100,0.5)}
 .currency-select{display:flex;gap:10px;margin-bottom:20px}
-.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif}
+.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:13px}
 .currency-btn.active{background:#00ff66;color:black}
 .currency-btn:hover{transform:scale(1.05)}
 .token-display{padding:15px;background:rgba(0,255,100,0.1);border:1px solid #00ff66;border-radius:10px;margin-bottom:20px;text-align:center}
@@ -117,6 +137,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .amount-input-group label{display:block;color:#00ff66;font-size:14px;font-weight:700;margin-bottom:8px}
 .amount-input-group input{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #00ff66;background:rgba(0,255,100,0.1);color:white;font-family:'Orbitron',sans-serif;font-size:14px}
 .wallet-status{padding:10px 15px;background:rgba(0,255,100,0.15);border:1px solid #00ff66;border-radius:10px;margin-bottom:20px;font-size:14px;color:#78ff7a}
+.wallet-required-notice{padding:15px;background:rgba(255,165,0,0.2);border:1px solid #ffa500;border-radius:10px;margin-bottom:20px;font-size:13px;color:#ffa500;text-align:center;font-weight:600}
 .toast-message{position:fixed;bottom:20px;right:20px;background:#00ff66;color:black;padding:15px 25px;border-radius:10px;font-weight:700;z-index:2000;animation:slideIn 0.3s ease}
 .toast-message.error{background:#ff6b6b;color:white}
 .toast-message.success{background:#00ff66;color:black}
@@ -135,7 +156,7 @@ footer p{font-weight:500}
 .socials{margin-top:20px}
 .socials a{color:#78ff7a;margin:0 10px;text-decoration:none;transition:0.3s}
 .socials a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-size:65px}.hero-text p{font-size:16px}.hero-image img{width:100%;max-width:350px}.presale, .buy-stake, .tokenomics, .roadmap{padding:80px 30px}.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{font-size:45px;margin-bottom:40px}.goal{font-size:18px}.stat-box{width:200px;padding:20px}.stat-box h3{font-size:24px}.card{width:240px;padding:25px}.card h3{font-size:24px}.phase{width:230px;padding:20px}.buy-card, .stake-card{min-width:300px;padding:30px}.buy-card h3, .stake-card h3{font-size:24px}}@media(max-width:768px){header{padding:12px 15px;flex-wrap:nowrap;justify-content:space-between}.logo{font-size:18px;gap:8px}.logo-icon{width:35px;height:35px}.logo-icon img{width:22px;height:22px}nav{display:none;width:100%;flex-direction:column;gap:10px;margin-top:10px}nav.active{display:flex}#wallet-btn{padding:8px 14px;font-size:12px;white-space:nowrap;flex-shrink:0}.wallet-menu{position:fixed;top:60px;left:10px;right:10px}} 
+@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-size:54px}.presale{padding:80px 20px}.tokenomics{padding:80px 20px}.roadmap{padding:80px 20px}.wallet-menu{min-width:250px;right:-20px}.modal-content{max-width:90%;padding:30px}}
 </style>
 </head>
 <body>
@@ -156,18 +177,48 @@ footer p{font-weight:500}
             <span class="wallet-indicator"></span>
             <span id="btn-text">Connect Wallet</span>
         </button>
-    </nav>
 
-    <div class="wallet-menu" id="wallet-menu">
-        <span class="wallet-status-label">✓ Connected</span>
-        <div class="wallet-menu-item">
-            <strong>Wallet Address</strong>
-            <span id="wallet-address-display">Connecting...</span>
-            <small id="wallet-network">Ethereum Mainnet</small>
+        <div class="wallet-menu" id="wallet-menu">
+            <span class="wallet-status-label">✓ Connected</span>
+            <div class="wallet-type-badge" id="wallet-type-badge"></div>
+            <div class="wallet-menu-item">
+                <strong>Wallet Address</strong>
+                <span id="wallet-address-display">Connecting...</span>
+                <small id="wallet-network">Ethereum Mainnet</small>
+            </div>
+            <button class="disconnect-btn" id="disconnect">Disconnect</button>
         </div>
-        <button class="disconnect-btn" id="disconnect">Disconnect</button>
-    </div>
+    </nav>
 </header>
+
+<!-- Wallet Selection Modal -->
+<div class="modal-overlay" id="wallet-modal">
+    <div class="modal-content wallet-selection-modal">
+        <button class="modal-close" id="close-modal">&times;</button>
+        <h2>Select Wallet</h2>
+        <p>Choose your wallet to connect and start buying LASTPEPE tokens</p>
+        <div class="wallet-options">
+            <button class="wallet-option-btn" id="connect-metamask">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.9 2.2L12.2 10.4L13.9 5.1L20.9 2.2Z" fill="currentColor"/>
+                    <path d="M3.1 2.2L11.5 10.6L9.9 5.1L3.1 2.2Z" fill="currentColor"/>
+                    <path d="M18.1 17.3L15.9 20.9L19.9 21.9L21 17.5L18.1 17.3Z" fill="currentColor"/>
+                    <path d="M2.1 17.5L3.1 21.9L7.1 20.9L4.9 17.3L2.1 17.5Z" fill="currentColor"/>
+                    <path d="M7.6 12.2L6.2 14.1L10.2 14.3L10.1 10.6L7.6 12.2Z" fill="currentColor"/>
+                    <path d="M16.4 12.2L13.9 10.6L13.8 14.3L17.8 14.1L16.4 12.2Z" fill="currentColor"/>
+                </svg>
+                MetaMask
+            </button>
+            <button class="wallet-option-btn" id="connect-phantom">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6z" fill="currentColor"/>
+                </svg>
+                Phantom
+            </button>
+        </div>
+        <div class="wallet-option-divider">Don't have a wallet? Install from the browser extension store</div>
+    </div>
+</div>
 
 <section class="hero">
     <div class="hero-title-section">
@@ -191,6 +242,10 @@ footer p{font-weight:500}
     <h2>Presale</h2>
     <p class="goal">Raise goal: <strong>$3,000,000</strong></p>
 
+    <div class="wallet-required-notice" id="wallet-notice" style="display: none;">
+        ⚠️ Please connect your wallet to proceed with purchase
+    </div>
+
     <div class="address-tabs">
         <button class="address-tab active" data-currency="ETH">ETH</button>
         <button class="address-tab" data-currency="USDT">USDT</button>
@@ -199,7 +254,7 @@ footer p{font-weight:500}
     </div>
 
     <div class="wallet-address">
-        <span class="wallet-address-label" id="currency-label">ETH Address</span>
+        <span class="wallet-address-label" id="address-label">ETH Wallet Address:</span>
         <strong id="sale-address">0x8E44a6Ab51025569E5a784576508eE38e881a72b</strong>
         <button class="copy-btn" id="copy-address">Copy</button>
     </div>
@@ -215,247 +270,385 @@ footer p{font-weight:500}
         </div>
         <div class="stat-box">
             <h3>Supply</h3>
-            <p>1,000,000,000 LASTPEPE</p>
+            <p>100 Billion Tokens</p>
         </div>
         <div class="stat-box">
-            <h3>Raised</h3>
-            <p id="raised-display">$126,325 USD</p>
+            <h3>Participants</h3>
+            <p>4,250+ Members</p>
         </div>
     </div>
-
-    <!-- Integrated presale form -->
-    <div style="max-width:900px;margin:40px auto;text-align:left;background:rgba(0,0,0,0.4);padding:20px;border-radius:12px;border:1px solid rgba(0,255,102,0.08)">
-      <h3 style="color:#78ff7a;margin-bottom:12px">Buy LASTPEPE (Presale)</h3>
-      <p style="color:#ccc;font-size:13px;margin-bottom:16px">Minimum purchase: $10 USD | Maximum supply: 1,000,000,000 LASTPEPE | Price: $0.003 per token</p>
-      
-      <div class="form-group">
-        <label for="payment-method">Select Payment Method</label>
-        <select id="payment-method">
-          <option value="eth">ETH (Ethereum Mainnet)</option>
-          <option value="usdt">USDT (Ethereum Mainnet)</option>
-          <option value="usdc">USDC (Ethereum Mainnet)</option>
-          <option value="sol">SOL (Solana Mainnet)</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="pepe-amount">Amount to Send</label>
-        <input id="pepe-amount" type="number" step="0.001" placeholder="Enter amount (ETH, USDT, USDC, or SOL)" />
-        <small style="color:#999;margin-top:4px;display:block">Minimum: $10 USD equivalent</small>
-      </div>
-
-      <div class="token-display" style="display:none" id="tokens-display">
-        <p>You will receive:</p>
-        <div class="amount" id="tokens-amount">0 LASTPEPE</div>
-      </div>
-
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <button id="connect-evm" class="btn">Connect MetaMask</button>
-        <button id="buy-btn" class="btn">Send & Buy</button>
-      </div>
-      
-      <p style="color:#999;margin-top:16px;font-size:12px">
-        ✓ ETH/USDT/USDC: Sends directly to your wallet on Ethereum mainnet<br/>
-        ✓ SOL: Manual transfer instruction provided<br/>
-        ✓ After sending, confirm in wallet and we'll distribute LASTPEPE tokens to your address
-      </p>
-    </div>
-
 </section>
 
-<section id="tokenomics" class="tokenomics">
+<section class="buy-stake">
+    <h2>Buy LASTPEPE Tokens</h2>
+    <div class="buy-stake-container">
+        <div class="buy-card">
+            <h3>💰 Buy Tokens</h3>
+            
+            <div class="wallet-required-notice" id="buy-wallet-notice" style="display: none;">
+                ⚠️ Connect wallet to buy
+            </div>
+
+            <div class="form-group">
+                <label>Amount to Spend</label>
+                <input type="number" id="spend-amount" placeholder="Enter amount in ETH/USDT/USDC/SOL" min="0" step="0.01">
+            </div>
+
+            <div class="currency-select">
+                <button class="currency-btn active" data-currency="ETH">ETH</button>
+                <button class="currency-btn" data-currency="USDT">USDT</button>
+                <button class="currency-btn" data-currency="USDC">USDC</button>
+                <button class="currency-btn" data-currency="SOL">SOL</button>
+            </div>
+
+            <div class="token-display">
+                <p>LASTPEPE You'll Receive</p>
+                <div class="amount" id="token-amount">0</div>
+            </div>
+
+            <button class="buy-btn" id="buy-btn" disabled>Connect Wallet to Buy</button>
+        </div>
+    </div>
+</section>
+
+<section class="tokenomics">
     <h2>Tokenomics</h2>
     <div class="cards">
         <div class="card">
-            <h3>Allocation</h3>
-            <p>50% Presale, 20% Liquidity, 15% Team, 10% Marketing, 5% Reserve</p>
+            <h3>50%</h3>
+            <p>Community & Presale</p>
         </div>
         <div class="card">
-            <h3>Tax</h3>
-            <p>Buy/Sell tax: 2% redis, 3% liquidity</p>
+            <h3>20%</h3>
+            <p>Liquidity Pool</p>
         </div>
         <div class="card">
-            <h3>Burn</h3>
-            <p>Initial burn: 100,000 LASTPEPE</p>
+            <h3>15%</h3>
+            <p>Team & Development</p>
+        </div>
+        <div class="card">
+            <h3>15%</h3>
+            <p>Marketing & Ecosystem</p>
         </div>
     </div>
 </section>
 
-<section id="buy" class="buy-stake">
-    <h2>Buy & Stake (Coming Soon)</h2>
-    <div class="buy-stake-container">
-        <div class="buy-card">
-            <h3>Buy</h3>
-            <div class="form-group">
-                <label>Amount</label>
-                <input type="text" placeholder="Enter ETH amount">
-            </div>
-            <button class="buy-btn">Buy with ETH</button>
-        </div>
-        <div class="stake-card">
-            <h3>Stake</h3>
-            <p>Staking will be live after launch.</p>
-        </div>
-    </div>
-</section>
-
-<section id="roadmap" class="roadmap">
+<section class="roadmap" id="roadmap">
     <h2>Roadmap</h2>
     <div class="timeline">
         <div class="phase">
             <h3>Phase 1</h3>
-            <p>Token launch, presale.</p>
+            <p>Token Launch & Presale (Q1 2025)</p>
         </div>
         <div class="phase">
             <h3>Phase 2</h3>
-            <p>Liquidity & CEX listings.</p>
+            <p>DEX Listing & Community Growth (Q2 2025)</p>
         </div>
         <div class="phase">
             <h3>Phase 3</h3>
-            <p>Marketing & partnerships.</p>
+            <p>Major Exchange Listings (Q3 2025)</p>
+        </div>
+        <div class="phase">
+            <h3>Phase 4</h3>
+            <p>Ecosystem Expansion (Q4 2025+)</p>
         </div>
     </div>
 </section>
 
 <footer>
-    <p>© 2026 The Last Pepe</p>
+    <p>&copy; 2025 The Last Pepe. All rights reserved.</p>
     <div class="socials">
-        <a href="#">Twitter</a>
-        <a href="#">Telegram</a>
-        <a href="#">Discord</a>
+        <a href="https://twitter.com" target="_blank">Twitter</a>
+        <a href="https://discord.com" target="_blank">Discord</a>
+        <a href="https://telegram.org" target="_blank">Telegram</a>
     </div>
 </footer>
 
-<div id="toast" class="toast-message" style="display:none"></div>
-
-<script src="/frontend/sale.js"></script>
-
 <script>
-// Currency addresses and prices
-const ADDRESSES = {
-    ETH: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
-    USDT: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
-    USDC: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
-    SOL: '4TvNJbBSfgZopxS6QkJRg75exFL4DLt7z4p3rdEf8UCF'
-};
-
-const PRICES = { ETH: 2500, USDT: 1, USDC: 1, SOL: 150 };
-const PRICE_PER_TOKEN = 0.003;
-const RAISED_USD = 126325;
-
-// Tab switching for addresses
+const $ = id => document.getElementById(id);
+const walletBtn = $('wallet-btn');
+const walletMenu = $('wallet-menu');
+const walletModal = $('wallet-modal');
+const disconnectBtn = $('disconnect');
 const addressTabs = document.querySelectorAll('.address-tab');
-const saleAddress = document.getElementById('sale-address');
-const currencyLabel = document.getElementById('currency-label');
-const raisedDisplay = document.getElementById('raised-display');
+const copyBtn = $('copy-address');
+const saleAddress = $('sale-address');
+const addressLabel = $('address-label');
+const walletAddressDisplay = $('wallet-address-display');
+const walletNetwork = $('wallet-network');
+const walletTypeBadge = $('wallet-type-badge');
+const btnText = $('btn-text');
+const closeModal = $('close-modal');
+const connectMetaMaskBtn = $('connect-metamask');
+const connectPhantomBtn = $('connect-phantom');
+const buyBtn = $('buy-btn');
+const spendAmount = $('spend-amount');
+const tokenAmount = $('token-amount');
+const currencyBtns = document.querySelectorAll('.currency-btn');
+const walletNotice = $('wallet-notice');
+const buyWalletNotice = $('buy-wallet-notice');
 
-addressTabs.forEach(tab => {
-    tab.addEventListener('click', (e) => {
-        // Remove active class from all tabs
-        addressTabs.forEach(t => t.classList.remove('active'));
-        
-        // Add active class to clicked tab
-        tab.classList.add('active');
-        
-        // Get selected currency
-        const currency = tab.getAttribute('data-currency');
-        
-        // Update address and label
-        saleAddress.innerText = ADDRESSES[currency];
-        currencyLabel.innerText = `${currency} Address`;
-        
-        // Update raised amount for this currency
-        const raisedInCurrency = RAISED_USD / PRICES[currency];
-        raisedDisplay.innerText = `${raisedInCurrency.toFixed(currency === 'SOL' ? 2 : 6)} ${currency}`;
-    });
+let connectedWallet = null;
+let walletType = null;
+let userAddress = null;
+let selectedCurrency = 'ETH';
+
+const TOKEN_PRICE = 0.003; // $0.003 per token
+
+// Close modal
+closeModal.addEventListener('click', () => {
+    walletModal.classList.remove('active');
 });
+
+// Open wallet selection modal
+walletBtn.addEventListener('click', () => {
+    if (connectedWallet) {
+        walletMenu.classList.toggle('active');
+    } else {
+        walletModal.classList.add('active');
+    }
+});
+
+// Connect MetaMask
+connectMetaMaskBtn.addEventListener('click', async () => {
+    await connectWallet('MetaMask');
+});
+
+// Connect Phantom
+connectPhantomBtn.addEventListener('click', async () => {
+    await connectWallet('Phantom');
+});
+
+async function connectWallet(type) {
+    try {
+        if (type === 'MetaMask') {
+            if (!window.ethereum?.isMetaMask) {
+                showToast('MetaMask not installed. Please install it from the browser extension store.', 'warning');
+                return;
+            }
+
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            userAddress = accounts[0];
+            connectedWallet = 'MetaMask';
+            walletType = 'MetaMask';
+
+            // Listen for account changes
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    disconnectWallet();
+                } else {
+                    userAddress = accounts[0];
+                    updateWalletDisplay();
+                }
+            });
+
+            // Listen for network changes
+            window.ethereum.on('chainChanged', (chainId) => {
+                walletNetwork.textContent = getNetworkName(chainId);
+            });
+
+            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+            walletNetwork.textContent = getNetworkName(chainId);
+        } else if (type === 'Phantom') {
+            if (!window.phantom?.solana?.isPhantom) {
+                showToast('Phantom not installed. Please install it from the browser extension store.', 'warning');
+                return;
+            }
+
+            const response = await window.phantom.solana.connect();
+            userAddress = response.publicKey.toString();
+            connectedWallet = 'Phantom';
+            walletType = 'Phantom';
+            walletNetwork.textContent = 'Solana Mainnet';
+        }
+
+        updateWalletDisplay();
+        walletModal.classList.remove('active');
+        showToast(`${type} wallet connected successfully!`, 'success');
+    } catch (error) {
+        if (error.code !== 4001) {
+            console.error('Error connecting wallet:', error);
+            showToast('Failed to connect wallet', 'error');
+        }
+    }
+}
+
+function getNetworkName(chainId) {
+    const networks = {
+        '0x1': 'Ethereum Mainnet',
+        '0x5': 'Goerli Testnet',
+        '0x11155111': 'Sepolia Testnet',
+        '0x38': 'Binance Smart Chain',
+        '0x89': 'Polygon Mainnet'
+    };
+    return networks[chainId] || 'Unknown Network';
+}
+
+function updateWalletDisplay() {
+    walletBtn.classList.add('connected');
+    btnText.textContent = `${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`;
+    walletAddressDisplay.textContent = userAddress;
+    walletTypeBadge.textContent = `🔗 ${walletType} Connected`;
+    walletTypeBadge.style.display = 'inline-block';
+    walletMenu.classList.add('active');
+
+    // Enable buying
+    buyBtn.disabled = false;
+    buyBtn.textContent = 'Buy LASTPEPE Tokens';
+    walletNotice.style.display = 'none';
+    buyWalletNotice.style.display = 'none';
+}
+
+disconnectBtn.addEventListener('click', () => {
+    disconnectWallet();
+});
+
+function disconnectWallet() {
+    connectedWallet = null;
+    walletType = null;
+    userAddress = null;
+    walletBtn.classList.remove('connected');
+    btnText.textContent = 'Connect Wallet';
+    walletMenu.classList.remove('active');
+    walletTypeBadge.style.display = 'none';
+
+    // Disable buying
+    buyBtn.disabled = true;
+    buyBtn.textContent = 'Connect Wallet to Buy';
+    walletNotice.style.display = 'block';
+    buyWalletNotice.style.display = 'block';
+    tokenAmount.textContent = '0';
+
+    showToast('Wallet disconnected', 'info');
+}
 
 // Copy address
-const copyBtn = document.getElementById('copy-address');
-copyBtn && copyBtn.addEventListener('click', () => {
-    const saleAddr = document.getElementById('sale-address').innerText;
-    navigator.clipboard.writeText(saleAddr).then(()=> {
-        copyBtn.innerText = '✓ Copied!';
-        setTimeout(() => { copyBtn.innerText = 'Copy'; }, 2000);
+copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(saleAddress.textContent);
+    copyBtn.classList.add('copied');
+    copyBtn.textContent = '✓ Copied';
+    setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        copyBtn.textContent = 'Copy';
+    }, 2000);
+});
+
+// Address tabs
+addressTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        addressTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const currency = tab.dataset.currency;
+        const addresses = {
+            'ETH': '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+            'USDT': '0xUsdt1234567890abcdef1234567890abcdef12345',
+            'USDC': '0xUsdc1234567890abcdef1234567890abcdef12345',
+            'SOL': 'SolWallet1234567890abcdefghijklmnopqrst'
+        };
+
+        saleAddress.textContent = addresses[currency];
+        addressLabel.textContent = `${currency} Wallet Address:`;
     });
 });
 
-// Wallet connection with enhanced display
-const walletBtn = document.getElementById('wallet-btn');
-const walletMenu = document.getElementById('wallet-menu');
-const walletAddressDisplay = document.getElementById('wallet-address-display');
-const disconnectBtn = document.getElementById('disconnect');
-const btnText = document.getElementById('btn-text');
-const walletNetwork = document.getElementById('wallet-network');
+// Currency buttons for buy section
+currencyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        currencyBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedCurrency = btn.dataset.currency;
+        calculateTokens();
+    });
+});
 
-walletBtn.addEventListener('click', async (e) => {
-    if (walletBtn.classList.contains('connected')) {
-        e.stopPropagation();
-        walletMenu.classList.toggle('active');
+// Calculate tokens based on spend amount
+spendAmount.addEventListener('input', calculateTokens);
+
+function calculateTokens() {
+    const amount = parseFloat(spendAmount.value) || 0;
+    if (amount > 0) {
+        const tokens = (amount / TOKEN_PRICE).toLocaleString('en-US', { maximumFractionDigits: 2 });
+        tokenAmount.textContent = tokens;
+    } else {
+        tokenAmount.textContent = '0';
+    }
+}
+
+// Buy button
+buyBtn.addEventListener('click', async () => {
+    if (!connectedWallet) {
+        showToast('Please connect your wallet first', 'warning');
         return;
     }
-    
-    if (!window.ethereum) return alert('MetaMask not found');
-    try{
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const address = accounts[0];
-        
-        // Show shortened address in button
-        const shortened = address.slice(0, 6) + '...' + address.slice(-4);
-        btnText.innerText = shortened;
-        
-        // Show full address in menu
-        walletAddressDisplay.innerText = address;
-        
-        // Get network
-        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-        const networks = { '0x1': 'Ethereum Mainnet', '0x5': 'Goerli Testnet', '0xaa36a7': 'Sepolia Testnet' };
-        walletNetwork.innerText = networks[chainId] || 'Unknown Network';
-        
-        walletMenu.classList.add('active');
-        walletBtn.classList.add('connected');
-    }catch(e){ console.error(e); }
+
+    const amount = parseFloat(spendAmount.value);
+    if (!amount || amount <= 0) {
+        showToast('Please enter a valid amount', 'warning');
+        return;
+    }
+
+    buyBtn.disabled = true;
+    buyBtn.textContent = 'Processing...';
+
+    try {
+        // Simulate transaction
+        showToast(`Initiating ${selectedCurrency} transaction... Check your ${walletType} wallet to confirm.`, 'info');
+
+        // In production, you would:
+        // 1. Call your backend to create a transaction
+        // 2. Request user to sign the transaction
+        // 3. Monitor the transaction status
+
+        setTimeout(() => {
+            showToast('Transaction successful! You will receive your tokens soon.', 'success');
+            spendAmount.value = '';
+            tokenAmount.textContent = '0';
+            buyBtn.disabled = false;
+            buyBtn.textContent = 'Buy LASTPEPE Tokens';
+        }, 2000);
+    } catch (error) {
+        console.error('Transaction error:', error);
+        showToast('Transaction failed. Please try again.', 'error');
+        buyBtn.disabled = false;
+        buyBtn.textContent = 'Buy LASTPEPE Tokens';
+    }
 });
 
-disconnectBtn.addEventListener('click', ()=>{
-    walletAddressDisplay.innerText = 'Connecting...';
-    walletNetwork.innerText = 'Ethereum Mainnet';
-    btnText.innerText = 'Connect Wallet';
-    walletMenu.classList.remove('active');
-    walletBtn.classList.remove('connected');
-});
+// Toast notification
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.className = `toast-message ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
 
-// Close menu when clicking outside
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+
+// Close wallet menu when clicking outside
 document.addEventListener('click', (e) => {
-    if (!walletBtn.contains(e.target) && !walletMenu.contains(e.target)) {
+    if (!e.target.closest('nav')) {
         walletMenu.classList.remove('active');
     }
 });
 
-// Real-time token display calculation
-const amountInput = document.getElementById('pepe-amount');
-const tokensDisplay = document.getElementById('tokens-display');
-const tokensAmount = document.getElementById('tokens-amount');
-const paymentSelect = document.getElementById('payment-method');
-
-function updateTokenDisplay() {
-  const amount = parseFloat(amountInput.value);
-  const method = paymentSelect.value.toUpperCase();
-  
-  if (!amount || amount <= 0) {
-    tokensDisplay.style.display = 'none';
-    return;
-  }
-  
-  const usdValue = amount * (PRICES[method] || 1);
-  const tokens = Math.floor(usdValue / PRICE_PER_TOKEN);
-  
-  tokensAmount.innerText = `${tokens.toLocaleString()} LASTPEPE ($${usdValue.toFixed(2)} USD)`;
-  tokensDisplay.style.display = 'block';
-}
-
-amountInput.addEventListener('input', updateTokenDisplay);
-paymentSelect.addEventListener('change', updateTokenDisplay);
+// Check if wallet was connected on page load
+window.addEventListener('load', async () => {
+    if (window.ethereum?.selectedAddress) {
+        userAddress = window.ethereum.selectedAddress;
+        connectedWallet = 'MetaMask';
+        walletType = 'MetaMask';
+        updateWalletDisplay();
+    } else if (window.phantom?.solana?.publicKey) {
+        userAddress = window.phantom.solana.publicKey.toString();
+        connectedWallet = 'Phantom';
+        walletType = 'Phantom';
+        updateWalletDisplay();
+    }
+});
 </script>
+
 </body>
 </html>
