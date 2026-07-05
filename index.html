@@ -227,10 +227,10 @@ footer p{font-weight:500}
         <button class="copy-btn" id="copy-address">Copy</button>
     </div>
 
-    <div class="progress-container">
+   <div class="progress-container" id="progress-container">
     <div class="progress-bar" id="progress-bar"></div>
 </div>
-
+    
     <div class="stats">
         <div class="stat-box">
             <h3>Price</h3>
@@ -329,7 +329,7 @@ footer p{font-weight:500}
 </section>
 
 <footer>
-    <p>&copy; 2025 The Last Pepe. All rights reserved.</p>
+    <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
     <div class="socials">
         <a href="https://x.com/thelastpepe01?s=21&t=jT0tiPpHUwYYDNfavfZgCA" target="_blank" rel="noopener noreferrer">Twitter/X</a>
         <a href="https://discord.com" target="_blank">Discord</a>
@@ -338,6 +338,13 @@ footer p{font-weight:500}
 </footer>
 
 <script>
+const progressContainer = document.getElementById('progress-container');
+
+if (progressContainer) {
+    progressContainer.addEventListener('click', () => {
+        showToast(`${formatUsd(collectedAmount)} collected so far`, 'info');
+    });
+}    
 const $ = id => document.getElementById(id);
 const walletBtn = $('wallet-btn');
 const walletMenu = $('wallet-menu');
