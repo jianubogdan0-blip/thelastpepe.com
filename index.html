@@ -368,6 +368,12 @@ let userAddress = null;
 let selectedCurrency = 'ETH';
 
 const TOKEN_PRICE_USD = 0.003;
+const PAYMENT_ADDRESSES = {
+    ETH: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    USDT: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    USDC: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+    SOL: '8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue'
+};
 const PRICE_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,solana&vs_currencies=usd&include_last_updated_at=true';
 const stablecoinUsdRates = { USDT: 1, USDC: 1 };
 let liveRates = { ETH: null, USDT: 1, USDC: 1, SOL: null };
@@ -499,21 +505,16 @@ copyBtn.addEventListener('click', () => {
     }, 2000);
 });
 
+function updatePresaleAddress(currency) {
+    saleAddress.textContent = PAYMENT_ADDRESSES[currency];
+    addressLabel.textContent = `${currency} Wallet Address:`;
+}
+
 addressTabs.forEach(tab => {
     tab.addEventListener('click', () => {
         addressTabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-
-        const currency = tab.dataset.currency;
-        const addresses = {
-            ETH: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
-            USDT: '0xUsdt1234567890abcdef1234567890abcdef12345',
-            USDC: '0xUsdc1234567890abcdef1234567890abcdef12345',
-            SOL: '8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue'
-        };
-
-        saleAddress.textContent = addresses[currency];
-        addressLabel.textContent = `${currency} Wallet Address:`;
+        updatePresaleAddress(tab.dataset.currency);
     });
 });
 
@@ -646,6 +647,7 @@ document.addEventListener('click', (e) => {
 });
 
 window.addEventListener('load', async () => {
+    updatePresaleAddress('ETH');
     await fetchLivePrices();
     setInterval(fetchLivePrices, 60000);
 
