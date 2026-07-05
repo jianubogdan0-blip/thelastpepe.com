@@ -1,17 +1,17 @@
 // frontend/sale.js
 // Frontend logic for presale: handles MetaMask (ETH, ERC20 USDT/USDC) payments.
-// IMPORTANT: set the configuration values below before using the site in production.
+// IMPORTANT: set the remaining configuration values below before using the site in production.
 
 const CONFIG = {
   // EVM sale contract (PepeSale) must be deployed on the same EVM chain as user's MetaMask
-  SALE_CONTRACT_ADDRESS: "0xREPLACE_WITH_SALE_CONTRACT_ADDRESS",
+  SALE_CONTRACT_ADDRESS: "0x8E44a6Ab51025569E5a784576508eE38e881a72b",
   // Pepe token contract address (ERC20) - used for display/decimals if needed
   PEPE_TOKEN_ADDRESS: "0xREPLACE_WITH_PEPE_TOKEN_ADDRESS",
   // ERC20 payment token addresses (on EVM chain)
   USDT_ADDRESS: "0xREPLACE_WITH_USDT_ADDRESS",
   USDC_ADDRESS: "0xREPLACE_WITH_USDC_ADDRESS",
-  // Owner/receiver addresses
-  RECEIVER_EVM_ADDRESS: "0xREPLACE_WITH_YOUR_EVM_ADDRESS",
+  // Owner/receiver address (EVM)
+  RECEIVER_EVM_ADDRESS: "0x8E44a6Ab51025569E5a784576508eE38e881a72b",
 };
 
 // Minimal ABI for the sale contract (must match the deployed contract)
@@ -31,7 +31,7 @@ let provider, signer, saleContract;
 
 const $ = id => document.getElementById(id);
 const toastEl = $("toast");
-function showToast(msg, timeout=5000){ toastEl.innerText = msg; toastEl.style.display = 'block'; setTimeout(()=> toastEl.style.display='none', timeout); }
+function showToast(msg, timeout=5000){ if (toastEl) { toastEl.innerText = msg; toastEl.style.display = 'block'; setTimeout(()=> toastEl.style.display='none', timeout); } else { console.log('TOAST:', msg); } }
 
 async function connectEVM(){
   if (!window.ethereum) { showToast('MetaMask not found'); throw new Error('MetaMask not found'); }
@@ -99,6 +99,11 @@ async function buyHandler(){
 
 // UI wiring
 window.addEventListener('load', ()=>{
-  $('connect-evm').addEventListener('click', async ()=>{ try{ await connectEVM(); }catch(e){console.error(e);} });
-  $('buy-btn').addEventListener('click', buyHandler);
+  const connectBtn = $('connect-evm');
+  if (connectBtn) connectBtn.addEventListener('click', async ()=>{ try{ await connectEVM(); }catch(e){console.error(e);} });
+  const buyBtn = $('buy-btn');
+  if (buyBtn) buyBtn.addEventListener('click', buyHandler);
+  // If wallet connect in header is used, keep it working
+  const walletBtn = document.getElementById('wallet-btn');
+  if (walletBtn) walletBtn.addEventListener('click', async ()=>{ try{ await connectEVM(); }catch(e){console.error(e);} });
 });
