@@ -27,13 +27,18 @@ header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;jus
 nav{display:flex;align-items:center;gap:25px}
 nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
 nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;white-space:nowrap}
+#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;white-space:nowrap;display:flex;align-items:center;gap:8px}
 #wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
-#wallet-btn.connected{background:#78ff7a}
-.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:250px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,102,0.3)}
+#wallet-btn.connected{background:#78ff7a;box-shadow:0 0 20px rgba(0,255,102,0.6)}
+.wallet-indicator{width:8px;height:8px;background:#0bbd3c;border-radius:50%;display:none;box-shadow:0 0 8px #00ff66}
+#wallet-btn.connected .wallet-indicator{display:block;animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 8px #00ff66}50%{box-shadow:0 0 15px #00ff66}100%{box-shadow:0 0 8px #00ff66}}
+.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:280px;display:none;z-index:1001;box-shadow:0 0 30px rgba(0,255,102,0.3)}
 .wallet-menu.active{display:block}
-.wallet-menu-item{padding:10px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3)}
-.wallet-menu-item strong{color:#00ff66}
+.wallet-status-label{font-size:11px;color:#00ff66;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
+.wallet-menu-item{padding:12px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3);border-left:3px solid #00ff66}
+.wallet-menu-item strong{color:#00ff66;display:block;margin-bottom:4px;font-size:12px}
+.wallet-menu-item small{display:block;color:#999;font-size:11px;margin-top:4px}
 .disconnect-btn{width:100%;padding:10px;background:#ff6b6b;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:13px}
 .disconnect-btn:hover{background:#ff5252;transform:scale(1.05)}
 .hero{min-height:100vh;display:flex;justify-content:space-between;align-items:center;padding:160px 60px 80px;gap:40px;flex-wrap:wrap}
@@ -146,11 +151,19 @@ footer p{font-weight:500}
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#roadmap">Roadmap</a>
-        <button id="wallet-btn">Connect Wallet</button>
+        <button id="wallet-btn">
+            <span class="wallet-indicator"></span>
+            <span id="btn-text">Connect Wallet</span>
+        </button>
     </nav>
 
     <div class="wallet-menu" id="wallet-menu">
-        <div class="wallet-menu-item"><strong id="wallet-address">Not connected</strong></div>
+        <span class="wallet-status-label">✓ Connected</span>
+        <div class="wallet-menu-item">
+            <strong>Wallet Address</strong>
+            <span id="wallet-address-display">Connecting...</span>
+            <small id="wallet-network">Ethereum Mainnet</small>
+        </div>
         <button class="disconnect-btn" id="disconnect">Disconnect</button>
     </div>
 </header>
@@ -323,26 +336,57 @@ copyBtn && copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(saleAddr).then(()=> alert('Copied'));
 });
 
-// wallet connect placeholder (keeps showing connected address in header menu)
+// Wallet connection with enhanced display
 const walletBtn = document.getElementById('wallet-btn');
 const walletMenu = document.getElementById('wallet-menu');
-const walletAddressEl = document.getElementById('wallet-address');
+const walletAddressDisplay = document.getElementById('wallet-address-display');
 const disconnectBtn = document.getElementById('disconnect');
+const btnText = document.getElementById('btn-text');
+const walletNetwork = document.getElementById('wallet-network');
 
 walletBtn.addEventListener('click', async ()=>{
     if (!window.ethereum) return alert('MetaMask not found');
     try{
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        walletAddressEl.innerText = accounts[0];
+        const address = accounts[0];
+        
+        // Show shortened address in button
+        const shortened = address.slice(0, 6) + '...' + address.slice(-4);
+        btnText.innerText = shortened;
+        
+        // Show full address in menu
+        walletAddressDisplay.innerText = address;
+        
+        // Get network
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        const networks = { '0x1': 'Ethereum Mainnet', '0x5': 'Goerli Testnet', '0xaa36a7': 'Sepolia Testnet' };
+        walletNetwork.innerText = networks[chainId] || 'Unknown Network';
+        
         walletMenu.classList.add('active');
         walletBtn.classList.add('connected');
     }catch(e){ console.error(e); }
 });
 
+walletBtn.addEventListener('click', (e) => {
+    if(walletBtn.classList.contains('connected')) {
+        e.stopPropagation();
+        walletMenu.classList.toggle('active');
+    }
+});
+
 disconnectBtn.addEventListener('click', ()=>{
-    walletAddressEl.innerText = 'Not connected';
+    walletAddressDisplay.innerText = 'Connecting...';
+    walletNetwork.innerText = 'Ethereum Mainnet';
+    btnText.innerText = 'Connect Wallet';
     walletMenu.classList.remove('active');
     walletBtn.classList.remove('connected');
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!walletBtn.contains(e.target) && !walletMenu.contains(e.target)) {
+        walletMenu.classList.remove('active');
+    }
 });
 
 // Real-time token display calculation
