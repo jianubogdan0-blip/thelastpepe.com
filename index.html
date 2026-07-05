@@ -6,7 +6,6 @@
 <title>The Last Pepe | Official Memecoin</title>
 <link rel="icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCg[...]
 <link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGh[...]
-<link rel="shortcut icon" href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGh[...]
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -23,6 +22,10 @@
     font-family:'Orbitron',sans-serif;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
     background:#07130a;
     color:white;
@@ -35,8 +38,7 @@ body{
     position:fixed;
     width:100%;
     height:100%;
-    background:
-    radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);
+    background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);
     z-index:-2;
 }
 
@@ -63,9 +65,10 @@ header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    background:rgba(0,0,0,0.3);
+    background:rgba(0,0,0,0.5);
     backdrop-filter:blur(10px);
     z-index:1000;
+    border-bottom:1px solid rgba(0,255,102,0.2);
 }
 
 .logo{
@@ -76,6 +79,7 @@ header{
     font-weight:900;
     color:#78ff7a;
     text-shadow:0 0 15px #00ff66;
+    cursor:pointer;
 }
 
 .logo-icon{
@@ -89,10 +93,10 @@ header{
     box-shadow:0 0 18px rgba(0,255,102,0.35);
 }
 
-.logo-icon svg{
-    width:28px;
-    height:28px;
-    filter:drop-shadow(0 0 3px rgba(0,255,102,0.7));
+.logo-icon img{
+    width:32px;
+    height:32px;
+    object-fit:contain;
 }
 
 nav{
@@ -106,10 +110,12 @@ nav a{
     color:white;
     transition:0.3s;
     font-size:14px;
+    font-weight:600;
 }
 
 nav a:hover{
     color:#00ff66;
+    text-shadow:0 0 10px #00ff66;
 }
 
 #wallet-btn{
@@ -124,6 +130,7 @@ nav a:hover{
     transition:0.3s;
     font-size:14px;
     position:relative;
+    white-space:nowrap;
 }
 
 #wallet-btn:hover{
@@ -194,8 +201,8 @@ nav a:hover{
     min-height:100vh;
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
-    padding:140px 60px 80px;
+    align-items:center;
+    padding:160px 60px 80px;
     gap:40px;
     flex-wrap:wrap;
 }
@@ -203,29 +210,37 @@ nav a:hover{
 .hero-title-section{
     display:flex;
     align-items:center;
-    gap:20px;
+    gap:30px;
     max-width:600px;
+    flex:1;
+    min-width:300px;
 }
 
 .hero-title-section img{
     width:150px;
     height:150px;
-    border-radius:15px;
+    border-radius:20px;
     flex-shrink:0;
+    object-fit:cover;
+    box-shadow:0 0 30px rgba(0,255,100,0.5);
+    border:3px solid #00ff66;
 }
 
 .hero-text{
-    max-width:400px;
+    max-width:500px;
+    flex:1;
+    min-width:250px;
 }
 
 .hero-text h1{
     font-size:82px;
-    line-height:1;
+    line-height:0.9;
     margin-bottom:25px;
+    font-weight:900;
 }
 
 .hero-text span{
-    color:#78ff7a;
+    color:#00ff66;
     text-shadow:0 0 30px #00ff66;
 }
 
@@ -234,6 +249,7 @@ nav a:hover{
     color:#d6d6d6;
     line-height:1.7;
     margin-bottom:35px;
+    font-weight:400;
 }
 
 .buttons{
@@ -248,36 +264,53 @@ nav a:hover{
     text-decoration:none;
     font-weight:700;
     transition:0.3s;
+    cursor:pointer;
+    border:none;
+    font-size:15px;
 }
 
 .buy{
     background:#00ff66;
     color:black;
-    box-shadow:0 0 20px #00ff66;
+    box-shadow:0 0 20px rgba(0,255,102,0.7);
 }
 
 .buy:hover{
     transform:scale(1.08);
+    box-shadow:0 0 30px rgba(0,255,102,1);
 }
 
 .whitepaper{
     border:2px solid #00ff66;
-    color:white;
+    color:#00ff66;
+    background:transparent;
+    box-shadow:0 0 10px rgba(0,255,102,0.3);
 }
 
 .whitepaper:hover{
     background:#00ff66;
     color:black;
+    box-shadow:0 0 20px rgba(0,255,102,1);
 }
 
 /* IMAGE */
 
+.hero-image{
+    flex:1;
+    min-width:250px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
 .hero-image img{
-    width:350px;
+    width:100%;
+    max-width:400px;
     border-radius:30px;
     border:5px solid #00ff66;
     box-shadow:0 0 40px rgba(0,255,100,0.7);
     animation:float 4s ease-in-out infinite;
+    object-fit:cover;
 }
 
 @keyframes float{
@@ -297,12 +330,14 @@ nav a:hover{
     font-size:60px;
     margin-bottom:20px;
     color:#78ff7a;
+    font-weight:900;
 }
 
 .goal{
     font-size:24px;
     margin-bottom:40px;
     color:#ccc;
+    font-weight:600;
 }
 
 .address-tabs{
@@ -314,7 +349,7 @@ nav a:hover{
 }
 
 .address-tab{
-    padding:10px 20px;
+    padding:12px 24px;
     border:2px solid #00ff66;
     background:transparent;
     color:#00ff66;
@@ -329,6 +364,7 @@ nav a:hover{
 .address-tab.active{
     background:#00ff66;
     color:black;
+    box-shadow:0 0 15px rgba(0,255,102,0.8);
 }
 
 .address-tab:hover{
@@ -362,11 +398,13 @@ nav a:hover{
     cursor:pointer;
     transition:0.3s;
     font-weight:700;
+    font-size:14px;
 }
 
 .copy-btn:hover{
     background:#00ff66;
     color:#000;
+    box-shadow:0 0 15px rgba(0,255,102,0.8);
 }
 
 .copy-btn.copied{
@@ -387,9 +425,15 @@ nav a:hover{
 
 .progress-bar{
     width:37%;
-    height:40px;
+    height:50px;
     background:linear-gradient(90deg,#00ff66,#78ff7a);
     animation:loading 3s ease forwards;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:15px;
+    font-weight:700;
+    font-size:14px;
 }
 
 @keyframes loading{
@@ -417,12 +461,19 @@ nav a:hover{
 .stat-box:hover{
     transform:translateY(-10px);
     box-shadow:0 0 25px rgba(0,255,100,0.4);
+    border-color:#00ff66;
 }
 
 .stat-box h3{
     color:#78ff7a;
     font-size:32px;
     margin-bottom:15px;
+    font-weight:900;
+}
+
+.stat-box p{
+    color:#999;
+    font-weight:600;
 }
 
 /* TOKENOMICS */
@@ -437,6 +488,7 @@ nav a:hover{
     font-size:60px;
     margin-bottom:60px;
     color:#78ff7a;
+    font-weight:900;
 }
 
 .cards{
@@ -458,17 +510,21 @@ nav a:hover{
 .card:hover{
     transform:translateY(-10px);
     box-shadow:0 0 25px rgba(0,255,100,0.3);
+    border-color:#00ff66;
+    background:rgba(0,255,100,0.08);
 }
 
 .card h3{
     font-size:30px;
     color:#78ff7a;
     margin-bottom:15px;
+    font-weight:900;
 }
 
 .card p{
     color:#ddd;
     line-height:1.6;
+    font-weight:500;
 }
 
 /* BUY & STAKE */
@@ -482,6 +538,7 @@ nav a:hover{
     font-size:60px;
     margin-bottom:60px;
     color:#78ff7a;
+    font-weight:900;
 }
 
 .buy-stake-container{
@@ -495,23 +552,24 @@ nav a:hover{
 
 .buy-card, .stake-card{
     flex:1;
-    min-width:350px;
+    min-width:320px;
     padding:40px;
     border-radius:25px;
     background:rgba(255,255,255,0.05);
     border:2px solid #00ff66;
     box-shadow:0 0 30px rgba(0,255,100,0.2);
+    text-align:left;
 }
 
 .buy-card h3, .stake-card h3{
     font-size:32px;
     color:#78ff7a;
     margin-bottom:25px;
+    font-weight:900;
 }
 
 .form-group{
     margin-bottom:20px;
-    text-align:left;
 }
 
 .form-group label{
@@ -524,13 +582,14 @@ nav a:hover{
 
 .form-group input, .form-group select{
     width:100%;
-    padding:12px 15px;
+    padding:14px 15px;
     border-radius:10px;
     border:1px solid #00ff66;
     background:rgba(0,255,100,0.1);
     color:white;
     font-family:'Orbitron',sans-serif;
     font-size:14px;
+    transition:0.3s;
 }
 
 .form-group input::placeholder{
@@ -540,6 +599,7 @@ nav a:hover{
 .form-group input:focus, .form-group select:focus{
     outline:none;
     box-shadow:0 0 15px rgba(0,255,100,0.5);
+    background:rgba(0,255,100,0.15);
 }
 
 .currency-select{
@@ -550,7 +610,7 @@ nav a:hover{
 
 .currency-btn{
     flex:1;
-    padding:10px;
+    padding:12px;
     border:2px solid #00ff66;
     background:transparent;
     color:#00ff66;
@@ -559,11 +619,13 @@ nav a:hover{
     font-weight:700;
     transition:0.3s;
     font-family:'Orbitron',sans-serif;
+    font-size:13px;
 }
 
 .currency-btn.active{
     background:#00ff66;
     color:black;
+    box-shadow:0 0 10px rgba(0,255,102,0.8);
 }
 
 .currency-btn:hover{
@@ -572,7 +634,7 @@ nav a:hover{
 
 .buy-btn, .stake-btn{
     width:100%;
-    padding:14px;
+    padding:16px;
     background:#00ff66;
     color:black;
     border:none;
@@ -582,6 +644,7 @@ nav a:hover{
     cursor:pointer;
     transition:0.3s;
     font-family:'Orbitron',sans-serif;
+    margin-top:10px;
 }
 
 .buy-btn:hover, .stake-btn:hover{
@@ -637,37 +700,15 @@ nav a:hover{
     font-size:14px;
 }
 
-.amount-input-group{
-    margin-bottom:20px;
-}
-
-.amount-input-group label{
-    display:block;
-    color:#00ff66;
-    font-size:14px;
-    font-weight:700;
-    margin-bottom:8px;
-}
-
-.amount-input-group input{
-    width:100%;
-    padding:12px 15px;
-    border-radius:10px;
-    border:1px solid #00ff66;
-    background:rgba(0,255,100,0.1);
-    color:white;
-    font-family:'Orbitron',sans-serif;
-    font-size:14px;
-}
-
 .wallet-status{
-    padding:10px 15px;
+    padding:12px 15px;
     background:rgba(0,255,100,0.15);
     border:1px solid #00ff66;
     border-radius:10px;
     margin-bottom:20px;
-    font-size:14px;
+    font-size:13px;
     color:#78ff7a;
+    font-weight:600;
 }
 
 .toast-message{
@@ -681,6 +722,7 @@ nav a:hover{
     font-weight:700;
     z-index:2000;
     animation:slideIn 0.3s ease;
+    max-width:90%;
 }
 
 .toast-message.error{
@@ -720,6 +762,7 @@ nav a:hover{
     font-size:60px;
     color:#78ff7a;
     margin-bottom:60px;
+    font-weight:900;
 }
 
 .timeline{
@@ -735,11 +778,24 @@ nav a:hover{
     border-radius:25px;
     background:rgba(255,255,255,0.05);
     border:1px solid rgba(255,255,255,0.08);
+    transition:0.3s;
+}
+
+.phase:hover{
+    border-color:#00ff66;
+    box-shadow:0 0 20px rgba(0,255,100,0.3);
+    transform:translateY(-5px);
 }
 
 .phase h3{
     color:#00ff66;
     margin-bottom:20px;
+    font-weight:900;
+}
+
+.phase p{
+    color:#999;
+    font-weight:500;
 }
 
 /* FOOTER */
@@ -749,19 +805,34 @@ footer{
     text-align:center;
     background:black;
     color:#777;
+    border-top:1px solid rgba(0,255,102,0.2);
+}
+
+footer p{
+    margin-bottom:20px;
+    font-weight:500;
 }
 
 .socials{
     margin-top:20px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
 }
 
 .socials a{
     color:#78ff7a;
-    margin:0 10px;
     text-decoration:none;
+    transition:0.3s;
+    font-weight:700;
 }
 
-/* TABLET OPTIMIZATION (768px - 900px) */
+.socials a:hover{
+    color:#00ff66;
+    text-shadow:0 0 10px #00ff66;
+}
+
+/* TABLET OPTIMIZATION (768px - 1024px) */
 @media(max-width:1024px){
 
 header{
@@ -787,7 +858,16 @@ nav a{
 
 .hero{
     padding:120px 30px 60px;
-    gap:40px;
+    gap:30px;
+    flex-direction:column;
+}
+
+.hero-title-section{
+    order:2;
+}
+
+.hero-image{
+    order:1;
 }
 
 .hero-text h1{
@@ -799,7 +879,7 @@ nav a{
 }
 
 .hero-image img{
-    width:350px;
+    max-width:350px;
 }
 
 .presale, .buy-stake, .tokenomics, .roadmap{
@@ -852,15 +932,21 @@ nav a{
 /* MOBILE OPTIMIZATION (max 768px) */
 @media(max-width:768px){
 
+html{
+    font-size:14px;
+}
+
 header{
     padding:12px 15px;
     flex-wrap:nowrap;
     justify-content:space-between;
+    gap:10px;
 }
 
 .logo{
     font-size:18px;
     gap:8px;
+    flex-shrink:0;
 }
 
 .logo-icon{
@@ -868,9 +954,9 @@ header{
     height:35px;
 }
 
-.logo-icon svg{
-    width:22px;
-    height:22px;
+.logo-icon img{
+    width:28px;
+    height:28px;
 }
 
 nav{
@@ -883,6 +969,11 @@ nav{
 
 nav.active{
     display:flex;
+}
+
+nav a{
+    padding:10px;
+    border-bottom:1px solid rgba(0,255,100,0.2);
 }
 
 #wallet-btn{
@@ -906,31 +997,32 @@ nav.active{
 
 .hero{
     padding:100px 20px 50px;
-    gap:30px;
+    gap:25px;
     min-height:auto;
     flex-direction:column;
-    align-items:center;
 }
 
 .hero-title-section{
     flex-direction:column;
     text-align:center;
     max-width:100%;
+    order:2;
 }
 
 .hero-title-section img{
-    width:120px;
-    height:120px;
+    width:100px;
+    height:100px;
 }
 
 .hero-text{
     max-width:100%;
     text-align:center;
+    order:3;
 }
 
 .hero-text h1{
     font-size:42px;
-    line-height:1.2;
+    line-height:1;
     margin-bottom:15px;
 }
 
@@ -942,21 +1034,27 @@ nav.active{
 
 .buttons{
     justify-content:center;
-    gap:15px;
+    gap:12px;
 }
 
 .btn{
-    padding:12px 24px;
-    font-size:13px;
+    padding:12px 20px;
+    font-size:12px;
+    flex:1;
+    min-width:120px;
+    text-align:center;
 }
 
 .hero-image{
+    order:1;
     width:100%;
+    margin-bottom:20px;
 }
 
 .hero-image img{
-    width:280px;
-    max-width:100%;
+    width:100%;
+    max-width:300px;
+    height:auto;
 }
 
 .presale, .buy-stake, .tokenomics, .roadmap{
@@ -991,16 +1089,19 @@ nav.active{
 }
 
 .address-tab{
-    padding:8px 16px;
+    padding:10px 16px;
     font-size:12px;
+    width:100%;
 }
 
 .progress-container{
     width:90%;
+    max-width:100%;
 }
 
 .progress-bar{
-    height:30px;
+    height:40px;
+    font-size:12px;
 }
 
 .stats{
@@ -1038,6 +1139,183 @@ nav.active{
     margin-bottom:10px;
 }
 
+.card p{
+    font-size:13px;
+}
+
+.buy-stake-container{
+    gap:20px;
+    flex-direction:column;
+}
+
+.buy-card, .stake-card{
+    min-width:unset;
+    width:100%;
+    padding:25px 20px;
+}
+
+.buy-card h3, .stake-card h3{
+    font-size:22px;
+}
+
+.form-group{
+    margin-bottom:15px;
+}
+
+.form-group label{
+    font-size:13px;
+    margin-bottom:6px;
+}
+
+.form-group input{
+    padding:12px;
+    font-size:13px;
+}
+
+.currency-select{
+    gap:8px;
+}
+
+.currency-btn{
+    padding:10px 8px;
+    font-size:12px;
+}
+
+.buy-btn, .stake-btn{
+    padding:14px;
+    font-size:14px;
+}
+
+.timeline{
+    gap:20px;
+}
+
+.phase{
+    width:100%;
+    max-width:280px;
+    padding:25px 20px;
+}
+
+.phase h3{
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+.phase p{
+    font-size:13px;
+}
+
+footer{
+    padding:40px 20px;
+}
+
+footer p{
+    font-size:13px;
+}
+
+.socials{
+    gap:15px;
+}
+
+.socials a{
+    font-size:13px;
+}
+
+.toast-message{
+    bottom:10px;
+    right:10px;
+    left:10px;
+    width:auto;
+    padding:12px 20px;
+    font-size:13px;
+}
+
+}
+
+/* ULTRA MOBILE (max 480px) */
+@media(max-width:480px){
+
+header{
+    padding:10px 12px;
+}
+
+.logo{
+    font-size:16px;
+    gap:6px;
+}
+
+.logo-icon{
+    width:32px;
+    height:32px;
+}
+
+#wallet-btn{
+    padding:8px 12px;
+    font-size:11px;
+}
+
+.hero{
+    padding:90px 15px 40px;
+    gap:20px;
+}
+
+.hero-text h1{
+    font-size:36px;
+    margin-bottom:12px;
+}
+
+.hero-text p{
+    font-size:14px;
+    margin-bottom:20px;
+}
+
+.buttons{
+    gap:10px;
+}
+
+.btn{
+    padding:10px 16px;
+    font-size:11px;
+    min-width:110px;
+}
+
+.presale h2, .buy-stake h2, .tokenomics h2, .roadmap h2{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+.address-tab{
+    padding:8px 12px;
+    font-size:11px;
+}
+
+.stat-box{
+    width:100%;
+    padding:15px;
+}
+
+.stat-box h3{
+    font-size:20px;
+}
+
+.card{
+    width:100%;
+    padding:15px;
+}
+
+.card h3{
+    font-size:20px;
+}
+
+.wallet-address{
+    font-size:12px;
+}
+
+.copy-btn{
+    padding:8px 12px;
+    font-size:11px;
+}
+
 }
 
 </style>
@@ -1052,23 +1330,19 @@ nav.active{
 <header>
     <div class="logo">
         <div class="logo-icon">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff66" stroke-width="2"/>
-                <text x="50" y="65" font-size="40" fill="#00ff66" text-anchor="middle" font-weight="bold">Ᵽ</text>
-            </svg>
+            <img src="https://raw.githubusercontent.com/jianubogdan0-blip/thelastpepe.com/main/pepe-icon.png" alt="Pepe">
         </div>
-        The Last Pepe
+        <span style="display:none;">The Last Pepe</span>
     </div>
     
     <nav>
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#roadmap">Roadmap</a>
-        <a href="#faq">FAQ</a>
     </nav>
     
     <div style="position:relative;">
-        <button id="wallet-btn">Connect Wallet</button>
+        <button id="wallet-btn">Connect</button>
         <div class="wallet-menu" id="wallet-menu">
             <div id="wallet-info" style="display:none;">
                 <div class="wallet-menu-item">
@@ -1094,8 +1368,12 @@ nav.active{
 
 <!-- HERO SECTION -->
 <div class="hero">
+    <div class="hero-image">
+        <img src="https://raw.githubusercontent.com/jianubogdan0-blip/thelastpepe.com/main/pepe-hero.png" alt="The Last Pepe">
+    </div>
+    
     <div class="hero-title-section">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%230d5f21' width='200' height='200'/%3E%3Ctext x='100' y='120' font-size='80' fill='%2300ff66' text-anchor='middle' font-weight='bold'%3Eᵽ%3C/text%3E%3C/svg%3E" alt="Pepe">
+        <img src="https://raw.githubusercontent.com/jianubogdan0-blip/thelastpepe.com/main/pepe-avatar.png" alt="Pepe Avatar">
         <div class="hero-text">
             <h1>The Last <span>Pepe</span></h1>
             <p>The ultimate memecoin experience. Join the revolution of digital culture and earning potential.</p>
@@ -1104,10 +1382,6 @@ nav.active{
                 <a href="#" class="btn whitepaper">Whitepaper</a>
             </div>
         </div>
-    </div>
-    
-    <div class="hero-image">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2300ff66;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%230bbd3c;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect fill='url(%23grad)' width='400' height='400' rx='30'/%3E%3Ctext x='200' y='220' font-size='120' fill='white' text-anchor='middle' font-weight='bold'%3Eᵽ%3C/text%3E%3C/svg%3E" alt="The Last Pepe">
     </div>
 </div>
 
@@ -1128,7 +1402,7 @@ nav.active{
     </div>
     
     <div class="progress-container">
-        <div class="progress-bar"></div>
+        <div class="progress-bar">37%</div>
     </div>
     
     <div class="stats">
@@ -1174,7 +1448,6 @@ nav.active{
 <section class="buy-stake" id="buy-stake">
     <h2>Buy & Stake</h2>
     <div class="buy-stake-container">
-        <!-- BUY CARD -->
         <div class="buy-card">
             <h3>Buy PEPE</h3>
             <div id="buy-wallet-status" class="wallet-status" style="display:none;">
@@ -1195,7 +1468,6 @@ nav.active{
             <button class="buy-btn" id="buy-btn" onclick="handleBuy()">Buy Now</button>
         </div>
         
-        <!-- STAKE CARD -->
         <div class="stake-card">
             <h3>Stake PEPE</h3>
             <div id="stake-wallet-status" class="wallet-status" style="display:none;">
@@ -1224,7 +1496,7 @@ nav.active{
                     </div>
                 </label>
             </div>
-            <div class="amount-input-group">
+            <div class="form-group">
                 <label>Amount to Stake</label>
                 <input type="number" id="stake-amount" placeholder="0.0" min="0" step="0.01">
             </div>
@@ -1286,7 +1558,14 @@ let currentChain = 'eth';
 
 let currentAccount = null;
 let currentNetwork = null;
-const provider = new ethers.providers.Web3Provider(window.ethereum);
+let provider;
+
+// Initialize when Ethereum is available
+function initProvider() {
+    if (window.ethereum) {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+    }
+}
 
 // Elements
 const walletBtn = document.getElementById('wallet-btn');
@@ -1299,8 +1578,9 @@ const errorMessage = document.getElementById('error-message');
 const presaleAddressDisplay = document.getElementById('presale-address');
 const chainLabel = document.getElementById('chain-label');
 
-// Initialize wallet on page load
+// Initialize
 window.addEventListener('load', async () => {
+    initProvider();
     checkIfWalletIsConnected();
     setupAddressTabs();
 });
@@ -1332,7 +1612,6 @@ function updateDisplayAddress() {
 // Check if wallet is already connected
 async function checkIfWalletIsConnected() {
     if (!window.ethereum) {
-        showError('MetaMask not installed');
         return;
     }
     
@@ -1356,7 +1635,7 @@ walletBtn.addEventListener('click', async () => {
     }
     
     if (!window.ethereum) {
-        showError('MetaMask is not installed. Please install it first.');
+        showError('MetaMask not installed');
         return;
     }
     
@@ -1369,15 +1648,13 @@ walletBtn.addEventListener('click', async () => {
             currentAccount = accounts[0];
             await updateWalletInfo();
             updateUIConnected();
-            showToast('Wallet connected successfully!', 'success');
+            showToast('Wallet connected!', 'success');
         }
     } catch (error) {
-        if (error.code === -32002) {
-            showError('MetaMask request already pending. Check your MetaMask extension.');
-        } else if (error.code === 4001) {
-            showError('Connection request rejected.');
+        if (error.code === 4001) {
+            showError('Connection rejected');
         } else {
-            showError('Failed to connect wallet: ' + error.message);
+            showError('Failed to connect');
         }
     }
 });
@@ -1387,7 +1664,7 @@ disconnectBtn.addEventListener('click', () => {
     currentAccount = null;
     updateUIDisconnected();
     walletMenu.classList.remove('active');
-    showToast('Wallet disconnected', 'warning');
+    showToast('Disconnected', 'warning');
 });
 
 // Update wallet info
@@ -1401,11 +1678,10 @@ async function updateWalletInfo() {
             parseFloat(balanceETH).toFixed(4) + ' ETH';
         
         const network = await provider.getNetwork();
-        currentNetwork = network;
         const networkNames = {
-            1: 'Ethereum Mainnet',
-            5: 'Goerli Testnet',
-            11155111: 'Sepolia Testnet',
+            1: 'Ethereum',
+            5: 'Goerli',
+            11155111: 'Sepolia',
             137: 'Polygon',
             42161: 'Arbitrum'
         };
@@ -1418,13 +1694,13 @@ async function updateWalletInfo() {
             currentAccount.substring(0, 6) + '...' + currentAccount.substring(38);
             
     } catch (error) {
-        console.error('Error updating wallet info:', error);
+        console.error('Error updating wallet:', error);
     }
 }
 
 // Update UI when connected
 function updateUIConnected() {
-    walletBtn.textContent = currentAccount.substring(0, 6) + '...' + currentAccount.substring(38);
+    walletBtn.textContent = currentAccount.substring(0, 6) + '...';
     walletBtn.classList.add('connected');
     walletInfo.style.display = 'block';
     walletError.style.display = 'none';
@@ -1434,7 +1710,7 @@ function updateUIConnected() {
 
 // Update UI when disconnected
 function updateUIDisconnected() {
-    walletBtn.textContent = 'Connect Wallet';
+    walletBtn.textContent = 'Connect';
     walletBtn.classList.remove('connected');
     walletInfo.style.display = 'none';
     walletError.style.display = 'none';
@@ -1450,7 +1726,7 @@ function showError(message) {
     showToast(message, 'error');
 }
 
-// Copy address to clipboard
+// Copy address
 copyAddressBtn.addEventListener('click', () => {
     const addr = addresses[currentChain].address;
     navigator.clipboard.writeText(addr);
@@ -1462,55 +1738,45 @@ copyAddressBtn.addEventListener('click', () => {
     }, 2000);
 });
 
-// Buy button
+// Buy
 function handleBuy() {
     if (!currentAccount) {
-        showToast('Please connect your wallet first', 'warning');
+        showToast('Connect wallet first', 'warning');
         return;
     }
-    
     const amount = document.getElementById('buy-amount').value;
     if (!amount || parseFloat(amount) <= 0) {
-        showToast('Please enter a valid amount', 'error');
+        showToast('Enter valid amount', 'error');
         return;
     }
-    
-    showToast(`Buy transaction initiated for ${amount} ETH`, 'success');
-    console.log('Buy amount:', amount);
+    showToast(`Buying ${amount} ETH worth of PEPE`, 'success');
 }
 
-// Stake button
+// Stake
 function handleStake() {
     if (!currentAccount) {
-        showToast('Please connect your wallet first', 'warning');
+        showToast('Connect wallet first', 'warning');
         return;
     }
-    
     const amount = document.getElementById('stake-amount').value;
-    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
-    
     if (!amount || parseFloat(amount) <= 0) {
-        showToast('Please enter a valid amount', 'error');
+        showToast('Enter valid amount', 'error');
         return;
     }
-    
+    const duration = document.querySelector('input[name="stake-duration"]:checked').value;
     showToast(`Staking ${amount} PEPE for ${duration} days`, 'success');
-    console.log('Stake amount:', amount, 'Duration:', duration);
 }
 
-// Toast notification
+// Toast
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast-message ${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+    setTimeout(() => toast.remove(), 3000);
 }
 
-// Listen for account changes
+// Wallet events
 if (window.ethereum) {
     window.ethereum.on('accountsChanged', (accounts) => {
         if (accounts.length === 0) {
@@ -1528,7 +1794,7 @@ if (window.ethereum) {
     });
 }
 
-// Currency selection
+// Currency buttons
 document.querySelectorAll('.currency-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
@@ -1536,7 +1802,7 @@ document.querySelectorAll('.currency-btn').forEach(btn => {
     });
 });
 
-// Close menu when clicking outside
+// Close menu outside
 document.addEventListener('click', (e) => {
     if (!e.target.closest('header')) {
         walletMenu.classList.remove('active');
