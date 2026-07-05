@@ -1,5 +1,5 @@
 // frontend/sale.js
-// Frontend logic for presale: handles MetaMask (ETH, ERC20) and Phantom (SOL) payments.
+// Frontend logic for presale: handles MetaMask (ETH, ERC20 USDT/USDC) payments.
 // IMPORTANT: set the configuration values below before using the site in production.
 
 const CONFIG = {
@@ -12,7 +12,6 @@ const CONFIG = {
   USDC_ADDRESS: "0xREPLACE_WITH_USDC_ADDRESS",
   // Owner/receiver addresses
   RECEIVER_EVM_ADDRESS: "0xREPLACE_WITH_YOUR_EVM_ADDRESS",
-  RECEIVER_SOL_ADDRESS: "REPLACE_WITH_YOUR_SOL_ADDRESS",
 };
 
 // Minimal ABI for the sale contract (must match the deployed contract)
@@ -29,7 +28,6 @@ const ERC20_ABI = [
 ];
 
 let provider, signer, saleContract;
-let solConn = null; // solana connection
 
 const $ = id => document.getElementById(id);
 const toastEl = $("toast");
@@ -46,22 +44,6 @@ async function connectEVM(){
   return addr;
 }
 
-async function connectSolana(){
-  // Phantom integration
-  if (window.solana && window.solana.isPhantom) {
-    try {
-      const resp = await window.solana.connect();
-      solConn = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl('mainnet-beta'));
-      showToast('Phantom connected: ' + resp.publicKey.toString());
-      return resp.publicKey.toString();
-    } catch (e){
-      console.error(e); showToast('Phantom connect failed'); throw e;
-    }
-  } else {
-    showToast('Phantom wallet not found'); throw new Error('Phantom not found');
-  }
-}
-
 async function buyHandler(){
   const method = $('payment-method').value;
   const pepeAmountStr = $('pepe-amount').value.trim();
@@ -72,24 +54,7 @@ async function buyHandler(){
   const pepeAmount = ethers.utils.parseUnits(pepeAmountStr, pepeDecimals);
 
   try{
-    if (method === 'sol'){
-      // Send SOL directly to receiver address
-      if (!solConn) await connectSolana();
-      const from = window.solana.publicKey;
-      const toPub = new solanaWeb3.PublicKey(CONFIG.RECEIVER_SOL_ADDRESS);
-      const tx = new solanaWeb3.Transaction().add(
-        solanaWeb3.SystemProgram.transfer({
-          fromPubkey: from,
-          toPubkey: toPub,
-          lamports: solanaWeb3.LAMPORTS_PER_SOL // sending 1 SOL as example — you should compute price server-side
-        })
-      );
-      const { signature } = await window.solana.signAndSendTransaction(tx);
-      showToast('SOL sent: ' + signature);
-      return;
-    }
-
-    // EVM flows
+    // EVM flows only
     if (!signer) await connectEVM();
     // get price per 1e18 pepe for the selected payment token
     let paymentTokenAddress = ethers.constants.AddressZero; // ETH
@@ -135,6 +100,5 @@ async function buyHandler(){
 // UI wiring
 window.addEventListener('load', ()=>{
   $('connect-evm').addEventListener('click', async ()=>{ try{ await connectEVM(); }catch(e){console.error(e);} });
-  $('connect-sol').addEventListener('click', async ()=>{ try{ await connectSolana(); }catch(e){console.error(e);} });
   $('buy-btn').addEventListener('click', buyHandler);
 });
