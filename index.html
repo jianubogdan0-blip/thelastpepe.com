@@ -305,6 +305,36 @@ nav a:hover{
     color:#ccc;
 }
 
+.address-tabs{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.address-tab{
+    padding:10px 20px;
+    border:2px solid #00ff66;
+    background:transparent;
+    color:#00ff66;
+    border-radius:50px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;
+}
+
+.address-tab.active{
+    background:#00ff66;
+    color:black;
+}
+
+.address-tab:hover{
+    transform:scale(1.05);
+}
+
 .wallet-address{
     font-size:18px;
     color:#c6ffc5;
@@ -955,6 +985,16 @@ nav.active{
     font-size:12px;
 }
 
+.address-tabs{
+    flex-direction:column;
+    gap:8px;
+}
+
+.address-tab{
+    padding:8px 16px;
+    font-size:12px;
+}
+
 .progress-container{
     width:90%;
 }
@@ -1076,9 +1116,14 @@ nav.active{
     <h2>Presale <span style="color:#00ff66;">Live</span></h2>
     <p class="goal">Goal: $500,000 | Current: $185,000</p>
     
+    <div class="address-tabs">
+        <button class="address-tab active" data-chain="eth">Ethereum</button>
+        <button class="address-tab" data-chain="sol">Solana</button>
+    </div>
+    
     <div class="wallet-address">
-        <strong>Send ETH to:</strong>
-        <span id="presale-address">0x742d35Cc6634C0532925a3b844Bc9e7595f1A3f0</span>
+        <strong id="chain-label">Send ETH to:</strong>
+        <span id="presale-address">0x8E44a6Ab51025569E5a784576508eE38e881a72b</span>
         <button class="copy-btn" id="copy-address-btn">Copy</button>
     </div>
     
@@ -1223,11 +1268,24 @@ nav.active{
 
 <script>
 
+// ========== RECEIVING ADDRESSES ==========
+const addresses = {
+    eth: {
+        address: '0x8E44a6Ab51025569E5a784576508eE38e881a72b',
+        label: 'Send ETH to:'
+    },
+    sol: {
+        address: 'H84yjLxSg16weE7u8zoQgivWDX6NAnYPEDq3pwJuBjzb',
+        label: 'Send SOL to:'
+    }
+};
+
+let currentChain = 'eth';
+
 // ========== METAMASK WALLET INTEGRATION ==========
 
 let currentAccount = null;
 let currentNetwork = null;
-const presaleAddress = '0x742d35Cc6634C0532925a3b844Bc9e7595f1A3f0';
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 // Elements
@@ -1238,11 +1296,38 @@ const walletError = document.getElementById('wallet-error');
 const disconnectBtn = document.getElementById('disconnect-btn');
 const copyAddressBtn = document.getElementById('copy-address-btn');
 const errorMessage = document.getElementById('error-message');
+const presaleAddressDisplay = document.getElementById('presale-address');
+const chainLabel = document.getElementById('chain-label');
 
 // Initialize wallet on page load
 window.addEventListener('load', async () => {
     checkIfWalletIsConnected();
+    setupAddressTabs();
 });
+
+// Setup address tabs
+function setupAddressTabs() {
+    document.querySelectorAll('.address-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const chain = this.dataset.chain;
+            currentChain = chain;
+            
+            document.querySelectorAll('.address-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            updateDisplayAddress();
+        });
+    });
+}
+
+// Update displayed address
+function updateDisplayAddress() {
+    const addr = addresses[currentChain];
+    presaleAddressDisplay.textContent = addr.address;
+    chainLabel.textContent = addr.label;
+    copyAddressBtn.textContent = 'Copy';
+    copyAddressBtn.classList.remove('copied');
+}
 
 // Check if wallet is already connected
 async function checkIfWalletIsConnected() {
@@ -1367,7 +1452,8 @@ function showError(message) {
 
 // Copy address to clipboard
 copyAddressBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(presaleAddress);
+    const addr = addresses[currentChain].address;
+    navigator.clipboard.writeText(addr);
     copyAddressBtn.textContent = 'Copied!';
     copyAddressBtn.classList.add('copied');
     setTimeout(() => {
