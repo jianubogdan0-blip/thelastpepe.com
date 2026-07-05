@@ -115,6 +115,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .toast-message.error{background:#ff6b6b;color:white}
 .toast-message.success{background:#00ff66;color:black}
 .toast-message.warning{background:#ffa500;color:black}
+.toast-message.info{background:#00ccff;color:black}
 @keyframes slideIn{from{transform:translateX(400px);opacity:0;}to{transform:translateX(0);opacity:1;}}
 .roadmap{padding:120px 50px;text-align:center}
 .roadmap h2{font-size:60px;color:#78ff7a;margin-bottom:60px;font-weight:900}
@@ -180,6 +181,7 @@ footer p{font-weight:500}
         <button class="address-tab active">ETH</button>
         <button class="address-tab">USDT</button>
         <button class="address-tab">USDC</button>
+        <button class="address-tab">SOL</button>
     </div>
 
     <div class="wallet-address">
@@ -209,23 +211,39 @@ footer p{font-weight:500}
     <!-- Integrated presale form -->
     <div style="max-width:900px;margin:40px auto;text-align:left;background:rgba(0,0,0,0.4);padding:20px;border-radius:12px;border:1px solid rgba(0,255,102,0.08)">
       <h3 style="color:#78ff7a;margin-bottom:12px">Buy LASTPEPE (Presale)</h3>
+      <p style="color:#ccc;font-size:13px;margin-bottom:16px">Minimum purchase: $10 USD | Maximum supply: 1,000,000,000 LASTPEPE | Price: $0.003 per token</p>
+      
       <div class="form-group">
-        <label for="payment-method">Payment method</label>
+        <label for="payment-method">Select Payment Method</label>
         <select id="payment-method">
-          <option value="eth">ETH (native)</option>
-          <option value="usdt">USDT (ERC-20)</option>
-          <option value="usdc">USDC (ERC-20)</option>
+          <option value="eth">ETH (Ethereum Mainnet)</option>
+          <option value="usdt">USDT (Ethereum Mainnet)</option>
+          <option value="usdc">USDC (Ethereum Mainnet)</option>
+          <option value="sol">SOL (Solana Mainnet)</option>
         </select>
       </div>
+
       <div class="form-group">
-        <label for="pepe-amount">Amount of LASTPEPE to buy (tokens)</label>
-        <input id="pepe-amount" type="text" placeholder="e.g. 1000" />
+        <label for="pepe-amount">Amount to Send</label>
+        <input id="pepe-amount" type="number" step="0.001" placeholder="Enter amount (ETH, USDT, USDC, or SOL)" />
+        <small style="color:#999;margin-top:4px;display:block">Minimum: $10 USD equivalent</small>
       </div>
+
+      <div class="token-display" style="display:none" id="tokens-display">
+        <p>You will receive:</p>
+        <div class="amount" id="tokens-amount">0 LASTPEPE</div>
+      </div>
+
       <div style="display:flex;gap:12px;flex-wrap:wrap">
         <button id="connect-evm" class="btn">Connect MetaMask</button>
-        <button id="buy-btn" class="btn">Buy</button>
+        <button id="buy-btn" class="btn">Send & Buy</button>
       </div>
-      <p style="color:#ccc;margin-top:12px">Note: make sure the sale contract is deployed, prices set, and the contract holds LASTPEPE tokens. Use testnet first.</p>
+      
+      <p style="color:#999;margin-top:16px;font-size:12px">
+        ✓ ETH/USDT/USDC: Sends directly to your wallet on Ethereum mainnet<br/>
+        ✓ SOL: Manual transfer instruction provided<br/>
+        ✓ After sending, confirm in wallet and we'll distribute LASTPEPE tokens to your address
+      </p>
     </div>
 
 </section>
@@ -326,6 +344,34 @@ disconnectBtn.addEventListener('click', ()=>{
     walletMenu.classList.remove('active');
     walletBtn.classList.remove('connected');
 });
+
+// Real-time token display calculation
+const amountInput = document.getElementById('pepe-amount');
+const tokensDisplay = document.getElementById('tokens-display');
+const tokensAmount = document.getElementById('tokens-amount');
+const paymentSelect = document.getElementById('payment-method');
+
+const PRICES = { ETH: 2500, USDT: 1, USDC: 1, SOL: 150 };
+const PRICE_PER_TOKEN = 0.003;
+
+function updateTokenDisplay() {
+  const amount = parseFloat(amountInput.value);
+  const method = paymentSelect.value.toUpperCase();
+  
+  if (!amount || amount <= 0) {
+    tokensDisplay.style.display = 'none';
+    return;
+  }
+  
+  const usdValue = amount * (PRICES[method] || 1);
+  const tokens = Math.floor(usdValue / PRICE_PER_TOKEN);
+  
+  tokensAmount.innerText = `${tokens.toLocaleString()} LASTPEPE ($${usdValue.toFixed(2)} USD)`;
+  tokensDisplay.style.display = 'block';
+}
+
+amountInput.addEventListener('input', updateTokenDisplay);
+paymentSelect.addEventListener('change', updateTokenDisplay);
 </script>
 </body>
 </html>
