@@ -227,9 +227,12 @@ footer p{font-weight:500}
         <button class="copy-btn" id="copy-address">Copy</button>
     </div>
 
-   <div class="progress-container" id="progress-container">
+  <div class="progress-container" id="progress-container">
     <div class="progress-bar" id="progress-bar"></div>
 </div>
+<p id="raised-text" style="margin-top:12px;color:#c6ffc5;font-weight:700;">
+    Total raised: $126,325 / $3,000,000
+</p>
     
     <div class="stats">
         <div class="stat-box">
@@ -337,14 +340,7 @@ footer p{font-weight:500}
     </div>
 </footer>
 
-<script>
-const progressContainer = document.getElementById('progress-container');
-
-if (progressContainer) {
-    progressContainer.addEventListener('click', () => {
-        showToast(`${formatUsd(collectedAmount)} collected so far`, 'info');
-    });
-}    
+<script>  
 const $ = id => document.getElementById(id);
 const walletBtn = $('wallet-btn');
 const walletMenu = $('wallet-menu');
@@ -691,6 +687,21 @@ window.addEventListener('load', async () => {
         updateWalletDisplay();
     }
 });
+function updateProgressBar() {
+    const progressBar = document.getElementById('progress-bar');
+    const raisedText = document.getElementById('raised-text');
+    if (!progressBar) return;
+
+    const percent = Math.min((collectedAmount / RAISE_GOAL) * 100, 100);
+    const text = `${formatUsd(collectedAmount)} / ${formatUsd(RAISE_GOAL)}`;
+
+    progressBar.style.width = `${percent}%`;
+    progressBar.textContent = text;
+
+    if (raisedText) {
+        raisedText.textContent = `Total raised: ${text}`;
+    }
+}    
 </script>
 
 </body>
