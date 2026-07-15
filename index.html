@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
-<title>THELASTPEPE | Official Memecoin</title>
+<title>The Last Pepe | Official Memecoin</title>
 <link rel="icon" href="pepe-icon.png">
 <link rel="shortcut icon" href="pepe-icon.png">
 
@@ -19,23 +19,22 @@ html{scroll-behavior:smooth}
 body{background:#07130a;color:white;overflow-x:hidden}
 .bg{position:fixed;width:100%;height:100%;background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);z-index:-2}
 .glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:0.15;top:-100px;right:-100px;z-index:-1}
-header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-[...]
-.logo{display:flex;align-items:center;gap:14px;font-size:27px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
-.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 [...]
+header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-bottom:1px solid rgba(0,255,102,0.15)}
+.logo{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
+.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 15px rgba(0,255,100,0.4)}
 .logo-icon img{width:32px;height:32px;object-fit:contain}
 nav{display:flex;align-items:center;gap:25px;position:relative}
-nav a{text-decoration:none;color:white;transition:0.3s;font-size:13px;font-weight:600}
+nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
 nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:rel[...]
+#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;display:flex;align-items:center;gap:8px}
 #wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
-#connect-phantom{display:none !important;}
 #wallet-btn.connected{background:#78ff7a;box-shadow:0 0 20px rgba(0,255,102,0.6)}
 .wallet-indicator{width:8px;height:8px;background:#0bbd3c;border-radius:50%;display:none;box-shadow:0 0 8px #00ff66}
 #wallet-btn.connected .wallet-indicator{display:block;animation:pulse 2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 8px #00ff66}50%{box-shadow:0 0 15px #00ff66}100%{box-shadow:0 0 8px #00ff66}}
 .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center}
 .modal-overlay.active{display:flex}
-.modal-content{background:#07130a;border:2px solid #00ff66;border-radius:20px;padding:40px;max-width:500px;width:90%;box-shadow:0 0 40px rgba(0,255,100,0.4);animation:slideDown 0.3s ease;position:rela[...]
+.modal-content{background:#07130a;border:2px solid #00ff66;border-radius:20px;padding:40px;max-width:500px;width:90%;box-shadow:0 0 40px rgba(0,255,100,0.4);animation:slideDown 0.3s ease;position:relative}
 @keyframes slideDown{from{transform:translateY(-50px);opacity:0}to{transform:translateY(0);opacity:1}}
 .modal-close{position:absolute;top:15px;right:20px;background:none;border:none;color:#00ff66;font-size:28px;cursor:pointer;transition:0.3s}
 .modal-close:hover{color:#78ff7a;transform:scale(1.2)}
@@ -43,10 +42,10 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .wallet-selection-modal h2{color:#78ff7a;font-size:32px;margin-bottom:10px;font-weight:900}
 .wallet-selection-modal p{color:#ccc;margin-bottom:30px;font-size:14px}
 .wallet-options{display:flex;flex-direction:column;gap:15px}
-.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px[...]
+.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px;display:flex;align-items:center;justify-content:center;gap:12px;transition:0.3s}
 .wallet-option-btn:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,100,0.6)}
 .wallet-option-divider{text-align:center;color:#666;margin:20px 0;font-size:12px}
-.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shado[...]
+.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shadow:0 0 20px rgba(0,255,100,0.3)}
 .wallet-menu.active{display:block}
 .wallet-status-label{font-size:11px;color:#00ff66;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
 .wallet-type-badge{display:inline-block;background:rgba(0,255,100,0.2);color:#00ff66;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px;border:1px solid #00ff66}
@@ -57,7 +56,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .disconnect-btn:hover{background:#ff5252;transform:scale(1.05)}
 .hero{min-height:100vh;display:flex;justify-content:space-between;align-items:center;padding:160px 60px 80px;gap:40px;flex-wrap:wrap}
 .hero-title-section{display:flex;align-items:center;gap:30px;max-width:600px;flex:1;min-width:300px}
-.hero-title-section img{width:120px;height:120px;border-radius:18px;flex-shrink:0;object-fit:cover;box-shadow:0 0 24px rgba(0,255,100,0.45);border:3px solid #00ff66}
+.hero-title-section img{width:150px;height:150px;border-radius:20px;flex-shrink:0;object-fit:cover;box-shadow:0 0 30px rgba(0,255,100,0.5);border:3px solid #00ff66}
 .hero-text{max-width:500px;flex:1;min-width:250px}
 .hero-text h1{font-size:82px;line-height:0.9;margin-bottom:25px;font-weight:900}
 .hero-text span{color:#00ff66;text-shadow:0 0 30px #00ff66}
@@ -75,7 +74,7 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .presale h2{font-size:60px;margin-bottom:20px;color:#78ff7a;font-weight:900}
 .goal{font-size:24px;margin-bottom:40px;color:#ccc;font-weight:600}
 .address-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
-.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-si[...]
+.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:14px}
 .address-tab.active{background:#00ff66;color:black;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .address-tab:hover{transform:scale(1.05)}
 .wallet-address{font-size:18px;color:#c6ffc5;line-height:1.7;margin:0 auto 30px;max-width:900px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
@@ -84,9 +83,9 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .copy-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:12px 20px;cursor:pointer;transition:0.3s;font-weight:700;font-size:14px}
 .copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
 .copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
-.progress-container{width:min(92%,900px);max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66;cursor:pointer}
-.progress-bar{width:0%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:clamp(11px,2.5vw,14px);color:#001a0[...]
-.raised-text{margin-top:12px;color:#c6ffc5;font-weight:700;font-size:16px}
+.progress-container{width:80%;max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66}
+.progress-bar{width:4.21%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;color:black;font-weight:900}
+@keyframes loading{from{width:0;}to{width:4.21%;}}
 .stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:50px}
 .stat-box{width:250px;padding:30px;background:rgba(255,255,255,0.05);border-radius:20px;border:1px solid rgba(255,255,255,0.1);transition:0.3s}
 .stat-box:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.4);border-color:#00ff66}
@@ -111,13 +110,13 @@ nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 .form-group input::placeholder{color:#666}
 .form-group input:focus{outline:none;box-shadow:0 0 15px rgba(0,255,100,0.5)}
 .currency-select{display:flex;gap:10px;margin-bottom:20px}
-.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif}
+.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-size:14px}
 .currency-btn.active{background:#00ff66;color:black}
 .currency-btn:hover{transform:scale(1.05)}
 .token-display{padding:15px;background:rgba(0,255,100,0.1);border:1px solid #00ff66;border-radius:10px;margin-bottom:12px;text-align:center}
 .token-display p{color:#00ff66;font-weight:700;font-size:16px}
 .token-display .amount{color:#78ff7a;font-size:24px;font-weight:900;margin-top:5px}
-.rate-display{margin-bottom:20px;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,100,0.35);border-radius:10px;color:#c6ffc5;font-size:13px;line-height:1.6;text-ali[...]
+.rate-display{margin-bottom:20px;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,100,0.35);border-radius:10px;color:#c6ffc5;font-size:13px;line-height:1.6;text-align:left}
 .rate-display strong{color:#78ff7a}
 .buy-btn{width:100%;padding:14px;background:#00ff66;color:black;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif}
 .buy-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(0,255,102,0.8)}
@@ -141,528 +140,214 @@ footer p{font-weight:500}
 .socials{margin-top:20px}
 .socials a{color:#78ff7a;margin:0 10px;text-decoration:none;transition:0.3s}
 .socials a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
+@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-size:58px}.presale h2,.tokenomics h2,.buy-stake h2,.roadmap h2{font-size:44px}}
+/* ===== Responsive / cross-device optimization patch ===== */
 
-/* Responsive optimization */
-img{max-width:100%;height:auto}
-button,a{-webkit-tap-highlight-color:transparent}
-.hero-text h1,.goal,.wallet-address,.stat-box p,.phase p{overflow-wrap:anywhere;word-break:break-word}
+/* Safer defaults */
+img { max-width: 100%; height: auto; }
+button, a { -webkit-tap-highlight-color: transparent; }
 
-@media (min-width:1200px){
-  .hero{padding:170px 80px 90px}
-  .hero-text h1{font-size:88px}
-  .hero-image img{max-width:460px}
-}
-
-@media(max-width:1024px){
-  header{padding:14px 20px;gap:10px}
-  nav{gap:12px;flex-wrap:wrap;justify-content:flex-end}
-  .hero{padding:120px 24px 60px;gap:28px}
-  .hero-title-section{gap:18px;min-width:0}
-  .hero-text h1{font-size:clamp(42px,8vw,64px);line-height:1}
-  .hero-text p{font-size:clamp(16px,2.5vw,20px)}
-  .presale,.tokenomics,.buy-stake,.roadmap{padding:90px 20px}
-  .cards,.timeline,.stats{gap:18px}
-  .card,.phase,.stat-box{width:min(100%,320px)}
-}
-
-@media(max-width:640px){
-  header{padding:10px 12px;align-items:flex-start}
-  .logo{font-size:18px;gap:8px}
-  .logo-icon{width:30px;height:30px}
-  .logo-icon img{width:20px;height:20px}
-  nav{gap:8px}
-  nav a{font-size:12px}
-  #wallet-btn{padding:8px 12px;font-size:12px}
-  .hero{padding:100px 12px 40px}
-  .hero-title-section{flex-direction:column;align-items:flex-start}
-  .hero-text h1{font-size:clamp(32px,12vw,44px)}
-  .hero-text p{font-size:15px;line-height:1.5}
-  .buttons{width:100%;gap:10px}
-  .btn{width:100%;text-align:center;padding:13px 16px;font-size:14px}
-  .presale h2,.tokenomics h2,.buy-stake h2,.roadmap h2{font-size:clamp(30px,10vw,42px);margin-bottom:24px}
-  .goal{font-size:17px}
-  .wallet-address{font-size:14px;gap:10px}
-  .copy-btn{width:100%;max-width:220px}
-  .progress-bar{height:44px;font-size:11px}
-  .raised-text{font-size:14px}
-  .buy-card{min-width:100%;padding:20px}
-  .currency-select{flex-wrap:wrap}
-  .currency-btn{min-width:calc(50% - 6px)}
-  footer{padding:28px 14px}
-  .socials a{display:inline-block;margin:6px 8px}
-}
-@media (max-width: 640px){
-  .hero{
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .hero-image{
-    order: -1;              /* puts floating image above text */
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 12px;
-  }
-
-  .hero-image img{
-    width: 58% !important;  /* force override */
-    max-width: 150px !important;
-    border-width: 3px;
-  }
-
-  .hero-title-section{
-    width: 100%;
-    justify-content: center;
-  }
-
-  .hero-text{
-    max-width: 100%;
-  }
-}
-/* ===== Responsive size rebalance patch (desktop + mobile) ===== */
-
-/* Base typography and spacing tuning */
-body {
-  font-size: 16px;
-  line-height: 1.45;
-}
-
+/* Fix potentially broken header border if line got truncated */
 header {
-  padding: 14px 24px !important;
+  border-bottom: 1px solid rgba(0, 255, 102, 0.2);
 }
 
-.logo {
-  font-size: clamp(16px, 2vw, 24px) !important;
-  gap: 10px !important;
-}
-
-.logo-icon {
-  width: clamp(30px, 3vw, 42px) !important;
-  height: clamp(30px, 3vw, 42px) !important;
-}
-
-.logo-icon img {
-  width: 70% !important;
-  height: 70% !important;
-}
-
-nav {
-  gap: 12px !important;
-}
-
-nav a {
-  font-size: clamp(11px, 1.2vw, 13px) !important;
-}
-
-#wallet-btn {
-  padding: 9px 14px !important;
-  font-size: clamp(11px, 1.1vw, 13px) !important;
-}
-
-/* Hero */
-.hero {
-  min-height: auto !important;
-  padding: 120px 24px 56px !important;
-  gap: 24px !important;
-  align-items: center !important;
-}
-
-.hero-title-section {
-  max-width: 620px !important;
-  min-width: 0 !important;
-  gap: 14px !important;
-}
-
-.hero-text {
-  max-width: 620px !important;
-}
-
-.hero-text h1 {
-  font-size: clamp(34px, 6.2vw, 74px) !important;
-  line-height: 0.98 !important;
-  margin-bottom: 16px !important;
-}
-
-.hero-text p {
-  font-size: clamp(14px, 2vw, 19px) !important;
-  line-height: 1.55 !important;
-  margin-bottom: 22px !important;
-}
-
-.buttons {
-  gap: 12px !important;
-}
-
-.btn {
-  padding: 12px 22px !important;
-  font-size: clamp(12px, 1.5vw, 15px) !important;
-}
-
-.hero-image img {
-  width: min(92vw, 360px) !important;
-  max-width: 360px !important;
-  border-width: 4px !important;
-}
-
-/* Section spacing */
-.presale,
-.tokenomics,
-.buy-stake,
-.roadmap {
-  padding: 76px 20px !important;
-}
-
-.presale h2,
-.tokenomics h2,
-.buy-stake h2,
-.roadmap h2 {
-  font-size: clamp(30px, 5vw, 54px) !important;
-  margin-bottom: 20px !important;
-}
-
-.goal {
-  font-size: clamp(16px, 2.2vw, 22px) !important;
-  margin-bottom: 26px !important;
-}
-
-/* Presale controls */
-.address-tab {
-  padding: 9px 16px !important;
-  font-size: 12px !important;
-}
-
-.wallet-address {
-  font-size: clamp(13px, 1.8vw, 17px) !important;
-  gap: 10px !important;
-  margin-bottom: 20px !important;
-}
-
-.copy-btn {
-  padding: 10px 14px !important;
-  font-size: 13px !important;
-}
-
-.progress-container {
-  width: min(96%, 860px) !important;
-}
-
-.progress-bar {
-  height: 42px !important;
-  font-size: clamp(10px, 2.1vw, 13px) !important;
-}
-
-.raised-text {
-  margin-top: 10px !important;
-  font-size: clamp(13px, 1.6vw, 15px) !important;
-}
-
-/* Cards and stats */
-.stats,
-.cards,
-.timeline {
-  gap: 14px !important;
-}
-
-.stat-box,
-.card,
-.phase {
-  width: min(100%, 280px) !important;
-  padding: 22px !important;
-}
-
-.stat-box h3,
-.card h3 {
-  font-size: clamp(23px, 3.5vw, 30px) !important;
-}
-
+/* Better text wrapping on small screens */
+.hero-text h1,
+.goal,
+.wallet-address,
 .stat-box p,
-.card p,
 .phase p {
-  font-size: clamp(13px, 1.4vw, 15px) !important;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-/* Buy box */
-.buy-stake-container {
-  gap: 20px !important;
+/* Progress readability */
+.progress-container {
+  width: min(92%, 900px);
+}
+.progress-bar {
+  min-width: 48px;
+  padding: 0 12px;
+  font-size: clamp(11px, 2.5vw, 14px);
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.buy-card {
-  min-width: 0 !important;
-  max-width: 560px !important;
-  width: 100% !important;
-  padding: 24px !important;
+/* Desktop polish */
+@media (min-width: 1200px) {
+  .hero { padding: 170px 80px 90px; }
+  .hero-text h1 { font-size: 88px; }
+  .hero-image img { max-width: 460px; }
 }
 
-.buy-card h3 {
-  font-size: clamp(24px, 3.4vw, 30px) !important;
-  margin-bottom: 18px !important;
-}
-
-.form-group input {
-  padding: 10px 12px !important;
-  font-size: 14px !important;
-}
-
-.currency-btn {
-  padding: 9px !important;
-  font-size: 13px !important;
-}
-
-.token-display .amount {
-  font-size: clamp(20px, 3.4vw, 28px) !important;
-}
-
-.rate-display {
-  font-size: 12px !important;
-  padding: 10px 12px !important;
-}
-
-/* Footer */
-footer {
-  padding: 24px 14px !important;
-}
-
-/* ===== Tablet ===== */
+/* Tablet */
 @media (max-width: 1024px) {
   header {
-    padding: 10px 14px !important;
-  }
-
-  .hero {
-    padding: 100px 14px 42px !important;
-    gap: 18px !important;
-  }
-
-  .hero-image img {
-    max-width: 290px !important;
-  }
-
-  .presale,
-  .tokenomics,
-  .buy-stake,
-  .roadmap {
-    padding: 62px 14px !important;
-  }
-
-  .buy-card {
-    padding: 18px !important;
-  }
-}
-
-/* ===== Mobile ===== */
-@media (max-width: 640px) {
-  body {
-    font-size: 14px;
-  }
-
-  header {
-    padding: 8px 10px !important;
-    gap: 8px !important;
-    align-items: center !important;
-  }
-
-  .logo {
-    font-size: 14px !important;
-    gap: 6px !important;
-  }
-
-  .logo-icon {
-    width: 24px !important;
-    height: 24px !important;
+    padding: 14px 20px;
+    gap: 10px;
   }
 
   nav {
-    gap: 6px !important;
-  }
-
-  nav a {
-    font-size: 11px !important;
-  }
-
-  #wallet-btn {
-    padding: 7px 10px !important;
-    font-size: 11px !important;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .hero {
-    padding: 86px 10px 28px !important;
-    flex-direction: column !important;
-    text-align: center !important;
-    gap: 10px !important;
-  }
-
-  .hero-image {
-    order: -1 !important;
-    margin-bottom: 4px !important;
-  }
-
-  .hero-image img {
-    width: 44vw !important;
-    max-width: 130px !important;
-    border-width: 2px !important;
+    padding: 120px 24px 60px;
+    gap: 28px;
   }
 
   .hero-title-section {
-    width: 100% !important;
-    justify-content: center !important;
+    gap: 18px;
+    min-width: 0;
   }
 
-  .hero-text {
-    max-width: 100% !important;
+  .hero-title-section img {
+    width: 110px;
+    height: 110px;
   }
 
   .hero-text h1 {
-    font-size: clamp(26px, 9vw, 36px) !important;
-    margin-bottom: 10px !important;
+    font-size: clamp(42px, 8vw, 64px);
+    line-height: 1;
   }
 
   .hero-text p {
-    font-size: 13px !important;
-    line-height: 1.4 !important;
-    margin-bottom: 14px !important;
+    font-size: clamp(16px, 2.5vw, 20px);
+  }
+
+  .presale, .tokenomics, .buy-stake, .roadmap {
+    padding: 90px 20px;
+  }
+
+  .cards, .timeline, .stats {
+    gap: 18px;
+  }
+
+  .card, .phase, .stat-box {
+    width: min(100%, 320px);
+  }
+}
+
+/* Phones */
+@media (max-width: 640px) {
+  header {
+    padding: 10px 12px;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 18px;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo-icon img {
+    width: 20px;
+    height: 20px;
+  }
+
+  nav {
+    gap: 8px;
+  }
+
+  nav a {
+    font-size: 12px;
+  }
+
+  #wallet-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .hero {
+    padding: 100px 12px 40px;
+  }
+
+  .hero-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-title-section img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .hero-text h1 {
+    font-size: clamp(32px, 12vw, 44px);
+  }
+
+  .hero-text p {
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .buttons {
-    width: 100% !important;
-    gap: 8px !important;
+    width: 100%;
+    gap: 10px;
   }
 
   .btn {
-    width: 100% !important;
-    padding: 11px 12px !important;
-    font-size: 13px !important;
+    width: 100%;
+    text-align: center;
+    padding: 13px 16px;
+    font-size: 14px;
   }
 
-  .presale,
-  .tokenomics,
-  .buy-stake,
-  .roadmap {
-    padding: 48px 10px !important;
-  }
-
-  .presale h2,
-  .tokenomics h2,
-  .buy-stake h2,
-  .roadmap h2 {
-    font-size: clamp(26px, 9vw, 34px) !important;
-    margin-bottom: 14px !important;
+  .presale h2, .tokenomics h2, .buy-stake h2, .roadmap h2 {
+    font-size: clamp(30px, 10vw, 42px);
+    margin-bottom: 24px;
   }
 
   .goal {
-    font-size: 14px !important;
-    margin-bottom: 16px !important;
+    font-size: 17px;
   }
 
   .wallet-address {
-    font-size: 12px !important;
-    gap: 8px !important;
+    font-size: 14px;
+    gap: 10px;
   }
 
   .copy-btn {
-    width: 100% !important;
-    max-width: 190px !important;
+    width: 100%;
+    max-width: 220px;
   }
 
   .progress-bar {
-    height: 34px !important;
-    font-size: 10px !important;
-  }
-
-  .raised-text {
-    font-size: 12px !important;
-  }
-
-  .stat-box,
-  .card,
-  .phase {
-    width: 100% !important;
-    max-width: 100% !important;
-    padding: 16px !important;
-  }
-
-  .buy-stake-container {
-    gap: 10px !important;
+    height: 44px;
+    font-size: 11px;
   }
 
   .buy-card {
-    padding: 14px !important;
-    border-radius: 16px !important;
-  }
-
-  .buy-card h3 {
-    font-size: 20px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .form-group {
-    margin-bottom: 14px !important;
-  }
-
-  .form-group label {
-    font-size: 12px !important;
-  }
-
-  .form-group input {
-    font-size: 13px !important;
+    min-width: 100%;
+    padding: 20px;
   }
 
   .currency-select {
-    gap: 8px !important;
-    margin-bottom: 14px !important;
+    flex-wrap: wrap;
   }
 
   .currency-btn {
-    min-width: calc(50% - 4px) !important;
-  }
-
-  .token-display {
-    padding: 10px !important;
-  }
-
-  .token-display .amount {
-    font-size: 20px !important;
-  }
-
-  .rate-display {
-    font-size: 11px !important;
-    padding: 9px !important;
-  }
-
-  .buy-btn {
-    padding: 12px !important;
-    font-size: 14px !important;
-  }
-
-  .wallet-menu {
-    min-width: 250px !important;
-    right: -8px !important;
-  }
-
-  .modal-content {
-    padding: 22px 14px !important;
-  }
-
-  .wallet-selection-modal h2 {
-    font-size: 24px !important;
-  }
-
-  .wallet-option-btn {
-    padding: 14px !important;
-    font-size: 14px !important;
+    min-width: calc(50% - 6px);
   }
 
   footer {
-    padding: 18px 10px !important;
-    font-size: 12px !important;
+    padding: 28px 14px;
   }
 
   .socials a {
-    margin: 4px 6px !important;
-    font-size: 12px !important;
+    display: inline-block;
+    margin: 6px 8px;
   }
-}              
+}
 </style>
 </head>
 <body>
