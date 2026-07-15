@@ -1,1002 +1,1035 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
-<title>The Last Pepe | Official Memecoin</title>
-<link rel="icon" href="pepe-icon.png">
-<link rel="shortcut icon" href="pepe-icon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>The Last Pepe | Official Memecoin</title>
+  <link rel="icon" href="pepe-icon.png" />
+  <link rel="shortcut icon" href="pepe-icon.png" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bungee:wght@400&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-<!-- Ethers.js -->
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Orbitron',sans-serif}
-html{scroll-behavior:smooth}
-body{background:#07130a;color:white;overflow-x:hidden}
-.bg{position:fixed;width:100%;height:100%;background:radial-gradient(circle at top,#0d5f21 0%,#07130a 50%);z-index:-2}
-.glow{position:fixed;width:600px;height:600px;background:#00ff6a;filter:blur(200px);opacity:0.15;top:-100px;right:-100px;z-index:-1}
-header{position:fixed;width:100%;top:0;left:0;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);z-index:1000;border-[...]
-.logo{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:900;color:#78ff7a;text-shadow:0 0 15px #00ff66;cursor:pointer}
-.logo-icon{width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%,#a2ff92,#0bbd3c 55%,#05270c 90%);border-radius:50%;box-shadow:0 0 [...]
-.logo-icon img{width:32px;height:32px;object-fit:contain}
-nav{display:flex;align-items:center;gap:25px;position:relative}
-nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weight:600}
-nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-#wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:rel[...]
-#wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
-#wallet-btn.connected{background:#78ff7a;box-shadow:0 0 20px rgba(0,255,102,0.6)}
-.wallet-indicator{width:8px;height:8px;background:#0bbd3c;border-radius:50%;display:none;box-shadow:0 0 8px #00ff66}
-#wallet-btn.connected .wallet-indicator{display:block;animation:pulse 2s infinite}
-@keyframes pulse{0%{box-shadow:0 0 8px #00ff66}50%{box-shadow:0 0 15px #00ff66}100%{box-shadow:0 0 8px #00ff66}}
-.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:2000;justify-content:center;align-items:center}
-.modal-overlay.active{display:flex}
-.modal-content{background:#07130a;border:2px solid #00ff66;border-radius:20px;padding:40px;max-width:500px;width:90%;box-shadow:0 0 40px rgba(0,255,100,0.4);animation:slideDown 0.3s ease;position:rela[...]
-@keyframes slideDown{from{transform:translateY(-50px);opacity:0}to{transform:translateY(0);opacity:1}}
-.modal-close{position:absolute;top:15px;right:20px;background:none;border:none;color:#00ff66;font-size:28px;cursor:pointer;transition:0.3s}
-.modal-close:hover{color:#78ff7a;transform:scale(1.2)}
-.wallet-selection-modal{text-align:center}
-.wallet-selection-modal h2{color:#78ff7a;font-size:32px;margin-bottom:10px;font-weight:900}
-.wallet-selection-modal p{color:#ccc;margin-bottom:30px;font-size:14px}
-.wallet-options{display:flex;flex-direction:column;gap:15px}
-.wallet-option-btn{padding:20px;background:rgba(0,255,100,0.1);border:2px solid #00ff66;border-radius:15px;color:#00ff66;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;font-size:16px[...]
-.wallet-option-btn:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,100,0.6)}
-.wallet-option-divider{text-align:center;color:#666;margin:20px 0;font-size:12px}
-.wallet-menu{position:absolute;top:100%;right:0;margin-top:10px;background:rgba(0,0,0,0.95);border:2px solid #00ff66;border-radius:15px;padding:15px;min-width:300px;display:none;z-index:1001;box-shado[...]
-.wallet-menu.active{display:block}
-.wallet-status-label{font-size:11px;color:#00ff66;text-transform:uppercase;font-weight:700;letter-spacing:1px;margin-bottom:10px;display:block}
-.wallet-type-badge{display:inline-block;background:rgba(0,255,100,0.2);color:#00ff66;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;margin-bottom:12px;border:1px solid #00ff66}
-.wallet-menu-item{padding:12px 15px;color:#78ff7a;font-size:13px;word-break:break-all;background:rgba(0,255,100,0.1);border-radius:8px;margin-bottom:10px;border:1px solid rgba(0,255,100,0.3)}
-.wallet-menu-item strong{color:#00ff66;display:block;margin-bottom:4px;font-size:12px}
-.wallet-menu-item small{display:block;color:#999;font-size:11px;margin-top:4px}
-.disconnect-btn{width:100%;padding:10px;background:#ff6b6b;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:13px}
-.disconnect-btn:hover{background:#ff5252;transform:scale(1.05)}
-.hero{min-height:100vh;display:flex;justify-content:space-between;align-items:center;padding:160px 60px 80px;gap:40px;flex-wrap:wrap}
-.hero-title-section{display:flex;align-items:center;gap:30px;max-width:600px;flex:1;min-width:300px}
-.hero-title-section img{width:150px;height:150px;border-radius:20px;flex-shrink:0;object-fit:cover;box-shadow:0 0 30px rgba(0,255,100,0.5);border:3px solid #00ff66}
-.hero-text{max-width:500px;flex:1;min-width:250px}
-.hero-text h1{font-size:82px;line-height:0.9;margin-bottom:25px;font-weight:900}
-.hero-text span{color:#00ff66;text-shadow:0 0 30px #00ff66}
-.hero-text p{font-size:20px;color:#d6d6d6;line-height:1.7;margin-bottom:35px;font-weight:400}
-.buttons{display:flex;gap:20px;flex-wrap:wrap}
-.btn{padding:16px 34px;border-radius:50px;text-decoration:none;font-weight:700;transition:0.3s;cursor:pointer;border:none;font-size:15px}
-.buy{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,102,0.7)}
-.buy:hover{transform:scale(1.08);box-shadow:0 0 30px rgba(0,255,102,1)}
-.whitepaper{border:2px solid #00ff66;color:#00ff66;background:transparent;box-shadow:0 0 10px rgba(0,255,102,0.3)}
-.whitepaper:hover{background:#00ff66;color:black;box-shadow:0 0 20px rgba(0,255,102,1);transform:scale(1.05)}
-.hero-image{flex:1;min-width:250px;display:flex;justify-content:center;align-items:center}
-.hero-image img{width:100%;max-width:400px;border-radius:30px;border:5px solid #00ff66;box-shadow:0 0 40px rgba(0,255,100,0.7);animation:float 4s ease-in-out infinite;object-fit:cover}
-@keyframes float{0%{transform:translateY(0);}50%{transform:translateY(-15px);}100%{transform:translateY(0);}}
-.presale{padding:120px 40px;text-align:center}
-.presale h2{font-size:60px;margin-bottom:20px;color:#78ff7a;font-weight:900}
-.goal{font-size:24px;margin-bottom:40px;color:#ccc;font-weight:600}
-.address-tabs{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
-.address-tab{padding:12px 24px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:50px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font-si[...]
-.address-tab.active{background:#00ff66;color:black;box-shadow:0 0 15px rgba(0,255,102,0.8)}
-.address-tab:hover{transform:scale(1.05)}
-.wallet-address{font-size:18px;color:#c6ffc5;line-height:1.7;margin:0 auto 30px;max-width:900px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
-.wallet-address strong{color:#78ff7a;word-break:break-all}
-.wallet-address-label{color:#999;font-size:13px;display:block;width:100%;margin-bottom:10px}
-.copy-btn{background:rgba(255,255,255,0.08);color:#fff;border:1px solid #00ff66;border-radius:999px;padding:12px 20px;cursor:pointer;transition:0.3s;font-weight:700;font-size:14px}
-.copy-btn:hover{background:#00ff66;color:#000;box-shadow:0 0 15px rgba(0,255,102,0.8)}
-.copy-btn.copied{background:#78ff7a;color:#000;border-color:#78ff7a}
-.progress-container{width:80%;max-width:900px;margin:auto;background:#1a1a1a;border-radius:50px;overflow:hidden;border:2px solid #00ff66}
-.progress-bar{width:4.21%;height:50px;background:linear-gradient(90deg,#00ff66,#78ff7a);animation:loading 3s ease forwards;display:flex;align-items:center;justify-content:flex-end;padding-right:15px;c[...]
-@keyframes loading{from{width:0;}to{width:4.21%;}}
-.stats{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:50px}
-.stat-box{width:250px;padding:30px;background:rgba(255,255,255,0.05);border-radius:20px;border:1px solid rgba(255,255,255,0.1);transition:0.3s}
-.stat-box:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.4);border-color:#00ff66}
-.stat-box h3{color:#78ff7a;font-size:32px;margin-bottom:15px;font-weight:900}
-.stat-box p{color:#999;font-weight:600}
-.presale-avatar{width:80px;height:80px;border-radius:50%;border:3px solid #00ff66;box-shadow:0 0 20px rgba(0,255,100,0.5);margin:0 auto 20px;object-fit:cover}
-.tokenomics{padding:120px 50px;background:#09150d;text-align:center}
-.tokenomics h2{font-size:60px;margin-bottom:60px;color:#78ff7a;font-weight:900}
-.cards{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
-.card{width:300px;padding:35px;border-radius:25px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:0.3s}
-.card:hover{transform:translateY(-10px);box-shadow:0 0 25px rgba(0,255,100,0.3);border-color:#00ff66}
-.card h3{font-size:30px;color:#78ff7a;margin-bottom:15px;font-weight:900}
-.card p{color:#ddd;line-height:1.6;font-weight:500}
-.buy-stake{padding:120px 40px;text-align:center}
-.buy-stake h2{font-size:60px;margin-bottom:60px;color:#78ff7a;font-weight:900}
-.buy-stake-container{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;max-width:1200px;margin:auto}
-.buy-card{flex:1;min-width:350px;padding:40px;border-radius:25px;background:rgba(255,255,255,0.05);border:2px solid #00ff66;box-shadow:0 0 30px rgba(0,255,100,0.2)}
-.buy-card h3{font-size:32px;color:#78ff7a;margin-bottom:25px;font-weight:900}
-.form-group{margin-bottom:20px;text-align:left}
-.form-group label{display:block;color:#00ff66;font-size:14px;font-weight:700;margin-bottom:8px}
-.form-group input{width:100%;padding:12px 15px;border-radius:10px;border:1px solid #00ff66;background:rgba(0,255,100,0.1);color:white;font-family:'Orbitron',sans-serif;font-size:14px}
-.form-group input::placeholder{color:#666}
-.form-group input:focus{outline:none;box-shadow:0 0 15px rgba(0,255,100,0.5)}
-.currency-select{display:flex;gap:10px;margin-bottom:20px}
-.currency-btn{flex:1;padding:10px;border:2px solid #00ff66;background:transparent;color:#00ff66;border-radius:10px;cursor:pointer;font-weight:700;transition:0.3s;font-family:'Orbitron',sans-serif;font[...]
-.currency-btn.active{background:#00ff66;color:black}
-.currency-btn:hover{transform:scale(1.05)}
-.token-display{padding:15px;background:rgba(0,255,100,0.1);border:1px solid #00ff66;border-radius:10px;margin-bottom:12px;text-align:center}
-.token-display p{color:#00ff66;font-weight:700;font-size:16px}
-.token-display .amount{color:#78ff7a;font-size:24px;font-weight:900;margin-top:5px}
-.rate-display{margin-bottom:20px;padding:12px 15px;background:rgba(255,255,255,0.05);border:1px solid rgba(0,255,100,0.35);border-radius:10px;color:#c6ffc5;font-size:13px;line-height:1.6;text-align:le[...]
-.rate-display strong{color:#78ff7a}
-.buy-btn{width:100%;padding:14px;background:#00ff66;color:black;border:none;border-radius:10px;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;font-family:'Orbitron',sans-serif}
-.buy-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(0,255,102,0.8)}
-.buy-btn:disabled{opacity:0.6;cursor:not-allowed}
-.wallet-required-notice{padding:15px;background:rgba(255,165,0,0.2);border:1px solid #ffa500;border-radius:10px;margin-bottom:20px;font-size:13px;color:#ffa500;text-align:center;font-weight:600}
-.toast-message{position:fixed;bottom:20px;right:20px;background:#00ff66;color:black;padding:15px 25px;border-radius:10px;font-weight:700;z-index:2000;animation:slideIn 0.3s ease;max-width:360px}
-.toast-message.error{background:#ff6b6b;color:white}
-.toast-message.success{background:#00ff66;color:black}
-.toast-message.warning{background:#ffa500;color:black}
-.toast-message.info{background:#00ccff;color:black}
-@keyframes slideIn{from{transform:translateX(400px);opacity:0;}to{transform:translateX(0);opacity:1;}}
-.roadmap{padding:120px 50px;text-align:center}
-.roadmap h2{font-size:60px;color:#78ff7a;margin-bottom:60px;font-weight:900}
-.timeline{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
-.phase{width:280px;padding:30px;border-radius:25px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);transition:0.3s}
-.phase:hover{border-color:#00ff66;box-shadow:0 0 20px rgba(0,255,100,0.3)}
-.phase h3{color:#00ff66;margin-bottom:20px;font-weight:900}
-.phase p{color:#ccc;font-weight:500}
-footer{padding:50px;text-align:center;background:black;color:#777;border-top:1px solid rgba(0,255,102,0.2)}
-footer p{font-weight:500}
-.socials{margin-top:20px}
-.socials a{color:#78ff7a;margin:0 10px;text-decoration:none;transition:0.3s}
-.socials a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
-@media(max-width:1024px){header{padding:15px 30px}.logo{font-size:22px}.logo-icon{width:38px;height:38px}nav{gap:15px}nav a{font-size:12px}.hero{padding:120px 30px 60px;gap:40px}.hero-text h1{font-siz[...]
-/* ===== Responsive / cross-device optimization patch ===== */
+  <style>
+    :root{
+      --bg:#12051f;
+      --bg2:#220c39;
+      --lime:#7dff4d;
+      --pink:#ff4db8;
+      --cyan:#35d6ff;
+      --yellow:#ffe14d;
+      --white:#fdfdfd;
+      --card:#1f1133;
+      --card2:#2b1747;
+      --danger:#ff5f6d;
+      --ok:#64ff9b;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:22px;
+    }
 
-/* Safer defaults */
-img { max-width: 100%; height: auto; }
-button, a { -webkit-tap-highlight-color: transparent; }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--white);
+      background:
+        radial-gradient(circle at 10% 10%, #3f0f74 0%, transparent 30%),
+        radial-gradient(circle at 90% 0%, #6d0c52 0%, transparent 30%),
+        linear-gradient(160deg,var(--bg),var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
 
-/* Fix potentially broken header border if line got truncated */
-header {
-  border-bottom: 1px solid rgba(0, 255, 102, 0.2);
-}
+    .noise{
+      pointer-events:none;
+      position:fixed; inset:0; z-index:-1;
+      opacity:.08;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 100 100'%3E%3Ccircle cx='10' cy='15' r='1' fill='%23fff'/%3E%3Ccircle cx='35' cy='45' r='1' fill='%23fff'/%3E%3Ccircle cx='70' cy='20' r='1' fill='%23fff'/%3E%3Ccircle cx='85' cy='80' r='1' fill='%23fff'/%3E%3Ccircle cx='45' cy='85' r='1' fill='%23fff'/%3E%3C/svg%3E");
+    }
 
-/* Better text wrapping on small screens */
-.hero-text h1,
-.goal,
-.wallet-address,
-.stat-box p,
-.phase p {
-  overflow-wrap: anywhere;
-  word-break: break-word;
-}
+    .blob{
+      position:fixed; z-index:-2; filter:blur(60px); opacity:.35; border-radius:50%;
+      animation:float 8s ease-in-out infinite;
+    }
+    .blob.b1{width:320px;height:320px;background:var(--pink);left:-100px;top:100px;}
+    .blob.b2{width:280px;height:280px;background:var(--cyan);right:-90px;top:220px;animation-delay:1.2s}
+    .blob.b3{width:260px;height:260px;background:var(--lime);left:40%;bottom:-100px;animation-delay:2.1s}
 
-/* Progress readability */
-.progress-container {
-  width: min(92%, 900px);
-}
-.progress-bar {
-  min-width: 48px;
-  padding: 0 12px;
-  font-size: clamp(11px, 2.5vw, 14px);
-  justify-content: center;
-  text-align: center;
-  white-space: nowrap;
-}
+    @keyframes float{
+      0%,100%{transform:translateY(0) translateX(0)}
+      50%{transform:translateY(-18px) translateX(10px)}
+    }
+    @keyframes wiggle{
+      0%,100%{transform:rotate(0deg)}
+      25%{transform:rotate(-2deg)}
+      75%{transform:rotate(2deg)}
+    }
+    @keyframes pop{
+      0%{transform:scale(.9);opacity:0}
+      100%{transform:scale(1);opacity:1}
+    }
 
-/* Desktop polish */
-@media (min-width: 1200px) {
-  .hero { padding: 170px 80px 90px; }
-  .hero-text h1 { font-size: 88px; }
-  .hero-image img { max-width: 460px; }
-}
+    img{max-width:100%;height:auto}
+    a,button{-webkit-tap-highlight-color:transparent}
 
-/* Tablet */
-@media (max-width: 1024px) {
-  header {
-    padding: 14px 20px;
-    gap: 10px;
-  }
+    .container{width:min(1180px,92%);margin-inline:auto}
 
-  nav {
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
+    header{
+      position:fixed; top:0; left:0; right:0;
+      z-index:1000;
+      backdrop-filter: blur(10px);
+      background:rgba(16,7,32,.6);
+      border-bottom:2px solid rgba(255,255,255,.1);
+    }
+    .header-wrap{
+      height:78px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px; cursor:pointer;
+      font-family:'Bungee',cursive; letter-spacing:.8px; font-size:1.1rem;
+      color:var(--yellow);
+      text-shadow:0 2px 0 #000, 0 0 18px rgba(255,225,77,.35);
+    }
+    .logo-icon{
+      width:42px;height:42px;border-radius:50%;
+      display:grid;place-items:center;background:linear-gradient(140deg,var(--lime),#1b9f36);
+      border:2px solid #fff; box-shadow:0 4px 0 #000, 0 0 16px rgba(125,255,77,.35);
+      animation:wiggle 2.3s ease-in-out infinite;
+    }
+    .logo-icon img{width:26px;height:26px;object-fit:contain}
 
-  .hero {
-    padding: 120px 24px 60px;
-    gap: 28px;
-  }
+    nav{display:flex; align-items:center; gap:14px; position:relative; flex-wrap:wrap; justify-content:flex-end;}
+    nav a{
+      color:#fff; text-decoration:none; font-weight:800; font-size:.9rem;
+      padding:8px 12px; border-radius:999px;
+      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+      transition:.22s ease;
+    }
+    nav a:hover{transform:translateY(-1px); background:rgba(255,255,255,.15)}
 
-  .hero-title-section {
-    gap: 18px;
-    min-width: 0;
-  }
+    #wallet-btn{
+      border:none; cursor:pointer; font-weight:900;
+      color:#11051f; background:linear-gradient(120deg,var(--yellow),#ffb84d);
+      border-radius:999px; padding:10px 16px; display:flex; align-items:center; gap:8px;
+      box-shadow:0 6px 0 #000, 0 0 20px rgba(255,225,77,.35);
+      transition:.2s ease;
+    }
+    #wallet-btn:hover{transform:translateY(-1px)}
+    #wallet-btn.connected{background:linear-gradient(120deg,var(--ok),#58efcc)}
+    .wallet-indicator{
+      width:9px;height:9px;border-radius:50%;background:#0fa958;display:none;
+      box-shadow:0 0 0 5px rgba(15,169,88,.2);
+    }
+    #wallet-btn.connected .wallet-indicator{display:inline-block}
 
-  .hero-title-section img {
-    width: 110px;
-    height: 110px;
-  }
+    .wallet-menu{
+      position:absolute; top:100%; right:0; margin-top:10px; width:min(330px,90vw);
+      background:linear-gradient(160deg,#1b0f31,#120824);
+      border:2px solid rgba(125,255,77,.5);
+      border-radius:16px; padding:14px; display:none; box-shadow:var(--shadow);
+      animation:pop .22s ease;
+    }
+    .wallet-menu.active{display:block}
+    .wallet-status-label{display:block;font-size:.72rem;color:var(--ok);font-weight:900;letter-spacing:.08em;margin-bottom:8px}
+    .wallet-type-badge{
+      display:inline-block;font-size:.72rem;padding:4px 10px;border-radius:999px;
+      background:rgba(53,214,255,.18);border:1px solid rgba(53,214,255,.5);color:#9cefff;margin-bottom:10px
+    }
+    .wallet-menu-item{
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+      border-radius:12px;padding:10px;margin-bottom:10px;word-break:break-all;font-size:.84rem
+    }
+    .wallet-menu-item strong{display:block;font-size:.74rem;color:#b6ffd9;margin-bottom:4px}
+    .wallet-menu-item small{display:block;margin-top:4px;color:#b8b8c7;font-size:.72rem}
+    .disconnect-btn{
+      width:100%; border:none; cursor:pointer; border-radius:10px; padding:10px;
+      font-weight:800; color:#fff; background:linear-gradient(120deg,#ff6f7e,var(--danger));
+    }
 
-  .hero-text h1 {
-    font-size: clamp(42px, 8vw, 64px);
-    line-height: 1;
-  }
+    .modal-overlay{
+      display:none;position:fixed;inset:0;z-index:2000;
+      background:rgba(6,3,14,.75);align-items:center;justify-content:center;padding:16px;
+    }
+    .modal-overlay.active{display:flex}
+    .modal-content{
+      width:min(500px,100%);border-radius:20px;padding:26px;position:relative;
+      background:linear-gradient(160deg,#2a1650,#1b0f31);
+      border:2px solid rgba(255,255,255,.18);box-shadow:var(--shadow);animation:pop .25s ease;
+      text-align:center;
+    }
+    .modal-close{
+      position:absolute;right:14px;top:10px;border:none;background:none;color:#fff;
+      font-size:1.8rem;cursor:pointer
+    }
+    .wallet-selection-modal h2{
+      font-family:'Bungee',cursive;color:var(--yellow);font-size:1.6rem;margin-bottom:6px
+    }
+    .wallet-selection-modal p{color:#d6d6e8;font-size:.95rem;margin-bottom:18px}
+    .wallet-options{display:grid;gap:10px}
+    .wallet-option-btn{
+      border:none;cursor:pointer;border-radius:14px;padding:14px;font-weight:900;font-size:1rem;
+      background:linear-gradient(120deg,var(--lime),#56df89);color:#1b122f;box-shadow:0 6px 0 #000;
+    }
+    .wallet-option-divider{margin-top:12px;font-size:.76rem;color:#c4bdd8}
 
-  .hero-text p {
-    font-size: clamp(16px, 2.5vw, 20px);
-  }
+    section{padding:95px 0}
+    .hero{padding-top:140px}
+    .hero-grid{
+      display:grid; grid-template-columns:1.1fr .9fr; gap:26px; align-items:center;
+    }
+    .hero-card{
+      background:linear-gradient(160deg,#2e1654,#1a0e31);
+      border:2px solid rgba(255,255,255,.16);
+      border-radius:var(--radius);
+      padding:28px; box-shadow:var(--shadow);
+      position:relative; overflow:hidden;
+    }
+    .hero-card::after{
+      content:""; position:absolute; right:-50px; top:-50px; width:150px; height:150px;
+      background:radial-gradient(circle,var(--pink),transparent 70%); opacity:.45;
+    }
 
-  .presale, .tokenomics, .buy-stake, .roadmap {
-    padding: 90px 20px;
-  }
+    .hero-text h1{
+      font-family:'Bungee',cursive;
+      line-height:1.04;
+      font-size:clamp(2rem,5vw,3.4rem);
+      text-shadow:0 3px 0 #000;
+      margin-bottom:14px;
+    }
+    .hero-text h1 span{color:var(--lime)}
+    .hero-text p{font-size:1.05rem;line-height:1.6;color:#ececf8;margin-bottom:20px}
 
-  .cards, .timeline, .stats {
-    gap: 18px;
-  }
+    .buttons{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{
+      text-decoration:none; border:none; cursor:pointer; border-radius:999px;
+      padding:12px 18px; font-weight:900; font-size:.95rem; transition:.2s ease;
+      box-shadow:0 5px 0 #000;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .buy{background:linear-gradient(120deg,var(--lime),#4de68f);color:#1a1030}
+    .whitepaper{background:linear-gradient(120deg,var(--cyan),#87f0ff);color:#11203a}
 
-  .card, .phase, .stat-box {
-    width: min(100%, 320px);
-  }
-}
+    .hero-image{
+      background:linear-gradient(160deg,#2a1650,#180d2d);
+      border:2px solid rgba(255,255,255,.16);
+      border-radius:var(--radius);
+      padding:16px; box-shadow:var(--shadow);
+    }
+    .hero-image img{
+      width:100%; border-radius:16px; border:3px solid rgba(255,255,255,.22);
+      animation:float 4.2s ease-in-out infinite;
+    }
 
-/* Phones */
-@media (max-width: 640px) {
-  header {
-    padding: 10px 12px;
-    align-items: flex-start;
-  }
+    .title{
+      font-family:'Bungee',cursive;
+      text-align:center; font-size:clamp(1.9rem,4vw,3rem);
+      color:var(--yellow); margin-bottom:12px; text-shadow:0 2px 0 #000;
+    }
+    .subtitle{
+      text-align:center;color:#e5e5f6;opacity:.92;font-weight:700;
+      margin-bottom:24px;
+    }
 
-  .logo {
-    font-size: 18px;
-    gap: 8px;
-  }
+    .wallet-required-notice{
+      display:none;
+      margin:0 auto 14px;
+      width:min(700px,100%);
+      background:rgba(255,163,26,.17);
+      border:1px solid rgba(255,163,26,.55);
+      color:#ffd38f; border-radius:12px; padding:11px 14px;
+      text-align:center; font-weight:700; font-size:.92rem;
+    }
 
-  .logo-icon {
-    width: 30px;
-    height: 30px;
-  }
+    .address-tabs,.currency-select{
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+    }
+    .address-tab,.currency-btn{
+      border:2px solid rgba(125,255,77,.6); background:rgba(125,255,77,.08);
+      color:#bfff98; border-radius:999px; padding:9px 14px;
+      font-weight:900; cursor:pointer; transition:.2s;
+    }
+    .address-tab:hover,.currency-btn:hover{transform:translateY(-1px)}
+    .address-tab.active,.currency-btn.active{
+      background:linear-gradient(120deg,var(--lime),#4de68f); color:#1a1030; border-color:transparent;
+    }
 
-  .logo-icon img {
-    width: 20px;
-    height: 20px;
-  }
+    .wallet-address{
+      margin:18px auto 16px;
+      width:min(920px,100%);
+      display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+      border-radius:14px;padding:14px;
+    }
+    .wallet-address-label{width:100%;text-align:center;color:#c4bdd8;font-size:.82rem}
+    .wallet-address strong{font-size:.95rem;word-break:break-all;color:#cbffb8}
+    .copy-btn{
+      border:none;cursor:pointer;border-radius:999px;padding:10px 14px;
+      font-weight:900;background:linear-gradient(120deg,var(--pink),#ff7bc8);color:#210b25;
+    }
+    .copy-btn.copied{background:linear-gradient(120deg,var(--ok),#4de6b8)}
 
-  nav {
-    gap: 8px;
-  }
+    .progress-container{
+      width:min(920px,100%);height:52px;margin:10px auto 8px;
+      background:#140926; border:2px solid rgba(255,255,255,.18); border-radius:999px; overflow:hidden;
+    }
+    .progress-bar{
+      height:100%; width:0%; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(120deg,var(--lime),var(--cyan),var(--pink));
+      color:#15051f; font-weight:900; padding:0 12px; white-space:nowrap;
+      transition:width .5s ease;
+      min-width:56px;
+    }
+    .raised-text{text-align:center;color:#f4f4ff;font-weight:700}
 
-  nav a {
-    font-size: 12px;
-  }
+    .stats,.cards,.timeline{
+      margin-top:24px;
+      display:grid; gap:14px;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+    }
+    .stat-box,.card,.phase{
+      background:linear-gradient(160deg,#271343,#1a0d2f);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:18px; padding:18px; text-align:center; box-shadow:var(--shadow);
+      transition:.2s ease;
+    }
+    .stat-box:hover,.card:hover,.phase:hover{transform:translateY(-3px)}
+    .stat-box h3,.card h3,.phase h3{
+      font-family:'Bungee',cursive; font-size:1.4rem; color:var(--lime); margin-bottom:8px
+    }
+    .stat-box p,.card p,.phase p{color:#e8e8fb;font-weight:600;line-height:1.5}
+    .presale-avatar{
+      width:86px;height:86px;border-radius:50%;display:block;margin:0 auto 14px;
+      border:3px solid var(--yellow); box-shadow:0 0 0 8px rgba(255,225,77,.16);
+      object-fit:cover;
+    }
 
-  #wallet-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
+    .buy-stake-container{display:flex;justify-content:center}
+    .buy-card{
+      width:min(760px,100%);
+      background:linear-gradient(160deg,#2b1747,#1a0d2f);
+      border:2px solid rgba(125,255,77,.5);
+      border-radius:22px; padding:22px; box-shadow:var(--shadow);
+    }
+    .buy-card h3{
+      font-family:'Bungee',cursive;color:var(--yellow);text-align:center;margin-bottom:14px
+    }
+    .form-group{margin-bottom:12px}
+    .form-group label{display:block;color:#c9ffc2;font-weight:800;margin-bottom:6px;font-size:.88rem}
+    .form-group input{
+      width:100%;border:1px solid rgba(255,255,255,.2);border-radius:10px;
+      background:rgba(255,255,255,.08);color:#fff;padding:12px 13px;font-weight:700;font-size:.95rem
+    }
+    .form-group input::placeholder{color:#bfbad2}
+    .form-group input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(53,214,255,.18)}
 
-  .hero {
-    padding: 100px 12px 40px;
-  }
+    .token-display,.rate-display{
+      margin-top:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+      border-radius:12px;padding:12px;
+    }
+    .token-display p{color:#d3ffc9;font-weight:800;text-align:center}
+    .token-display .amount{
+      text-align:center;font-family:'Bungee',cursive;color:var(--lime);
+      font-size:1.45rem;margin-top:4px
+    }
+    .rate-display{font-size:.88rem;line-height:1.55;color:#e8e8fb}
+    .rate-display strong{color:#beff86}
 
-  .hero-title-section {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .buy-btn{
+      margin-top:12px;width:100%;border:none;border-radius:12px;padding:12px 14px;
+      font-weight:900;font-size:1rem;cursor:pointer;color:#160a24;
+      background:linear-gradient(120deg,var(--lime),#4de68f);
+      box-shadow:0 5px 0 #000;
+    }
+    .buy-btn:disabled{opacity:.65;cursor:not-allowed}
 
-  .hero-title-section img {
-    width: 90px;
-    height: 90px;
-  }
+    footer{
+      margin-top:20px;
+      padding:26px 0;
+      border-top:2px solid rgba(255,255,255,.1);
+      background:rgba(7,3,16,.55);text-align:center
+    }
+    footer p{color:#d9d6ea;font-weight:700}
+    .socials{margin-top:10px}
+    .socials a{
+      color:#fff;text-decoration:none;font-weight:800;margin:0 8px;display:inline-block;
+      padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16)
+    }
 
-  .hero-text h1 {
-    font-size: clamp(32px, 12vw, 44px);
-  }
+    .toast-message{
+      position:fixed; right:16px; bottom:16px; z-index:3000;
+      padding:12px 16px; border-radius:10px; font-weight:800;
+      box-shadow:var(--shadow); max-width:360px; animation:pop .2s ease;
+    }
+    .toast-message.success{background:linear-gradient(120deg,#9dff70,#54df94);color:#112716}
+    .toast-message.error{background:linear-gradient(120deg,#ff7c88,#ff5f6d);color:#fff}
+    .toast-message.warning{background:linear-gradient(120deg,#ffd36f,#ffb84d);color:#321f00}
+    .toast-message.info{background:linear-gradient(120deg,#7adfff,#48cfff);color:#06253a}
 
-  .hero-text p {
-    font-size: 15px;
-    line-height: 1.5;
-  }
+    @media (max-width: 1024px){
+      .header-wrap{height:auto;padding:10px 0}
+      .hero-grid{grid-template-columns:1fr}
+      .stats,.cards,.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
 
-  .buttons {
-    width: 100%;
-    gap: 10px;
-  }
-
-  .btn {
-    width: 100%;
-    text-align: center;
-    padding: 13px 16px;
-    font-size: 14px;
-  }
-
-  .presale h2, .tokenomics h2, .buy-stake h2, .roadmap h2 {
-    font-size: clamp(30px, 10vw, 42px);
-    margin-bottom: 24px;
-  }
-
-  .goal {
-    font-size: 17px;
-  }
-
-  .wallet-address {
-    font-size: 14px;
-    gap: 10px;
-  }
-
-  .copy-btn {
-    width: 100%;
-    max-width: 220px;
-  }
-
-  .progress-bar {
-    height: 44px;
-    font-size: 11px;
-  }
-
-  .buy-card {
-    min-width: 100%;
-    padding: 20px;
-  }
-
-  .currency-select {
-    flex-wrap: wrap;
-  }
-
-  .currency-btn {
-    min-width: calc(50% - 6px);
-  }
-
-  footer {
-    padding: 28px 14px;
-  }
-
-  .socials a {
-    display: inline-block;
-    margin: 6px 8px;
-  }
-}
-</style>
+    @media (max-width: 640px){
+      .container{width:94%}
+      nav a{font-size:.78rem;padding:7px 10px}
+      #wallet-btn{font-size:.78rem;padding:8px 12px}
+      .hero{padding-top:118px}
+      .hero-card,.hero-image,.buy-card{padding:16px}
+      .btn{width:100%;text-align:center}
+      .stats,.cards,.timeline{grid-template-columns:1fr}
+      .progress-bar{font-size:.72rem}
+      .wallet-address strong{font-size:.82rem}
+      .socials a{margin:4px}
+    }
+  </style>
 </head>
 <body>
+  <div class="noise"></div>
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 
-<div class="bg"></div>
-<div class="glow"></div>
-
-<header>
-    <div class="logo">
+  <header>
+    <div class="container header-wrap">
+      <div class="logo">
         <div class="logo-icon"><img src="pepe-icon.png" alt="pepe"></div>
         The Last Pepe
-    </div>
-    <nav>
+      </div>
+
+      <nav>
         <a href="#presale">Presale</a>
         <a href="#tokenomics">Tokenomics</a>
         <a href="#roadmap">Roadmap</a>
+
         <button id="wallet-btn">
-            <span class="wallet-indicator"></span>
-            <span id="btn-text">Connect Wallet</span>
+          <span class="wallet-indicator"></span>
+          <span id="btn-text">Connect Wallet</span>
         </button>
 
         <div class="wallet-menu" id="wallet-menu">
-            <span class="wallet-status-label">✓ Connected</span>
-            <div class="wallet-type-badge" id="wallet-type-badge"></div>
-            <div class="wallet-menu-item">
-                <strong>Wallet Address</strong>
-                <span id="wallet-address-display">Connecting...</span>
-                <small id="wallet-network">Ethereum Mainnet</small>
-            </div>
-            <button class="disconnect-btn" id="disconnect">Disconnect</button>
+          <span class="wallet-status-label">✓ Connected</span>
+          <div class="wallet-type-badge" id="wallet-type-badge"></div>
+          <div class="wallet-menu-item">
+            <strong>Wallet Address</strong>
+            <span id="wallet-address-display">Connecting...</span>
+            <small id="wallet-network">Ethereum Mainnet</small>
+          </div>
+          <button class="disconnect-btn" id="disconnect">Disconnect</button>
         </div>
-    </nav>
-</header>
+      </nav>
+    </div>
+  </header>
 
-<div class="modal-overlay" id="wallet-modal">
+  <div class="modal-overlay" id="wallet-modal">
     <div class="modal-content wallet-selection-modal">
-        <button class="modal-close" id="close-modal">&times;</button>
-        <h2>Select Wallet</h2>
-        <p>Choose your wallet to connect and start buying LASTPEPE tokens</p>
-        <div class="wallet-options">
-            <button class="wallet-option-btn" id="connect-metamask">MetaMask</button>
-            <button class="wallet-option-btn" id="connect-phantom">Phantom</button>
-        </div>
-        <div class="wallet-option-divider">Don't have a wallet? Install from the browser extension store</div>
+      <button class="modal-close" id="close-modal">&times;</button>
+      <h2>Select Wallet</h2>
+      <p>Choose your wallet to connect and start buying LASTPEPE tokens</p>
+      <div class="wallet-options">
+        <button class="wallet-option-btn" id="connect-metamask">MetaMask</button>
+        <button class="wallet-option-btn" id="connect-phantom">Phantom</button>
+      </div>
+      <div class="wallet-option-divider">Don't have a wallet? Install from the browser extension store</div>
     </div>
-</div>
+  </div>
 
-<section class="hero">
-   <div class="hero-title-section">
-    <div class="hero-text">
-            <h1>LASTPEPE <span>Official Memecoin</span></h1>
-            <p>Join the presale and secure your LASTPEPE tokens before launch. Simple, fast, and on-chain.</p>
-            <div class="buttons">
-                <a class="btn buy" href="#presale">Buy Presale</a>
-                <a class="btn whitepaper" href="LASTPEPE_Whitepaper.pdf" target="_blank" download>Whitepaper</a>
-            </div>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-card hero-text">
+        <h1>LASTPEPE <span>Official Memecoin</span></h1>
+        <p>Join the presale and secure your LASTPEPE tokens before launch. Simple, fast, and on-chain.</p>
+        <div class="buttons">
+          <a class="btn buy" href="#presale">Buy Presale</a>
+          <a class="btn whitepaper" href="LASTPEPE_Whitepaper.pdf" target="_blank" download>Whitepaper</a>
         </div>
-    </div>
-    <div class="hero-image">
+      </div>
+
+      <div class="hero-image">
         <img src="pepe-avatar.png" alt="pepe avatar">
+      </div>
     </div>
-</section>
+  </section>
 
-<section id="presale" class="presale">
-    <img src="pepe-avatar.png" alt="pepe avatar" class="presale-avatar">
-    <h2>Presale</h2>
-    <p class="goal">Raise goal: <strong>$3,000,000</strong></p>
+  <section id="presale">
+    <div class="container">
+      <img src="pepe-avatar.png" alt="pepe avatar" class="presale-avatar">
+      <h2 class="title">Presale</h2>
+      <p class="subtitle">Raise goal: <strong>$3,000,000</strong></p>
 
-    <div class="wallet-required-notice" id="wallet-notice" style="display: none;">
+      <div class="wallet-required-notice" id="wallet-notice" style="display:none;">
         ⚠️ Please connect your wallet to proceed with purchase
-    </div>
+      </div>
 
-    <div class="address-tabs">
+      <div class="address-tabs">
         <button class="address-tab active" data-currency="ETH">ETH</button>
         <button class="address-tab" data-currency="USDT">USDT</button>
         <button class="address-tab" data-currency="USDC">USDC</button>
         <button class="address-tab" data-currency="SOL">SOL</button>
-    </div>
+      </div>
 
-    <div class="wallet-address">
+      <div class="wallet-address">
         <span class="wallet-address-label" id="address-label">ETH Wallet Address:</span>
         <strong id="sale-address">0xb955813a677095eF6E077584007b9b56e9639b31</strong>
         <button class="copy-btn" id="copy-address">Copy</button>
-    </div>
+      </div>
 
-    <div class="progress-container" id="progress-container">
+      <div class="progress-container" id="progress-container">
         <div class="progress-bar" id="progress-bar"></div>
-    </div>
-    <p id="raised-text" class="raised-text">Total raised: $126,325 / $3,000,000</p>
+      </div>
+      <p id="raised-text" class="raised-text">Total raised: $126,325 / $3,000,000</p>
 
-    <div class="stats">
+      <div class="stats">
         <div class="stat-box">
-            <h3>Price</h3>
-            <p>1 LASTPEPE = $0.003</p>
+          <h3>Price</h3>
+          <p>1 LASTPEPE = $0.003</p>
         </div>
         <div class="stat-box">
-            <h3>Supply</h3>
-            <p>1,000,000,000 Tokens</p>
+          <h3>Supply</h3>
+          <p>1,000,000,000 Tokens</p>
         </div>
         <div class="stat-box">
-            <h3>Participants</h3>
-            <p>1.258+ Members</p>
+          <h3>Participants</h3>
+          <p>1.258+ Members</p>
         </div>
+        <div class="stat-box">
+          <h3>Status</h3>
+          <p>ETH purchases live</p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="buy-stake">
-    <h2>Buy LASTPEPE Tokens</h2>
-    <div class="buy-stake-container">
+  <section class="buy-stake">
+    <div class="container">
+      <h2 class="title">Buy LASTPEPE Tokens</h2>
+      <div class="buy-stake-container">
         <div class="buy-card">
-            <h3>💰 Buy Tokens</h3>
-            
-            <div class="wallet-required-notice" id="buy-wallet-notice" style="display: none;">
-                ⚠️ Connect wallet to buy
-            </div>
+          <h3>💰 Buy Tokens</h3>
 
-            <div class="form-group">
-                <label>Amount to Spend</label>
-                <input type="number" id="spend-amount" placeholder="Enter amount in ETH/USDT/USDC/SOL" min="0" step="0.01">
-            </div>
+          <div class="wallet-required-notice" id="buy-wallet-notice" style="display:none;">
+            ⚠️ Connect wallet to buy
+          </div>
 
-            <div class="currency-select">
-                <button class="currency-btn active" data-currency="ETH">ETH</button>
-                <button class="currency-btn" data-currency="USDT">USDT</button>
-                <button class="currency-btn" data-currency="USDC">USDC</button>
-                <button class="currency-btn" data-currency="SOL">SOL</button>
-            </div>
+          <div class="form-group">
+            <label>Amount to Spend</label>
+            <input type="number" id="spend-amount" placeholder="Enter amount in ETH/USDT/USDC/SOL" min="0" step="0.01">
+          </div>
 
-            <div class="token-display">
-                <p>LASTPEPE You'll Receive</p>
-                <div class="amount" id="token-amount">0</div>
-            </div>
+          <div class="currency-select">
+            <button class="currency-btn active" data-currency="ETH">ETH</button>
+            <button class="currency-btn" data-currency="USDT">USDT</button>
+            <button class="currency-btn" data-currency="USDC">USDC</button>
+            <button class="currency-btn" data-currency="SOL">SOL</button>
+          </div>
 
-            <div class="rate-display" id="rate-display">
-                <div><strong>Current rate:</strong> Loading live prices...</div>
-                <div id="rate-updated-at">Calculating using today's market price.</div>
-            </div>
+          <div class="token-display">
+            <p>LASTPEPE You'll Receive</p>
+            <div class="amount" id="token-amount">0</div>
+          </div>
 
-            <button class="buy-btn" id="buy-btn" disabled>Connect Wallet to Buy</button>
+          <div class="rate-display" id="rate-display">
+            <div><strong>Current rate:</strong> Loading live prices...</div>
+            <div id="rate-updated-at">Calculating using today's market price.</div>
+          </div>
+
+          <button class="buy-btn" id="buy-btn" disabled>Connect Wallet to Buy</button>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section id="tokenomics" class="tokenomics">
-    <h2>Tokenomics</h2>
-    <div class="cards">
+  <section id="tokenomics">
+    <div class="container">
+      <h2 class="title">Tokenomics</h2>
+      <div class="cards">
         <div class="card">
-            <h3>50%</h3>
-            <p>Community & Presale</p>
+          <h3>50%</h3>
+          <p>Community & Presale</p>
         </div>
         <div class="card">
-            <h3>20%</h3>
-            <p>Liquidity Pool</p>
+          <h3>20%</h3>
+          <p>Liquidity Pool</p>
         </div>
         <div class="card">
-            <h3>15%</h3>
-            <p>Team & Development</p>
+          <h3>15%</h3>
+          <p>Team & Development</p>
         </div>
         <div class="card">
-            <h3>15%</h3>
-            <p>Marketing & Ecosystem</p>
+          <h3>15%</h3>
+          <p>Marketing & Ecosystem</p>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="roadmap" id="roadmap">
-    <h2>Roadmap</h2>
-    <div class="timeline">
+  <section id="roadmap">
+    <div class="container">
+      <h2 class="title">Roadmap</h2>
+      <div class="timeline">
         <div class="phase">
-            <h3>Phase 1</h3>
-            <p>Token Launch & Presale (Q1 2027)</p>
+          <h3>Phase 1</h3>
+          <p>Token Launch & Presale (Q1 2027)</p>
         </div>
         <div class="phase">
-            <h3>Phase 2</h3>
-            <p>DEX Listing & Community Growth (Q2 2027)</p>
+          <h3>Phase 2</h3>
+          <p>DEX Listing & Community Growth (Q2 2027)</p>
         </div>
         <div class="phase">
-            <h3>Phase 3</h3>
-            <p>Major Exchange Listings (Q3 2027)</p>
+          <h3>Phase 3</h3>
+          <p>Major Exchange Listings (Q3 2027)</p>
         </div>
         <div class="phase">
-            <h3>Phase 4</h3>
-            <p>Ecosystem Expansion (Q4 2028+)</p>
+          <h3>Phase 4</h3>
+          <p>Ecosystem Expansion (Q4 2028+)</p>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<footer>
-    <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
-    <div class="socials">
-    <a href="https://x.com/thelastpepe01?s=21&t=jT0tiPpHUwYYDNfavfZgCA" target="_blank" rel="noopener noreferrer">Twitter/X</a>
-    <a href="https://www.instagram.com/thelastpepe01?igsh=N2FvZXo3eTJvdTg1&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
-    <a href="https://discord.com" target="_blank" rel="noopener noreferrer">Discord</a>
-    <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">Telegram</a>
-</div>
-</footer>
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 The Last Pepe. All rights reserved.</p>
+      <div class="socials">
+        <a href="https://x.com/thelastpepe01?s=21&t=jT0tiPpHUwYYDNfavfZgCA" target="_blank" rel="noopener noreferrer">Twitter/X</a>
+        <a href="https://www.instagram.com/thelastpepe01?igsh=N2FvZXo3eTJvdTg1&utm_source=qr" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://discord.com" target="_blank" rel="noopener noreferrer">Discord</a>
+        <a href="https://telegram.org" target="_blank" rel="noopener noreferrer">Telegram</a>
+      </div>
+    </div>
+  </footer>
 
-<script>
-const $ = id => document.getElementById(id);
-const walletBtn = $('wallet-btn');
-const walletMenu = $('wallet-menu');
-const walletModal = $('wallet-modal');
-const disconnectBtn = $('disconnect');
-const addressTabs = document.querySelectorAll('.address-tab');
-const copyBtn = $('copy-address');
-const saleAddress = $('sale-address');
-const addressLabel = $('address-label');
-const walletAddressDisplay = $('wallet-address-display');
-const walletNetwork = $('wallet-network');
-const walletTypeBadge = $('wallet-type-badge');
-const btnText = $('btn-text');
-const closeModal = $('close-modal');
-const connectMetaMaskBtn = $('connect-metamask');
-const connectPhantomBtn = $('connect-phantom');
-const buyBtn = $('buy-btn');
-const spendAmount = $('spend-amount');
-const tokenAmount = $('token-amount');
-const currencyBtns = document.querySelectorAll('.currency-btn');
-const walletNotice = $('wallet-notice');
-const buyWalletNotice = $('buy-wallet-notice');
-const rateDisplay = $('rate-display');
-const progressContainer = $('progress-container');
+  <script>
+    const $ = id => document.getElementById(id);
+    const walletBtn = $('wallet-btn');
+    const walletMenu = $('wallet-menu');
+    const walletModal = $('wallet-modal');
+    const disconnectBtn = $('disconnect');
+    const addressTabs = document.querySelectorAll('.address-tab');
+    const copyBtn = $('copy-address');
+    const saleAddress = $('sale-address');
+    const addressLabel = $('address-label');
+    const walletAddressDisplay = $('wallet-address-display');
+    const walletNetwork = $('wallet-network');
+    const walletTypeBadge = $('wallet-type-badge');
+    const btnText = $('btn-text');
+    const closeModal = $('close-modal');
+    const connectMetaMaskBtn = $('connect-metamask');
+    const connectPhantomBtn = $('connect-phantom');
+    const buyBtn = $('buy-btn');
+    const spendAmount = $('spend-amount');
+    const tokenAmount = $('token-amount');
+    const currencyBtns = document.querySelectorAll('.currency-btn');
+    const walletNotice = $('wallet-notice');
+    const buyWalletNotice = $('buy-wallet-notice');
+    const rateDisplay = $('rate-display');
+    const progressContainer = $('progress-container');
 
-let connectedWallet = null;
-let walletType = null;
-let userAddress = null;
-let selectedCurrency = 'ETH';
+    let connectedWallet = null;
+    let walletType = null;
+    let userAddress = null;
+    let selectedCurrency = 'ETH';
 
-const TOKEN_PRICE_USD = 0.003;
-const RAISE_GOAL = 3000000;
-let collectedAmount = 126325;
+    const TOKEN_PRICE_USD = 0.003;
+    const RAISE_GOAL = 3000000;
+    let collectedAmount = 126325;
 
-const PAYMENT_ADDRESSES = {
-    ETH: '0xb955813a677095eF6E077584007b9b56e9639b31',
-    USDT: '0xb955813a677095eF6E077584007b9b56e9639b31',
-    USDC: '0xb955813a677095eF6E077584007b9b56e9639b31',
-    SOL: '8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue'
-};
+    const PAYMENT_ADDRESSES = {
+      ETH: '0xb955813a677095eF6E077584007b9b56e9639b31',
+      USDT: '0xb955813a677095eF6E077584007b9b56e9639b31',
+      USDC: '0xb955813a677095eF6E077584007b9b56e9639b31',
+      SOL: '8ZythTksFNm8HKexryS9DceDHcSkkkNbBKHCJAi3HNue'
+    };
 
-const PRICE_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,solana&vs_currencies=usd&include_last_updated_at=true';
-const stablecoinUsdRates = { USDT: 1, USDC: 1 };
-let liveRates = { ETH: null, USDT: 1, USDC: 1, SOL: null };
-let lastPriceTimestamp = null;
+    const PRICE_API_URL = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum,solana&vs_currencies=usd&include_last_updated_at=true';
+    const stablecoinUsdRates = { USDT: 1, USDC: 1 };
+    let liveRates = { ETH: null, USDT: 1, USDC: 1, SOL: null };
+    let lastPriceTimestamp = null;
 
-function formatUsd(value) {
-    return '$' + Number(value).toLocaleString('en-US');
-}
-
-function updateProgressBar() {
-    const progressBar = $('progress-bar');
-    const raisedText = $('raised-text');
-    if (!progressBar) return;
-
-    const percent = Math.min((collectedAmount / RAISE_GOAL) * 100, 100);
-    const text = `${formatUsd(collectedAmount)} / ${formatUsd(RAISE_GOAL)}`;
-
-    progressBar.style.width = `${percent}%`;
-    progressBar.textContent = text;
-
-    if (raisedText) {
-        raisedText.textContent = `Total raised: ${text}`;
+    function formatUsd(value){
+      return '$' + Number(value).toLocaleString('en-US');
     }
-}
 
-if (progressContainer) {
-    progressContainer.addEventListener('click', () => {
+    function updateProgressBar(){
+      const progressBar = $('progress-bar');
+      const raisedText = $('raised-text');
+      if (!progressBar) return;
+
+      const percent = Math.min((collectedAmount / RAISE_GOAL) * 100, 100);
+      const text = `${formatUsd(collectedAmount)} / ${formatUsd(RAISE_GOAL)}`;
+
+      progressBar.style.width = `${percent}%`;
+      progressBar.textContent = text;
+      if (raisedText) raisedText.textContent = `Total raised: ${text}`;
+    }
+
+    if (progressContainer){
+      progressContainer.addEventListener('click', () => {
         showToast(`${formatUsd(collectedAmount)} collected so far`, 'info');
-    });
-}
-
-closeModal.addEventListener('click', () => {
-    walletModal.classList.remove('active');
-});
-
-walletBtn.addEventListener('click', () => {
-    if (connectedWallet) {
-        walletMenu.classList.toggle('active');
-    } else {
-        walletModal.classList.add('active');
+      });
     }
-});
 
-connectMetaMaskBtn.addEventListener('click', async () => {
-    await connectWallet('MetaMask');
-});
+    closeModal.addEventListener('click', () => walletModal.classList.remove('active'));
 
-// Phantom intentionally disabled for now (ETH-only flow)
-if (connectPhantomBtn) {
-    connectPhantomBtn.style.display = 'none';
-    connectPhantomBtn.addEventListener('click', async () => {
-        showToast('Phantom is currently disabled. Please use MetaMask for ETH purchases.', 'warning');
+    walletBtn.addEventListener('click', () => {
+      if (connectedWallet) walletMenu.classList.toggle('active');
+      else walletModal.classList.add('active');
     });
-}
 
-async function connectWallet(type) {
-    try {
-        if (type === 'MetaMask') {
-            if (!window.ethereum?.isMetaMask) {
-                showToast('MetaMask not installed. Please install it from the browser extension store.', 'warning');
-                return;
-            }
+    connectMetaMaskBtn.addEventListener('click', async () => {
+      await connectWallet('MetaMask');
+    });
 
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            userAddress = accounts[0];
-            connectedWallet = 'MetaMask';
-            walletType = 'MetaMask';
+    if (connectPhantomBtn){
+      connectPhantomBtn.style.display = 'none';
+      connectPhantomBtn.addEventListener('click', async () => {
+        showToast('Phantom is currently disabled. Please use MetaMask for ETH purchases.', 'warning');
+      });
+    }
 
-            window.ethereum.on('accountsChanged', (accounts) => {
-                if (accounts.length === 0) {
-                    disconnectWallet();
-                } else {
-                    userAddress = accounts[0];
-                    updateWalletDisplay();
-                }
-            });
-
-            window.ethereum.on('chainChanged', (chainId) => {
-                walletNetwork.textContent = getNetworkName(chainId);
-            });
-
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            walletNetwork.textContent = getNetworkName(chainId);
-        } else {
-            showToast('Only MetaMask is supported right now.', 'warning');
+    async function connectWallet(type){
+      try{
+        if (type === 'MetaMask'){
+          if (!window.ethereum?.isMetaMask){
+            showToast('MetaMask not installed. Please install it from the browser extension store.', 'warning');
             return;
+          }
+
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          userAddress = accounts[0];
+          connectedWallet = 'MetaMask';
+          walletType = 'MetaMask';
+
+          window.ethereum.on('accountsChanged', (accounts) => {
+            if (accounts.length === 0) disconnectWallet();
+            else{
+              userAddress = accounts[0];
+              updateWalletDisplay();
+            }
+          });
+
+          window.ethereum.on('chainChanged', (chainId) => {
+            walletNetwork.textContent = getNetworkName(chainId);
+          });
+
+          const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+          walletNetwork.textContent = getNetworkName(chainId);
+        } else {
+          showToast('Only MetaMask is supported right now.', 'warning');
+          return;
         }
 
         updateWalletDisplay();
         walletModal.classList.remove('active');
         showToast(`${type} wallet connected successfully!`, 'success');
-    } catch (error) {
-        if (error.code !== 4001) {
-            console.error('Error connecting wallet:', error);
-            showToast('Failed to connect wallet', 'error');
+      } catch(error){
+        if (error.code !== 4001){
+          console.error('Error connecting wallet:', error);
+          showToast('Failed to connect wallet', 'error');
         }
+      }
     }
-}
 
-function getNetworkName(chainId) {
-    const networks = {
-        '0x1': 'Ethereum Mainnet',
-        '0x5': 'Goerli Testnet',
-        '0xaa36a7': 'Sepolia Testnet',
-        '0x11155111': 'Sepolia Testnet',
-        '0x38': 'Binance Smart Chain',
-        '0x89': 'Polygon Mainnet'
-    };
-    return networks[chainId] || 'Unknown Network';
-}
-
-function getEtherscanBaseUrl(chainIdHex) {
-    const map = {
-        '0x1': 'https://etherscan.io',
-        '0x5': 'https://goerli.etherscan.io',
-        '0xaa36a7': 'https://sepolia.etherscan.io',
-        '0x89': 'https://polygonscan.com',
-        '0x13881': 'https://mumbai.polygonscan.com',
-        '0x38': 'https://bscscan.com',
-        '0x61': 'https://testnet.bscscan.com'
-    };
-    return map[chainIdHex] || 'https://etherscan.io';
-}
-
-function ensureMetaMaskForEthBuy() {
-    if (!connectedWallet || walletType !== 'MetaMask') {
-        throw new Error('ETH purchases require a connected MetaMask wallet.');
+    function getNetworkName(chainId){
+      const networks = {
+        '0x1':'Ethereum Mainnet',
+        '0x5':'Goerli Testnet',
+        '0xaa36a7':'Sepolia Testnet',
+        '0x11155111':'Sepolia Testnet',
+        '0x38':'Binance Smart Chain',
+        '0x89':'Polygon Mainnet'
+      };
+      return networks[chainId] || 'Unknown Network';
     }
-    if (!window.ethereum?.isMetaMask) {
-        throw new Error('MetaMask extension not detected.');
+
+    function getEtherscanBaseUrl(chainIdHex){
+      const map = {
+        '0x1':'https://etherscan.io',
+        '0x5':'https://goerli.etherscan.io',
+        '0xaa36a7':'https://sepolia.etherscan.io',
+        '0x89':'https://polygonscan.com',
+        '0x13881':'https://mumbai.polygonscan.com',
+        '0x38':'https://bscscan.com',
+        '0x61':'https://testnet.bscscan.com'
+      };
+      return map[chainIdHex] || 'https://etherscan.io';
     }
-}
 
-async function sendEthPayment(amountEth) {
-    ensureMetaMaskForEthBuy();
+    function ensureMetaMaskForEthBuy(){
+      if (!connectedWallet || walletType !== 'MetaMask') throw new Error('ETH purchases require a connected MetaMask wallet.');
+      if (!window.ethereum?.isMetaMask) throw new Error('MetaMask extension not detected.');
+    }
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const from = await signer.getAddress();
-    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    async function sendEthPayment(amountEth){
+      ensureMetaMaskForEthBuy();
 
-    const valueWei = ethers.utils.parseEther(String(amountEth));
-    const txRequest = {
-        from,
-        to: PAYMENT_ADDRESSES.ETH,
-        value: ethers.utils.hexValue(valueWei)
-    };
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const from = await signer.getAddress();
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
 
-    const txHash = await window.ethereum.request({
+      const valueWei = ethers.utils.parseEther(String(amountEth));
+      const txRequest = { from, to: PAYMENT_ADDRESSES.ETH, value: ethers.utils.hexValue(valueWei) };
+
+      const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [txRequest]
-    });
+      });
 
-    showToast(`Transaction sent: ${txHash.slice(0, 10)}...`, 'info');
+      showToast(`Transaction sent: ${txHash.slice(0,10)}...`, 'info');
 
-    const receipt = await provider.waitForTransaction(txHash, 1);
-    if (!receipt || receipt.status !== 1) {
-        throw new Error('Transaction failed on-chain.');
-    }
+      const receipt = await provider.waitForTransaction(txHash, 1);
+      if (!receipt || receipt.status !== 1) throw new Error('Transaction failed on-chain.');
 
-    return {
+      return {
         txHash,
         chainId,
         receipt,
         explorerUrl: `${getEtherscanBaseUrl(chainId)}/tx/${txHash}`
-    };
-}
+      };
+    }
 
-function updateWalletDisplay() {
-    walletBtn.classList.add('connected');
-    btnText.textContent = `${userAddress.substring(0, 6)}...${userAddress.substring(userAddress.length - 4)}`;
-    walletAddressDisplay.textContent = userAddress;
-    walletTypeBadge.textContent = `🔗 ${walletType} Connected`;
-    walletTypeBadge.style.display = 'inline-block';
-    walletMenu.classList.add('active');
-    buyBtn.disabled = false;
-    buyBtn.textContent = 'Buy LASTPEPE Tokens';
-    walletNotice.style.display = 'none';
-    buyWalletNotice.style.display = 'none';
-}
+    function updateWalletDisplay(){
+      walletBtn.classList.add('connected');
+      btnText.textContent = `${userAddress.substring(0,6)}...${userAddress.substring(userAddress.length - 4)}`;
+      walletAddressDisplay.textContent = userAddress;
+      walletTypeBadge.textContent = `🔗 ${walletType} Connected`;
+      walletTypeBadge.style.display = 'inline-block';
+      walletMenu.classList.add('active');
+      buyBtn.disabled = false;
+      buyBtn.textContent = 'Buy LASTPEPE Tokens';
+      walletNotice.style.display = 'none';
+      buyWalletNotice.style.display = 'none';
+    }
 
-disconnectBtn.addEventListener('click', () => {
-    disconnectWallet();
-});
+    disconnectBtn.addEventListener('click', () => disconnectWallet());
 
-function disconnectWallet() {
-    connectedWallet = null;
-    walletType = null;
-    userAddress = null;
-    walletBtn.classList.remove('connected');
-    btnText.textContent = 'Connect Wallet';
-    walletMenu.classList.remove('active');
-    walletTypeBadge.style.display = 'none';
-    buyBtn.disabled = true;
-    buyBtn.textContent = 'Connect Wallet to Buy';
-    walletNotice.style.display = 'block';
-    buyWalletNotice.style.display = 'block';
-    tokenAmount.textContent = '0';
-    showToast('Wallet disconnected', 'info');
-}
+    function disconnectWallet(){
+      connectedWallet = null;
+      walletType = null;
+      userAddress = null;
+      walletBtn.classList.remove('connected');
+      btnText.textContent = 'Connect Wallet';
+      walletMenu.classList.remove('active');
+      walletTypeBadge.style.display = 'none';
+      buyBtn.disabled = true;
+      buyBtn.textContent = 'Connect Wallet to Buy';
+      walletNotice.style.display = 'block';
+      buyWalletNotice.style.display = 'block';
+      tokenAmount.textContent = '0';
+      showToast('Wallet disconnected', 'info');
+    }
 
-copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(saleAddress.textContent);
-    copyBtn.classList.add('copied');
-    copyBtn.textContent = '✓ Copied';
-    setTimeout(() => {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(saleAddress.textContent);
+      copyBtn.classList.add('copied');
+      copyBtn.textContent = '✓ Copied';
+      setTimeout(() => {
         copyBtn.classList.remove('copied');
         copyBtn.textContent = 'Copy';
-    }, 2000);
-});
-
-function syncAddressTabs(currency) {
-    addressTabs.forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.currency === currency);
+      }, 2000);
     });
-}
 
-function syncCurrencyButtons(currency) {
-    currencyBtns.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.currency === currency);
-    });
-}
+    function syncAddressTabs(currency){
+      addressTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.currency === currency));
+    }
+    function syncCurrencyButtons(currency){
+      currencyBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.currency === currency));
+    }
 
-function setSelectedCurrency(currency, options = {}) {
-    const { syncBuyButtons = true, syncPresaleTabs = true, updateEstimate = true } = options;
-    selectedCurrency = currency;
+    function setSelectedCurrency(currency, options = {}){
+      const { syncBuyButtons = true, syncPresaleTabs = true, updateEstimate = true } = options;
+      selectedCurrency = currency;
 
-    if (syncPresaleTabs) syncAddressTabs(currency);
-    if (syncBuyButtons) syncCurrencyButtons(currency);
+      if (syncPresaleTabs) syncAddressTabs(currency);
+      if (syncBuyButtons) syncCurrencyButtons(currency);
 
-    updatePresaleAddress(currency);
+      updatePresaleAddress(currency);
 
-    if (updateEstimate) {
+      if (updateEstimate){
         calculateTokens();
         renderRateDisplay();
+      }
     }
-}
 
-function setBuyCurrenciesEnabledState() {
-    currencyBtns.forEach(btn => {
+    function setBuyCurrenciesEnabledState(){
+      currencyBtns.forEach(btn => {
         const isEth = btn.dataset.currency === 'ETH';
         btn.disabled = !isEth;
-        btn.style.opacity = isEth ? '1' : '0.5';
+        btn.style.opacity = isEth ? '1' : '.5';
         btn.style.cursor = isEth ? 'pointer' : 'not-allowed';
         if (!isEth) btn.title = 'Temporarily disabled: only ETH purchases are live on-chain now';
-    });
+      });
 
-    addressTabs.forEach(tab => {
+      addressTabs.forEach(tab => {
         const isEth = tab.dataset.currency === 'ETH';
         tab.disabled = !isEth;
-        tab.style.opacity = isEth ? '1' : '0.5';
+        tab.style.opacity = isEth ? '1' : '.5';
         tab.style.cursor = isEth ? 'pointer' : 'not-allowed';
         if (!isEth) tab.title = 'Temporarily disabled: only ETH purchases are live on-chain now';
-    });
+      });
 
-    if (selectedCurrency !== 'ETH') {
-        setSelectedCurrency('ETH');
+      if (selectedCurrency !== 'ETH') setSelectedCurrency('ETH');
     }
-}
 
-function updatePresaleAddress(currency) {
-    saleAddress.textContent = PAYMENT_ADDRESSES[currency];
-    addressLabel.textContent = `${currency} Wallet Address:`;
-}
+    function updatePresaleAddress(currency){
+      saleAddress.textContent = PAYMENT_ADDRESSES[currency];
+      addressLabel.textContent = `${currency} Wallet Address:`;
+    }
 
-addressTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        if (tab.dataset.currency !== 'ETH') {
-            showToast('Only ETH is enabled right now.', 'warning');
-            return;
+    addressTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if (tab.dataset.currency !== 'ETH'){
+          showToast('Only ETH is enabled right now.', 'warning');
+          return;
         }
         setSelectedCurrency(tab.dataset.currency);
         fetchLivePrices();
+      });
     });
-});
 
-currencyBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (btn.dataset.currency !== 'ETH') {
-            showToast('Only ETH is enabled right now.', 'warning');
-            return;
+    currencyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.currency !== 'ETH'){
+          showToast('Only ETH is enabled right now.', 'warning');
+          return;
         }
         setSelectedCurrency(btn.dataset.currency);
         fetchLivePrices();
+      });
     });
-});
 
-spendAmount.addEventListener('input', calculateTokens);
+    spendAmount.addEventListener('input', calculateTokens);
 
-function getUsdRate(currency) {
-    return liveRates[currency] || null;
-}
+    function getUsdRate(currency){ return liveRates[currency] || null; }
 
-function calculateTokens() {
-    const amount = parseFloat(spendAmount.value) || 0;
-    const usdRate = getUsdRate(selectedCurrency);
+    function calculateTokens(){
+      const amount = parseFloat(spendAmount.value) || 0;
+      const usdRate = getUsdRate(selectedCurrency);
 
-    if (amount > 0 && usdRate) {
+      if (amount > 0 && usdRate){
         const usdValue = amount * usdRate;
         const tokens = usdValue / TOKEN_PRICE_USD;
         tokenAmount.textContent = tokens.toLocaleString('en-US', { maximumFractionDigits: 2 });
-    } else {
+      } else {
         tokenAmount.textContent = '0';
+      }
     }
-}
 
-function renderRateDisplay() {
-    const usdRate = getUsdRate(selectedCurrency);
+    function renderRateDisplay(){
+      const usdRate = getUsdRate(selectedCurrency);
 
-    if (!usdRate) {
+      if (!usdRate){
         rateDisplay.innerHTML = '<div><strong>Current rate:</strong> Live price unavailable right now.</div><div>Please try again in a moment.</div>';
         return;
-    }
+      }
 
-    const tokenPerUnit = usdRate / TOKEN_PRICE_USD;
-    const updatedText = lastPriceTimestamp
+      const tokenPerUnit = usdRate / TOKEN_PRICE_USD;
+      const updatedText = lastPriceTimestamp
         ? `Updated: ${new Date(lastPriceTimestamp * 1000).toLocaleString()}`
         : 'Stablecoin rate fixed at approximately $1.00';
 
-    rateDisplay.innerHTML = `
-        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: selectedCurrency === 'ETH' || selectedCurrency[...]
+      rateDisplay.innerHTML = `
+        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: (selectedCurrency === 'ETH' || selectedCurrency === 'SOL') ? 4 : 2 })}</div>
         <div><strong>Estimate:</strong> 1 ${selectedCurrency} ≈ ${tokenPerUnit.toLocaleString('en-US', { maximumFractionDigits: 2 })} LASTPEPE</div>
         <div>${updatedText}</div>
-    `;
-}
+      `;
+    }
 
-async function fetchLivePrices() {
-    try {
+    async function fetchLivePrices(){
+      try{
         const response = await fetch(PRICE_API_URL, { headers: { Accept: 'application/json' } });
         if (!response.ok) throw new Error('Failed to fetch live prices');
 
         const data = await response.json();
         liveRates = {
-            ETH: data?.ethereum?.usd || null,
-            USDT: stablecoinUsdRates.USDT,
-            USDC: stablecoinUsdRates.USDC,
-            SOL: data?.solana?.usd || null
+          ETH: data?.ethereum?.usd || null,
+          USDT: stablecoinUsdRates.USDT,
+          USDC: stablecoinUsdRates.USDC,
+          SOL: data?.solana?.usd || null
         };
         lastPriceTimestamp = data?.ethereum?.last_updated_at || data?.solana?.last_updated_at || null;
 
         renderRateDisplay();
         calculateTokens();
-    } catch (error) {
+      } catch(error){
         console.error('Price fetch error:', error);
         showToast('Unable to refresh live market prices. Using latest available data.', 'warning');
         renderRateDisplay();
+      }
     }
-}
 
-buyBtn.addEventListener('click', async () => {
-    if (!connectedWallet) {
+    buyBtn.addEventListener('click', async () => {
+      if (!connectedWallet){
         showToast('Please connect your wallet first', 'warning');
         return;
-    }
+      }
 
-    const amount = parseFloat(spendAmount.value);
-    if (!amount || amount <= 0) {
+      const amount = parseFloat(spendAmount.value);
+      if (!amount || amount <= 0){
         showToast('Please enter a valid amount', 'warning');
         return;
-    }
+      }
 
-    buyBtn.disabled = true;
-    buyBtn.textContent = 'Processing...';
+      buyBtn.disabled = true;
+      buyBtn.textContent = 'Processing...';
 
-    try {
-        if (selectedCurrency !== 'ETH') {
-            throw new Error('Only ETH purchases are enabled right now.');
-        }
+      try{
+        if (selectedCurrency !== 'ETH') throw new Error('Only ETH purchases are enabled right now.');
 
         ensureMetaMaskForEthBuy();
         const { txHash, explorerUrl } = await sendEthPayment(amount);
 
         const usdRate = getUsdRate('ETH');
-        if (usdRate) {
-            collectedAmount += amount * usdRate;
-            updateProgressBar();
+        if (usdRate){
+          collectedAmount += amount * usdRate;
+          updateProgressBar();
         }
 
-        showToast(`Payment confirmed! Tx: ${txHash.slice(0, 10)}...`, 'success');
+        showToast(`Payment confirmed! Tx: ${txHash.slice(0,10)}...`, 'success');
 
         const linkToast = document.createElement('div');
         linkToast.className = 'toast-message success';
-        linkToast.innerHTML = `✅ Confirmed on-chain. <a href="${explorerUrl}" target="_blank" rel="noopener noreferrer" style="color:#003b18;text-decoration:underline;font-weight:900;">View on Ether[...]
+        linkToast.innerHTML = `✅ Confirmed on-chain. <a href="${explorerUrl}" target="_blank" rel="noopener noreferrer" style="color:#0f3a25;text-decoration:underline;font-weight:900;">View on Etherscan</a>`;
         document.body.appendChild(linkToast);
         setTimeout(() => linkToast.remove(), 7000);
 
         spendAmount.value = '';
         tokenAmount.textContent = '0';
-    } catch (error) {
+      } catch(error){
         console.error('Transaction error:', error);
-
-        if (error?.code === 4001) {
-            showToast('Transaction rejected in MetaMask.', 'warning');
-        } else {
-            showToast(error.message || 'Transaction failed. Please try again.', 'error');
-        }
-    } finally {
+        if (error?.code === 4001) showToast('Transaction rejected in MetaMask.', 'warning');
+        else showToast(error.message || 'Transaction failed. Please try again.', 'error');
+      } finally {
         buyBtn.disabled = false;
         buyBtn.textContent = connectedWallet ? 'Buy LASTPEPE Tokens' : 'Connect Wallet to Buy';
+      }
+    });
+
+    function showToast(message, type = 'info'){
+      const toast = document.createElement('div');
+      toast.className = `toast-message ${type}`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
     }
-});
 
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast-message ${type}`;
-    toast.textContent = message;
-    document.body.appendChild(toast);
+    window.addEventListener('click', (e) => {
+      if (e.target === walletModal) walletModal.classList.remove('active');
+      if (!walletMenu.contains(e.target) && !walletBtn.contains(e.target)) walletMenu.classList.remove('active');
+    });
 
-    setTimeout(() => {
-        toast.remove();
-    }, 4000);
-[...]
+    updateProgressBar();
+    setBuyCurrenciesEnabledState();
+    setSelectedCurrency('ETH', { syncBuyButtons: true, syncPresaleTabs: true, updateEstimate: false });
+    walletNotice.style.display = 'block';
+    buyWalletNotice.style.display = 'block';
+    fetchLivePrices();
+  </script>
+</body>
+</html>
 
