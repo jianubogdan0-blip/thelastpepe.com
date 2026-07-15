@@ -28,6 +28,7 @@ nav a{text-decoration:none;color:white;transition:0.3s;font-size:14px;font-weigh
 nav a:hover{color:#00ff66;text-shadow:0 0 10px #00ff66}
 #wallet-btn{padding:10px 20px;background:#00ff66;color:black;border:none;border-radius:50px;cursor:pointer;font-weight:700;font-family:'Orbitron',sans-serif;transition:0.3s;font-size:14px;position:relative;display:flex;align-items:center;gap:8px}
 #wallet-btn:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,255,102,0.8)}
+#connect-phantom{display:none !important;}
 #wallet-btn.connected{background:#78ff7a;box-shadow:0 0 20px rgba(0,255,102,0.6)}
 .wallet-indicator{width:8px;height:8px;background:#0bbd3c;border-radius:50%;display:none;box-shadow:0 0 8px #00ff66}
 #wallet-btn.connected .wallet-indicator{display:block;animation:pulse 2s infinite}
@@ -506,9 +507,13 @@ connectMetaMaskBtn.addEventListener('click', async () => {
     await connectWallet('MetaMask');
 });
 
-connectPhantomBtn.addEventListener('click', async () => {
-    await connectWallet('Phantom');
-});
+// Phantom intentionally disabled for now (ETH-only flow)
+if (connectPhantomBtn) {
+    connectPhantomBtn.style.display = 'none';
+    connectPhantomBtn.addEventListener('click', async () => {
+        showToast('Phantom is currently disabled. Please use MetaMask for ETH purchases.', 'warning');
+    });
+}
 
 async function connectWallet(type) {
     try {
@@ -538,17 +543,9 @@ async function connectWallet(type) {
 
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
             walletNetwork.textContent = getNetworkName(chainId);
-        } else if (type === 'Phantom') {
-            if (!window.phantom?.solana?.isPhantom) {
-                showToast('Phantom not installed. Please install it from the browser extension store.', 'warning');
-                return;
-            }
-
-            const response = await window.phantom.solana.connect();
-            userAddress = response.publicKey.toString();
-            connectedWallet = 'Phantom';
-            walletType = 'Phantom';
-            walletNetwork.textContent = 'Solana Mainnet';
+        } else {
+            showToast('Only MetaMask is supported right now.', 'warning');
+            return;
         }
 
         updateWalletDisplay();
@@ -566,11 +563,69 @@ function getNetworkName(chainId) {
     const networks = {
         '0x1': 'Ethereum Mainnet',
         '0x5': 'Goerli Testnet',
+        '0xaa36a7': 'Sepolia Testnet',
         '0x11155111': 'Sepolia Testnet',
         '0x38': 'Binance Smart Chain',
         '0x89': 'Polygon Mainnet'
     };
     return networks[chainId] || 'Unknown Network';
+}
+
+function getEtherscanBaseUrl(chainIdHex) {
+    const map = {
+        '0x1': 'https://etherscan.io',
+        '0x5': 'https://goerli.etherscan.io',
+        '0xaa36a7': 'https://sepolia.etherscan.io',
+        '0x89': 'https://polygonscan.com',
+        '0x13881': 'https://mumbai.polygonscan.com',
+        '0x38': 'https://bscscan.com',
+        '0x61': 'https://testnet.bscscan.com'
+    };
+    return map[chainIdHex] || 'https://etherscan.io';
+}
+
+function ensureMetaMaskForEthBuy() {
+    if (!connectedWallet || walletType !== 'MetaMask') {
+        throw new Error('ETH purchases require a connected MetaMask wallet.');
+    }
+    if (!window.ethereum?.isMetaMask) {
+        throw new Error('MetaMask extension not detected.');
+    }
+}
+
+async function sendEthPayment(amountEth) {
+    ensureMetaMaskForEthBuy();
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const from = await signer.getAddress();
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+
+    const valueWei = ethers.utils.parseEther(String(amountEth));
+    const txRequest = {
+        from,
+        to: PAYMENT_ADDRESSES.ETH,
+        value: ethers.utils.hexValue(valueWei)
+    };
+
+    const txHash = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [txRequest]
+    });
+
+    showToast(`Transaction sent: ${txHash.slice(0, 10)}...`, 'info');
+
+    const receipt = await provider.waitForTransaction(txHash, 1);
+    if (!receipt || receipt.status !== 1) {
+        throw new Error('Transaction failed on-chain.');
+    }
+
+    return {
+        txHash,
+        chainId,
+        receipt,
+        explorerUrl: `${getEtherscanBaseUrl(chainId)}/tx/${txHash}`
+    };
 }
 
 function updateWalletDisplay() {
@@ -643,6 +698,28 @@ function setSelectedCurrency(currency, options = {}) {
     }
 }
 
+function setBuyCurrenciesEnabledState() {
+    currencyBtns.forEach(btn => {
+        const isEth = btn.dataset.currency === 'ETH';
+        btn.disabled = !isEth;
+        btn.style.opacity = isEth ? '1' : '0.5';
+        btn.style.cursor = isEth ? 'pointer' : 'not-allowed';
+        if (!isEth) btn.title = 'Temporarily disabled: only ETH purchases are live on-chain now';
+    });
+
+    addressTabs.forEach(tab => {
+        const isEth = tab.dataset.currency === 'ETH';
+        tab.disabled = !isEth;
+        tab.style.opacity = isEth ? '1' : '0.5';
+        tab.style.cursor = isEth ? 'pointer' : 'not-allowed';
+        if (!isEth) tab.title = 'Temporarily disabled: only ETH purchases are live on-chain now';
+    });
+
+    if (selectedCurrency !== 'ETH') {
+        setSelectedCurrency('ETH');
+    }
+}
+
 function updatePresaleAddress(currency) {
     saleAddress.textContent = PAYMENT_ADDRESSES[currency];
     addressLabel.textContent = `${currency} Wallet Address:`;
@@ -650,6 +727,10 @@ function updatePresaleAddress(currency) {
 
 addressTabs.forEach(tab => {
     tab.addEventListener('click', () => {
+        if (tab.dataset.currency !== 'ETH') {
+            showToast('Only ETH is enabled right now.', 'warning');
+            return;
+        }
         setSelectedCurrency(tab.dataset.currency);
         fetchLivePrices();
     });
@@ -657,6 +738,10 @@ addressTabs.forEach(tab => {
 
 currencyBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+        if (btn.dataset.currency !== 'ETH') {
+            showToast('Only ETH is enabled right now.', 'warning');
+            return;
+        }
         setSelectedCurrency(btn.dataset.currency);
         fetchLivePrices();
     });
@@ -695,7 +780,7 @@ function renderRateDisplay() {
         : 'Stablecoin rate fixed at approximately $1.00';
 
     rateDisplay.innerHTML = `
-        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: selectedCurrency === 'ETH' || selectedCurrency === 'SOL' ? 4 : 2 })}</div>
+        <div><strong>Current rate:</strong> 1 ${selectedCurrency} = $${usdRate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: selectedCurrency === 'ETH' || selectedCurrency === 'SOL' ? 2 : 4 })}</div>
         <div><strong>Estimate:</strong> 1 ${selectedCurrency} ≈ ${tokenPerUnit.toLocaleString('en-US', { maximumFractionDigits: 2 })} LASTPEPE</div>
         <div>${updatedText}</div>
     `;
@@ -740,23 +825,40 @@ buyBtn.addEventListener('click', async () => {
     buyBtn.textContent = 'Processing...';
 
     try {
-        const usdRate = getUsdRate(selectedCurrency);
-        const estimatedTokens = usdRate ? ((amount * usdRate) / TOKEN_PRICE_USD).toLocaleString('en-US', { maximumFractionDigits: 2 }) : '0';
+        if (selectedCurrency !== 'ETH') {
+            throw new Error('Only ETH purchases are enabled right now.');
+        }
 
-        showToast(`Initiating ${selectedCurrency} transaction... Estimated tokens: ${estimatedTokens}. Check your ${walletType} wallet to confirm.`, 'info');
+        ensureMetaMaskForEthBuy();
+        const { txHash, explorerUrl } = await sendEthPayment(amount);
 
-        setTimeout(() => {
-            showToast('Transaction successful! You will receive your tokens soon.', 'success');
-            spendAmount.value = '';
-            tokenAmount.textContent = '0';
-            buyBtn.disabled = false;
-            buyBtn.textContent = 'Buy LASTPEPE Tokens';
-        }, 2000);
+        const usdRate = getUsdRate('ETH');
+        if (usdRate) {
+            collectedAmount += amount * usdRate;
+            updateProgressBar();
+        }
+
+        showToast(`Payment confirmed! Tx: ${txHash.slice(0, 10)}...`, 'success');
+
+        const linkToast = document.createElement('div');
+        linkToast.className = 'toast-message success';
+        linkToast.innerHTML = `✅ Confirmed on-chain. <a href="${explorerUrl}" target="_blank" rel="noopener noreferrer" style="color:#003b18;text-decoration:underline;font-weight:900;">View on Etherscan</a>`;
+        document.body.appendChild(linkToast);
+        setTimeout(() => linkToast.remove(), 7000);
+
+        spendAmount.value = '';
+        tokenAmount.textContent = '0';
     } catch (error) {
         console.error('Transaction error:', error);
-        showToast('Transaction failed. Please try again.', 'error');
+
+        if (error?.code === 4001) {
+            showToast('Transaction rejected in MetaMask.', 'warning');
+        } else {
+            showToast(error.message || 'Transaction failed. Please try again.', 'error');
+        }
+    } finally {
         buyBtn.disabled = false;
-        buyBtn.textContent = 'Buy LASTPEPE Tokens';
+        buyBtn.textContent = connectedWallet ? 'Buy LASTPEPE Tokens' : 'Connect Wallet to Buy';
     }
 });
 
@@ -780,29 +882,24 @@ document.addEventListener('click', (e) => {
     }
 });
 
-  document.addEventListener('visibilitychange', () => {
+document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') fetchLivePrices();
 });
-  
+
 window.addEventListener('load', async () => {
     updateProgressBar();
     setSelectedCurrency('ETH');
+    setBuyCurrenciesEnabledState();
     await fetchLivePrices();
-    setInterval(fetchLivePrices, 15000); // every 15s
+    setInterval(fetchLivePrices, 15000);
 
     if (window.ethereum?.selectedAddress) {
         userAddress = window.ethereum.selectedAddress;
         connectedWallet = 'MetaMask';
         walletType = 'MetaMask';
         updateWalletDisplay();
-    } else if (window.phantom?.solana?.publicKey) {
-        userAddress = window.phantom.solana.publicKey.toString();
-        connectedWallet = 'Phantom';
-        walletType = 'Phantom';
-        updateWalletDisplay();
     }
 });
 </script>
-
 </body>
 </html>
