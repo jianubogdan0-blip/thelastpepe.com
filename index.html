@@ -221,6 +221,448 @@ button,a{-webkit-tap-highlight-color:transparent}
     max-width: 100%;
   }
 }
+/* ===== Responsive size rebalance patch (desktop + mobile) ===== */
+
+/* Base typography and spacing tuning */
+body {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+header {
+  padding: 14px 24px !important;
+}
+
+.logo {
+  font-size: clamp(16px, 2vw, 24px) !important;
+  gap: 10px !important;
+}
+
+.logo-icon {
+  width: clamp(30px, 3vw, 42px) !important;
+  height: clamp(30px, 3vw, 42px) !important;
+}
+
+.logo-icon img {
+  width: 70% !important;
+  height: 70% !important;
+}
+
+nav {
+  gap: 12px !important;
+}
+
+nav a {
+  font-size: clamp(11px, 1.2vw, 13px) !important;
+}
+
+#wallet-btn {
+  padding: 9px 14px !important;
+  font-size: clamp(11px, 1.1vw, 13px) !important;
+}
+
+/* Hero */
+.hero {
+  min-height: auto !important;
+  padding: 120px 24px 56px !important;
+  gap: 24px !important;
+  align-items: center !important;
+}
+
+.hero-title-section {
+  max-width: 620px !important;
+  min-width: 0 !important;
+  gap: 14px !important;
+}
+
+.hero-text {
+  max-width: 620px !important;
+}
+
+.hero-text h1 {
+  font-size: clamp(34px, 6.2vw, 74px) !important;
+  line-height: 0.98 !important;
+  margin-bottom: 16px !important;
+}
+
+.hero-text p {
+  font-size: clamp(14px, 2vw, 19px) !important;
+  line-height: 1.55 !important;
+  margin-bottom: 22px !important;
+}
+
+.buttons {
+  gap: 12px !important;
+}
+
+.btn {
+  padding: 12px 22px !important;
+  font-size: clamp(12px, 1.5vw, 15px) !important;
+}
+
+.hero-image img {
+  width: min(92vw, 360px) !important;
+  max-width: 360px !important;
+  border-width: 4px !important;
+}
+
+/* Section spacing */
+.presale,
+.tokenomics,
+.buy-stake,
+.roadmap {
+  padding: 76px 20px !important;
+}
+
+.presale h2,
+.tokenomics h2,
+.buy-stake h2,
+.roadmap h2 {
+  font-size: clamp(30px, 5vw, 54px) !important;
+  margin-bottom: 20px !important;
+}
+
+.goal {
+  font-size: clamp(16px, 2.2vw, 22px) !important;
+  margin-bottom: 26px !important;
+}
+
+/* Presale controls */
+.address-tab {
+  padding: 9px 16px !important;
+  font-size: 12px !important;
+}
+
+.wallet-address {
+  font-size: clamp(13px, 1.8vw, 17px) !important;
+  gap: 10px !important;
+  margin-bottom: 20px !important;
+}
+
+.copy-btn {
+  padding: 10px 14px !important;
+  font-size: 13px !important;
+}
+
+.progress-container {
+  width: min(96%, 860px) !important;
+}
+
+.progress-bar {
+  height: 42px !important;
+  font-size: clamp(10px, 2.1vw, 13px) !important;
+}
+
+.raised-text {
+  margin-top: 10px !important;
+  font-size: clamp(13px, 1.6vw, 15px) !important;
+}
+
+/* Cards and stats */
+.stats,
+.cards,
+.timeline {
+  gap: 14px !important;
+}
+
+.stat-box,
+.card,
+.phase {
+  width: min(100%, 280px) !important;
+  padding: 22px !important;
+}
+
+.stat-box h3,
+.card h3 {
+  font-size: clamp(23px, 3.5vw, 30px) !important;
+}
+
+.stat-box p,
+.card p,
+.phase p {
+  font-size: clamp(13px, 1.4vw, 15px) !important;
+}
+
+/* Buy box */
+.buy-stake-container {
+  gap: 20px !important;
+}
+
+.buy-card {
+  min-width: 0 !important;
+  max-width: 560px !important;
+  width: 100% !important;
+  padding: 24px !important;
+}
+
+.buy-card h3 {
+  font-size: clamp(24px, 3.4vw, 30px) !important;
+  margin-bottom: 18px !important;
+}
+
+.form-group input {
+  padding: 10px 12px !important;
+  font-size: 14px !important;
+}
+
+.currency-btn {
+  padding: 9px !important;
+  font-size: 13px !important;
+}
+
+.token-display .amount {
+  font-size: clamp(20px, 3.4vw, 28px) !important;
+}
+
+.rate-display {
+  font-size: 12px !important;
+  padding: 10px 12px !important;
+}
+
+/* Footer */
+footer {
+  padding: 24px 14px !important;
+}
+
+/* ===== Tablet ===== */
+@media (max-width: 1024px) {
+  header {
+    padding: 10px 14px !important;
+  }
+
+  .hero {
+    padding: 100px 14px 42px !important;
+    gap: 18px !important;
+  }
+
+  .hero-image img {
+    max-width: 290px !important;
+  }
+
+  .presale,
+  .tokenomics,
+  .buy-stake,
+  .roadmap {
+    padding: 62px 14px !important;
+  }
+
+  .buy-card {
+    padding: 18px !important;
+  }
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+
+  header {
+    padding: 8px 10px !important;
+    gap: 8px !important;
+    align-items: center !important;
+  }
+
+  .logo {
+    font-size: 14px !important;
+    gap: 6px !important;
+  }
+
+  .logo-icon {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  nav {
+    gap: 6px !important;
+  }
+
+  nav a {
+    font-size: 11px !important;
+  }
+
+  #wallet-btn {
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+  }
+
+  .hero {
+    padding: 86px 10px 28px !important;
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 10px !important;
+  }
+
+  .hero-image {
+    order: -1 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .hero-image img {
+    width: 44vw !important;
+    max-width: 130px !important;
+    border-width: 2px !important;
+  }
+
+  .hero-title-section {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .hero-text {
+    max-width: 100% !important;
+  }
+
+  .hero-text h1 {
+    font-size: clamp(26px, 9vw, 36px) !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-text p {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 14px !important;
+  }
+
+  .buttons {
+    width: 100% !important;
+    gap: 8px !important;
+  }
+
+  .btn {
+    width: 100% !important;
+    padding: 11px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .presale,
+  .tokenomics,
+  .buy-stake,
+  .roadmap {
+    padding: 48px 10px !important;
+  }
+
+  .presale h2,
+  .tokenomics h2,
+  .buy-stake h2,
+  .roadmap h2 {
+    font-size: clamp(26px, 9vw, 34px) !important;
+    margin-bottom: 14px !important;
+  }
+
+  .goal {
+    font-size: 14px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .wallet-address {
+    font-size: 12px !important;
+    gap: 8px !important;
+  }
+
+  .copy-btn {
+    width: 100% !important;
+    max-width: 190px !important;
+  }
+
+  .progress-bar {
+    height: 34px !important;
+    font-size: 10px !important;
+  }
+
+  .raised-text {
+    font-size: 12px !important;
+  }
+
+  .stat-box,
+  .card,
+  .phase {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+  }
+
+  .buy-stake-container {
+    gap: 10px !important;
+  }
+
+  .buy-card {
+    padding: 14px !important;
+    border-radius: 16px !important;
+  }
+
+  .buy-card h3 {
+    font-size: 20px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .form-group {
+    margin-bottom: 14px !important;
+  }
+
+  .form-group label {
+    font-size: 12px !important;
+  }
+
+  .form-group input {
+    font-size: 13px !important;
+  }
+
+  .currency-select {
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .currency-btn {
+    min-width: calc(50% - 4px) !important;
+  }
+
+  .token-display {
+    padding: 10px !important;
+  }
+
+  .token-display .amount {
+    font-size: 20px !important;
+  }
+
+  .rate-display {
+    font-size: 11px !important;
+    padding: 9px !important;
+  }
+
+  .buy-btn {
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
+
+  .wallet-menu {
+    min-width: 250px !important;
+    right: -8px !important;
+  }
+
+  .modal-content {
+    padding: 22px 14px !important;
+  }
+
+  .wallet-selection-modal h2 {
+    font-size: 24px !important;
+  }
+
+  .wallet-option-btn {
+    padding: 14px !important;
+    font-size: 14px !important;
+  }
+
+  footer {
+    padding: 18px 10px !important;
+    font-size: 12px !important;
+  }
+
+  .socials a {
+    margin: 4px 6px !important;
+    font-size: 12px !important;
+  }
+}              
 </style>
 </head>
 <body>
