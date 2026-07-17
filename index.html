@@ -429,99 +429,100 @@
     left:auto;
   }
 }
-
-/* FINAL mobile header layout: all buttons visible in one line via horizontal swipe */
 @media (max-width: 640px){
+  header{
+    border-bottom:1px solid rgba(255,255,255,.12);
+    background:rgba(16,7,32,.78);
+    backdrop-filter:blur(10px);
+  }
+
   header .container.header-wrap{
     height:auto;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
-    padding:8px 0;
-    flex-wrap:nowrap;
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+    padding:10px 0 12px;
   }
 
   header .logo{
-    flex:0 0 auto;
-    font-size:.8rem;
+    width:100%;
+    justify-content:center;
+    font-size:.92rem;
+    letter-spacing:.4px;
     white-space:nowrap;
   }
 
   header .logo-icon{
-    width:30px;
-    height:30px;
-    min-width:30px;
+    width:34px;
+    height:34px;
+    min-width:34px;
   }
 
   header nav{
-    flex:1 1 auto;
-    min-width:0;
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:8px;
+    align-items:stretch;
+  }
+
+  header nav a{
+    min-height:40px;
+    padding:10px 8px;
+    border-radius:10px;
+    font-size:.78rem;
+    font-weight:800;
+    text-align:center;
     display:flex;
     align-items:center;
-    justify-content:flex-start;
-    gap:6px;
-    flex-wrap:nowrap;
-
-    overflow-x:auto;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-    padding-bottom:2px;
-    scrollbar-width:none;
-  }
-  header nav::-webkit-scrollbar{ display:none; }
-
-  header nav a,
-  header nav #wallet-btn{
-    flex:0 0 auto;
-    display:inline-flex;
-    align-items:center;
     justify-content:center;
-    min-height:34px;
-    height:34px;
-    padding:0 10px;
-    font-size:.72rem;
-    border-radius:999px;
     white-space:nowrap;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.16);
     box-shadow:none;
   }
 
   header nav #wallet-btn{
-    min-width:128px;
+    grid-column:1 / -1;
+    min-height:44px;
+    height:auto;
+    border-radius:12px;
+    font-size:.86rem;
+    font-weight:900;
+    justify-content:center;
+    padding:10px 12px;
+    box-shadow:0 3px 0 #000;
   }
 
   header nav .wallet-menu{
+    left:0;
     right:0;
-    left:auto;
-    width:min(320px,92vw);
+    width:100%;
     margin-top:8px;
+    border-radius:12px;
   }
 
   .hero{
-    padding-top:120px;
+    padding-top:210px;
   }
+
+  section{ padding:74px 0; }
+  .hero-card,.hero-image,.buy-card{ border-radius:16px; }
+  .btn{ min-height:44px; }
 }
 
-@media screen and (max-width: 390px){
-  header .logo{
-    max-width:30% !important;
-    font-size:.72rem !important;
-  }
-
-  header nav a,
-  header nav #wallet-btn{
-    min-height:34px !important;
-    height:34px !important;
-    padding:0 9px !important;
-    font-size:.68rem !important;
+@media (max-width: 390px){
+  header nav{
+    grid-template-columns:1fr;
   }
 
   header nav #wallet-btn{
-    min-width:114px !important;
+    grid-column:auto;
   }
 
   .hero{
-    padding-top:116px !important;
+    padding-top:232px;
   }
 }
 </style>
