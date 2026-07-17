@@ -369,9 +369,6 @@
     .toast-message.info{background:linear-gradient(120deg,#7adfff,#48cfff);color:#06253a}
 
   <style>
-/* ...keep all your existing CSS above this point unchanged... */
-
-/* REPLACE existing responsive blocks with this */
 @media (max-width: 1024px){
   .header-wrap{
     height:auto;
@@ -525,6 +522,201 @@
     padding-top:232px;
   }
 }
+/* ===== Mobile readability + tidy layout pass ===== */
+@media (max-width: 640px){
+  html, body{
+    overflow-x:hidden;
+  }
+
+  .container{
+    width:min(100% - 16px, 100%);
+  }
+
+  /* Headings and body text readability */
+  .hero-text h1{
+    font-size:clamp(1.55rem,7.2vw,2.1rem);
+    line-height:1.12;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
+
+  .hero-text p,
+  .subtitle,
+  .stat-box p,
+  .card p,
+  .phase p,
+  .rate-display,
+  .raised-text,
+  footer p{
+    font-size:.92rem;
+    line-height:1.5;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
+
+  .title{
+    font-size:clamp(1.45rem,6.5vw,1.9rem);
+    line-height:1.15;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
+
+  /* Keep address + long wallet strings readable */
+  .wallet-address{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    align-items:center;
+    padding:10px;
+  }
+
+  .wallet-address-label{
+    grid-column:1 / -1;
+    text-align:left;
+    font-size:.76rem;
+  }
+
+  .wallet-address strong{
+    display:block;
+    max-width:100%;
+    font-size:.8rem;
+    line-height:1.35;
+    word-break:break-all;
+    overflow-wrap:anywhere;
+  }
+
+  .copy-btn{
+    min-height:38px;
+    padding:8px 12px;
+    white-space:nowrap;
+  }
+
+  /* Progress/raised text */
+  .progress-container{
+    height:42px;
+  }
+
+  .progress-bar{
+    font-size:.68rem;
+    padding:0 8px;
+    min-width:44px;
+  }
+
+  .raised-text{
+    margin-top:8px;
+    text-align:center;
+  }
+
+  /* Buy card/form visibility */
+  .buy-card h3{
+    font-size:1.08rem;
+    line-height:1.2;
+  }
+
+  .form-group label{
+    font-size:.82rem;
+    line-height:1.3;
+  }
+
+  .form-group input{
+    width:100%;
+    min-height:44px;
+    font-size:16px; /* prevent iOS zoom */
+    line-height:1.2;
+  }
+
+  .token-display .amount{
+    font-size:1.15rem;
+    line-height:1.2;
+    word-break:break-word;
+  }
+
+  .rate-display div{
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
+
+  /* Buttons and tabs: no clipping */
+  .btn,
+  .address-tab,
+  .currency-btn,
+  .buy-btn{
+    min-height:44px;
+    line-height:1.2;
+    text-align:center;
+  }
+
+  .address-tab,
+  .currency-btn{
+    font-size:.82rem;
+    padding:10px 8px;
+  }
+
+  /* Cards spacing */
+  .stat-box,.card,.phase{
+    text-align:center;
+    padding:14px;
+  }
+
+  .stat-box h3,.card h3,.phase h3{
+    font-size:1.12rem;
+    line-height:1.2;
+    word-break:break-word;
+  }
+
+  /* Footer links tidy */
+  .socials{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .socials a{
+    min-height:40px;
+    font-size:.82rem;
+    line-height:1.2;
+    padding:8px;
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* Toasts readable */
+  .toast-message{
+    left:10px;
+    right:10px;
+    max-width:none;
+    font-size:.86rem;
+    line-height:1.35;
+  }
+}
+
+@media (max-width: 390px){
+  .hero-text h1{
+    font-size:1.42rem;
+  }
+
+  .title{
+    font-size:1.34rem;
+  }
+
+  .hero-text p,
+  .subtitle,
+  .stat-box p,
+  .card p,
+  .phase p,
+  .rate-display,
+  .raised-text,
+  footer p{
+    font-size:.88rem;
+  }
+
+  .socials{
+    grid-template-columns:1fr;
+  }
+}    
 </style>
 </head>
 <body>
