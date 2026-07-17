@@ -755,6 +755,78 @@
 }
 
 /* ...keep all your existing CSS below this point unchanged... */
+<style>
+/* Mobile header button rearrangement */
+@media (max-width: 640px){
+  .header-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
+  }
+
+  .logo{
+    width:100%;
+    justify-content:center;
+  }
+
+  nav{
+    width:100%;
+    display:grid !important;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:8px;
+    align-items:stretch;
+  }
+
+  nav a{
+    min-height:42px;
+    padding:10px 8px;
+    border-radius:10px;
+    font-size:.78rem;
+    text-align:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    white-space:nowrap;
+  }
+
+  /* Connect Wallet on its own full row */
+  #wallet-btn{
+    grid-column:1 / -1;
+    min-height:44px;
+    border-radius:12px;
+    justify-content:center;
+    padding:10px 12px;
+    font-size:.86rem;
+  }
+
+  /* keep dropdown aligned under wallet button */
+  .wallet-menu{
+    right:0;
+    left:0;
+    width:100%;
+  }
+
+  /* adjust hero offset for taller mobile header */
+  .hero{
+    padding-top:230px;
+  }
+}
+
+@media (max-width: 390px){
+  nav a{
+    font-size:.74rem;
+    padding:9px 6px;
+  }
+
+  #wallet-btn{
+    font-size:.82rem;
+  }
+
+  .hero{
+    padding-top:242px;
+  }
+}    
 </style>
 </head>
 <body>
