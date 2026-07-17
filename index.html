@@ -368,24 +368,392 @@
     .toast-message.warning{background:linear-gradient(120deg,#ffd36f,#ffb84d);color:#321f00}
     .toast-message.info{background:linear-gradient(120deg,#7adfff,#48cfff);color:#06253a}
 
-    @media (max-width: 1024px){
-      .header-wrap{height:auto;padding:10px 0}
-      .hero-grid{grid-template-columns:1fr}
-      .stats,.cards,.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
+   <style>
+/* REPLACE existing responsive blocks with this */
+@media (max-width: 1024px){
+  .header-wrap{
+    height:auto;
+    padding:10px 0;
+    align-items:flex-start;
+  }
 
-    @media (max-width: 640px){
-      .container{width:94%}
-      nav a{font-size:.78rem;padding:7px 10px}
-      #wallet-btn{font-size:.78rem;padding:8px 12px}
-      .hero{padding-top:118px}
-      .hero-card,.hero-image,.buy-card{padding:16px}
-      .btn{width:100%;text-align:center}
-      .stats,.cards,.timeline{grid-template-columns:1fr}
-      .progress-bar{font-size:.72rem}
-      .wallet-address strong{font-size:.82rem}
-      .socials a{margin:4px}
-    }
+  .logo{
+    font-size:1rem;
+  }
+
+  nav{
+    width:100%;
+    justify-content:flex-start;
+    gap:10px;
+    margin-top:8px;
+  }
+
+  nav a{
+    font-size:.82rem;
+    padding:9px 12px;
+    min-height:42px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  #wallet-btn{
+    min-height:42px;
+    padding:10px 14px;
+    font-size:.84rem;
+  }
+
+  .hero{
+    padding-top:152px; /* extra space because header grows */
+  }
+
+  .hero-grid{
+    grid-template-columns:1fr;
+    gap:18px;
+  }
+
+  .hero-card,
+  .hero-image,
+  .buy-card{
+    padding:20px;
+  }
+
+  .stats,.cards,.timeline{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .wallet-menu{
+    right:0;
+    left:auto;
+  }
+}
+
+@media (max-width: 640px){
+  :root{
+    --radius:18px;
+  }
+
+  .container{
+    width:min(100% - 16px, 100%);
+  }
+
+  section{
+    padding:72px 0;
+  }
+
+  header{
+    backdrop-filter: blur(8px);
+  }
+
+  .header-wrap{
+    gap:8px;
+    padding:8px 0 10px;
+  }
+
+  .logo{
+    width:100%;
+    font-size:.95rem;
+    gap:8px;
+  }
+
+  .logo-icon{
+    width:36px;
+    height:36px;
+  }
+
+  .logo-icon img{
+    width:22px;
+    height:22px;
+  }
+
+  nav{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  nav a,
+  #wallet-btn{
+    width:100%;
+    min-height:44px;
+    border-radius:12px;
+    box-shadow:none;
+  }
+
+  nav a{
+    font-size:.8rem;
+    padding:10px 8px;
+    text-align:center;
+  }
+
+  #wallet-btn{
+    grid-column:1 / -1;
+    justify-content:center;
+    font-size:.86rem;
+    padding:11px 12px;
+  }
+
+  .wallet-menu{
+    width:100%;
+    margin-top:8px;
+    border-radius:12px;
+    padding:12px;
+  }
+
+  .hero{
+    padding-top:210px; /* mobile stacked header/nav safe space */
+  }
+
+  .hero-card,
+  .hero-image,
+  .buy-card{
+    padding:14px;
+    border-radius:16px;
+  }
+
+  .hero-text h1{
+    font-size:clamp(1.55rem,8.2vw,2.2rem);
+    line-height:1.06;
+    margin-bottom:10px;
+  }
+
+  .hero-text p{
+    font-size:.95rem;
+    line-height:1.55;
+    margin-bottom:14px;
+  }
+
+  .buttons{
+    gap:8px;
+  }
+
+  .btn{
+    width:100%;
+    text-align:center;
+    min-height:44px;
+    padding:12px 14px;
+    box-shadow:none;
+  }
+
+  .title{
+    font-size:clamp(1.45rem,7vw,2rem);
+    margin-bottom:8px;
+  }
+
+  .subtitle{
+    font-size:.92rem;
+    margin-bottom:16px;
+  }
+
+  .address-tabs,
+  .currency-select{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+  }
+
+  .address-tab,
+  .currency-btn{
+    width:100%;
+    min-height:44px;
+    border-radius:12px;
+    font-size:.85rem;
+    padding:10px 8px;
+  }
+
+  .wallet-address{
+    margin:12px auto;
+    gap:8px;
+    padding:10px;
+    border-radius:12px;
+  }
+
+  .wallet-address-label{
+    font-size:.76rem;
+  }
+
+  .wallet-address strong{
+    font-size:.8rem;
+    line-height:1.3;
+  }
+
+  .copy-btn{
+    min-height:40px;
+    padding:9px 12px;
+    font-size:.84rem;
+  }
+
+  .progress-container{
+    height:44px;
+    border-radius:999px;
+  }
+
+  .progress-bar{
+    font-size:.7rem;
+    min-width:46px;
+    padding:0 8px;
+  }
+
+  .raised-text{
+    font-size:.85rem;
+    line-height:1.4;
+    margin-top:8px;
+  }
+
+  .stats,.cards,.timeline{
+    margin-top:14px;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .stat-box,.card,.phase{
+    padding:14px;
+    border-radius:14px;
+  }
+
+  .stat-box h3,.card h3,.phase h3{
+    font-size:1.15rem;
+    margin-bottom:6px;
+  }
+
+  .stat-box p,.card p,.phase p{
+    font-size:.9rem;
+    line-height:1.45;
+  }
+
+  .presale-avatar{
+    width:72px;
+    height:72px;
+    margin-bottom:10px;
+  }
+
+  .form-group label{
+    font-size:.82rem;
+    margin-bottom:5px;
+  }
+
+  .form-group input{
+    min-height:44px;
+    font-size:16px; /* prevents iOS zoom on focus */
+    padding:11px 12px;
+  }
+
+  .token-display,.rate-display{
+    padding:10px;
+    border-radius:10px;
+  }
+
+  .token-display .amount{
+    font-size:1.2rem;
+  }
+
+  .rate-display{
+    font-size:.82rem;
+    line-height:1.45;
+  }
+
+  .buy-btn{
+    min-height:46px;
+    font-size:.95rem;
+    box-shadow:none;
+  }
+
+  .modal-content{
+    width:100%;
+    padding:18px 14px;
+    border-radius:14px;
+  }
+
+  .wallet-selection-modal h2{
+    font-size:1.25rem;
+  }
+
+  .wallet-selection-modal p{
+    font-size:.9rem;
+    margin-bottom:14px;
+  }
+
+  .wallet-option-btn{
+    min-height:44px;
+    font-size:.94rem;
+    box-shadow:none;
+  }
+
+  .toast-message{
+    right:10px;
+    left:10px;
+    bottom:10px;
+    max-width:none;
+    font-size:.88rem;
+    padding:10px 12px;
+  }
+
+  footer{
+    padding:20px 0;
+  }
+
+  .socials{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-top:10px;
+  }
+
+  .socials a{
+    margin:0;
+    min-height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.84rem;
+    padding:8px;
+  }
+
+  .blob{
+    opacity:.22; /* lighter GPU load on phones */
+    filter:blur(45px);
+  }
+
+  .noise{
+    opacity:.04;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 390px){
+  .hero{
+    padding-top:222px;
+  }
+
+  .hero-text h1{
+    font-size:1.45rem;
+  }
+
+  nav{
+    grid-template-columns:1fr;
+  }
+
+  #wallet-btn{
+    grid-column:auto;
+  }
+
+  .address-tabs,
+  .currency-select,
+  .socials{
+    grid-template-columns:1fr;
+  }
+}
+
+/* Accessibility + performance: reduce heavy motion if user prefers */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
   </style>
 </head>
 <body>
