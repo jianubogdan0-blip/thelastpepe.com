@@ -368,7 +368,9 @@
     .toast-message.warning{background:linear-gradient(120deg,#ffd36f,#ffb84d);color:#321f00}
     .toast-message.info{background:linear-gradient(120deg,#7adfff,#48cfff);color:#06253a}
 
-   <style>
+  <style>
+/* ...keep all your existing CSS above this point unchanged... */
+
 /* REPLACE existing responsive blocks with this */
 @media (max-width: 1024px){
   .header-wrap{
@@ -404,7 +406,7 @@
   }
 
   .hero{
-    padding-top:152px; /* extra space because header grows */
+    padding-top:152px;
   }
 
   .hero-grid{
@@ -502,7 +504,7 @@
   }
 
   .hero{
-    padding-top:210px; /* mobile stacked header/nav safe space */
+    padding-top:210px;
   }
 
   .hero-card,
@@ -635,7 +637,7 @@
 
   .form-group input{
     min-height:44px;
-    font-size:16px; /* prevents iOS zoom on focus */
+    font-size:16px;
     padding:11px 12px;
   }
 
@@ -711,7 +713,7 @@
   }
 
   .blob{
-    opacity:.22; /* lighter GPU load on phones */
+    opacity:.22;
     filter:blur(45px);
   }
 
@@ -720,7 +722,6 @@
   }
 }
 
-/* Extra small devices */
 @media (max-width: 390px){
   .hero{
     padding-top:222px;
@@ -745,7 +746,6 @@
   }
 }
 
-/* Accessibility + performance: reduce heavy motion if user prefers */
 @media (prefers-reduced-motion: reduce){
   *{
     animation:none !important;
@@ -753,8 +753,9 @@
     scroll-behavior:auto !important;
   }
 }
+
+/* ...keep all your existing CSS below this point unchanged... */
 </style>
-  </style>
 </head>
 <body>
   <div class="noise"></div>
