@@ -755,87 +755,72 @@
 }
     
 <style>
-/* ===== MOBILE HEADER SAFE FIX: visible inline buttons ===== */
-@media screen and (max-width: 640px){
-  header .container.header-wrap{
+@media (max-width: 640px){
+  .header-wrap{
+    height:auto !important;
     display:flex !important;
     align-items:center !important;
     justify-content:space-between !important;
     gap:8px !important;
-    flex-wrap:nowrap !important;
     padding:8px 0 !important;
+    flex-wrap:nowrap !important;
   }
 
-  header .logo{
+  .logo{
     flex:0 0 auto !important;
-    width:auto !important;
-    max-width:34% !important;
-    overflow:hidden !important;
-    white-space:nowrap !important;
-    text-overflow:ellipsis !important;
     font-size:.8rem !important;
+    white-space:nowrap !important;
   }
 
-  header .logo-icon{
+  .logo-icon{
     width:30px !important;
     height:30px !important;
-    min-width:30px !important;
   }
 
-  header nav{
+  nav{
     flex:1 1 auto !important;
     min-width:0 !important;
     display:flex !important;
-    align-items:center !important;
-    justify-content:flex-end !important;
-    gap:6px !important;
     flex-wrap:nowrap !important;
-    overflow-x:auto !important;      /* allow horizontal scroll instead of hiding */
-    overflow-y:visible !important;
+    justify-content:flex-start !important;
+    align-items:center !important;
+    gap:6px !important;
+
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
     -webkit-overflow-scrolling:touch !important;
     padding-bottom:2px !important;
   }
 
-  /* hide scrollbar but keep scrolling */
-  header nav::-webkit-scrollbar{ display:none; }
-  header nav{ scrollbar-width:none; }
+  nav::-webkit-scrollbar{ display:none; }
+  nav{ scrollbar-width:none; }
 
-  header nav a,
-  header nav #wallet-btn{
+  nav a,
+  #wallet-btn{
+    flex:0 0 auto !important;
     display:inline-flex !important;
     align-items:center !important;
     justify-content:center !important;
-    flex:0 0 auto !important;
-    visibility:visible !important;
-    opacity:1 !important;
-
-    min-height:36px !important;
-    height:36px !important;
+    min-height:34px !important;
+    height:34px !important;
     padding:0 10px !important;
     font-size:.72rem !important;
-    font-weight:800 !important;
-    line-height:1 !important;
-    white-space:nowrap !important;
     border-radius:999px !important;
+    white-space:nowrap !important;
     box-shadow:none !important;
   }
 
-  header nav #wallet-btn{
-    min-width:122px !important;
-    font-size:.7rem !important;
+  #wallet-btn{
+    min-width:128px !important;
   }
 
-  header nav .wallet-menu{
-    position:absolute !important;
+  .wallet-menu{
     right:0 !important;
     left:auto !important;
     width:min(320px,92vw) !important;
-    margin-top:8px !important;
   }
 
-  .hero{
-    padding-top:122px !important;
-  }
+  .hero{ padding-top:120px !important; }
 }
 
 @media screen and (max-width: 390px){
